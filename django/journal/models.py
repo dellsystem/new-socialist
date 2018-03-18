@@ -13,35 +13,11 @@ from martor.models import MartorField
 from martor.utils import markdownify
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=20)
-    slug = models.SlugField(max_length=20)
-    description = models.TextField()
-    content = MartorField()
-    formatted_content = models.TextField(editable=False)
-
-    class Meta:
-        verbose_name_plural = 'categories'
-
-    def get_articles(self):
-        return self.articles.filter(published=True)
-
-    def get_absolute_url(self):
-        return reverse('category', args=[self.slug])
-
-    def save(self, *args, **kwargs):
-        # Parse markdown and cache it.
-        self.formatted_content = markdownify(self.content)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
-
-
 class Author(models.Model):
     name = models.CharField(max_length=100)
-    bio = MartorField()
+    bio = MartorField(blank=True)
     formatted_bio = models.TextField(editable=False)
+    twitter = models.CharField(max_length=15, blank=True, null=True)
     slug = models.SlugField()
     is_editor = models.BooleanField(default=False)
 
@@ -60,41 +36,59 @@ class Author(models.Model):
         super().save(*args, **kwargs)
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=50)
+    description = models.TextField()
+    content = MartorField(blank=True)
+    formatted_content = models.TextField(editable=False)
+    editors = models.ManyToManyField(Author, limit_choices_to={
+        'is_editor': True,
+    }, blank=True)
+    email = models.EmailField(blank=True)
+    image_credit = models.TextField(blank=True)
+    formatted_image_credit = models.TextField(editable=False)
+    image = ProcessedImageField(
+        upload_to='tags',
+        processors=[ResizeToFill(1115, 450)],
+        options={'quality': 100},
+        blank=True
+    )
+
+    def get_articles(self):
+        return self.articles.filter(published=True)
+
+    def get_absolute_url(self):
+        return reverse('tag', args=[self.slug])
+
+    def save(self, *args, **kwargs):
+        # Parse markdown and cache it.
+        self.formatted_image_credit = markdownify(self.image_credit)
+        self.formatted_content = markdownify(self.content)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 class Issue(models.Model):
-    number = models.PositiveSmallIntegerField(unique=True)
-    title =  models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
     date = models.DateField(help_text='Day ignored')
-    slug = models.SlugField()
     image = ProcessedImageField(
         upload_to='issues',
         processors=[ResizeToFill(1920, 450)],
         options={'quality': 100},
         blank=True
     )
-    published = models.BooleanField(default=True)
-
-    class Meta:
-        get_latest_by = 'number'
-
-    def get_articles(self):
-        # If this issue isn't published, just return all the articles.
-        if self.published:
-            return self.articles.filter(published=True)
-        else:
-            return self.articles.all()
-
-    def get_absolute_url(self):
-        return reverse('issue', args=[self.slug])
 
     def __str__(self):
         return self.title
 
 
 class Article(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,
-        related_name='articles')
+    tags = models.ManyToManyField(Tag, related_name='articles', blank=True)
     title = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=100)
     authors = models.ManyToManyField(Author, related_name='articles',
         blank=True)
     subtitle = models.TextField()
@@ -105,21 +99,21 @@ class Article(models.Model):
     date = models.DateField()
     issue = models.ForeignKey(Issue, related_name='articles', null=True,
         blank=True, on_delete=models.CASCADE)
-    order_in_issue = models.PositiveIntegerField(default=0)
     image = ProcessedImageField(
         upload_to='articles',
-        processors=[ResizeToFill(1920, 1080)],
+        processors=[ResizeToFill(1115, 450)],
         format='JPEG',
         options={'quality': 100}
     )
     image_thumbnail = ImageSpecField(
         source='image',
-        processors=[ResizeToFill(540, 360)],
+        processors=[ResizeToFill(540, 350)],
         format='JPEG',
         options={'quality': 90}
     )
     background_position = models.CharField(max_length=50, blank=True)
-    image_credit = models.URLField(blank=True)
+    image_credit = models.TextField(blank=True)
+    formatted_image_credit = models.TextField(editable=False)
     related_1 = models.ForeignKey("self", related_name='related_1_articles',
         on_delete=models.CASCADE, blank=True, null=True)
     related_2 = models.ForeignKey("self", related_name='related_2_articles',
@@ -129,17 +123,18 @@ class Article(models.Model):
     featured = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-date', 'order_in_issue']
+        ordering = ['-date']
         get_latest_by = 'date'
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('article', args=[self.slug])
+        return reverse('article_or_page', args=[self.slug])
 
     def save(self, *args, **kwargs):
         # Parse markdown and cache it.
+        self.formatted_image_credit = markdownify(self.image_credit)
         self.formatted_content = markdownify(self.content)
         self.unformatted_content = strip_tags(self.formatted_content)
         words = self.unformatted_content.split()
@@ -172,9 +167,9 @@ class Article(models.Model):
     # Use h2 or h3 in article thumbnail depending on the length of the title.
     def get_title_header(self):
         if len(self.title) > 50:
-            return 'h3'
+            return 'h4'
         else:
-            return 'h2'
+            return 'h3'
 
     def get_related(self):
         # Limited to 2. Currently just gets the latest articles.

@@ -8,21 +8,12 @@
     <meta name="description" content="{% block longdescription %}{% block description %}{% endblock %}{% endblock %}" />
     <meta name="date" content="{% block date %}2018-01-29{% endblock %}" scheme="YYYY-MM-DD">
 
-    <title>{% block fulltitle %}{% block title %}{% endblock %} // Notes From Below{% endblock %}</title>
+    <title>{% block fulltitle %}{% block title %}{% endblock %} // New Socialist{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="/static/css/semantic.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
     {% include 'favicon.html' %}
     {% block meta %}
     {% endblock %}
-    <script async
-    src="https://www.googletagmanager.com/gtag/js?id=UA-107718477-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-107718477-1');
-    </script>
 </head>
 <body>
     {% block body %}

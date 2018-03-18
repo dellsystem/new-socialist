@@ -30,7 +30,7 @@ class AuthorSitemap(Sitemap):
     priority = 0.4
 
     def items(self):
-        return Author.objects.filter(articles__published=True).order_by('name')
+        return Author.objects.filter(articles__published=True).order_by('name').distinct()
 
     def lastmod(self, item):
         try:
@@ -39,26 +39,15 @@ class AuthorSitemap(Sitemap):
             return None
 
 
-class CategorySitemap(Sitemap):
+class TagSitemap(Sitemap):
     changefreq = 'weekly'
     priority = 0.8
 
     def items(self):
-        return Category.objects.order_by('name')
+        return Tag.objects.order_by('name')
 
     def lastmod(self, item):
         try:
             return item.articles.latest().date
         except Article.DoesNotExist:
             return None
-
-
-class IssueSitemap(Sitemap):
-    changefreq = 'never'
-    priority = 0.9
-
-    def items(self):
-        return Issue.objects.order_by('pk')
-
-    def lastmod(self, item):
-        return item.date

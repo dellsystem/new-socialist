@@ -1,0 +1,47 @@
+<div class="column featured-article">
+    <div class="article-photo" style="background-image: url('{{ article.image.url }}'); background-position: {{ article.background_position|default:"center" }}">
+        <div class="overlay">
+            <div class="overlay-content">
+                {% comment %}
+                <h4 class="ui inverted header article-category">
+                    {% for tag in article.tags.all %}
+                    <a href="{{ tag.get_absolute_url }}">
+                        {{ tag.name }}
+                    </a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </h4>
+                {% endcomment %}
+                <h2 class="ui inverted header article-title">
+                    <a href="{{ article.get_absolute_url }}">
+                        {{ article.title }}
+                    </a>
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="description">
+        <h3 class="ui inverted header">
+            <div class="sub header">
+                {{ article.subtitle }}
+        </h3>
+    </div>
+    <h3 class="ui header article-metadata">
+        <div class="sub header">
+            {% if article.authors.count %}
+            by {% for author in article.authors.all %}
+            <strong><a href="{{ author.get_absolute_url }}">{{ author.name }}</a></strong>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            {% else %}
+            by anonymous
+            {% endif %}
+            /
+            {{ article.date }}
+            /
+            {% for tag in article.tags.all %}
+            <a href="{{ tag.get_absolute_url }}">
+                <strong>{{ tag.name }}</strong>
+            </a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+    </h3>
+</div>

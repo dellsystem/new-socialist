@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block twittercard %}summary{% endblock %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+{% block description %}{{ tag.description }}{% endblock %}
+{% block longdescription %}{{ tag.formatted_content|striptags|truncatechars:500 }}{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="ui container">
+        <img src="{{ tag.image.url }}" alt="" class="ui image print-hide" />
+        <h1 class="ui header">
+            {{ tag.name }}
+        </h1>
+        <div id="article-lead">
+            {{ tag.description }}
+        </div>
+        <div class="print-hide">
+            <div class="ui two column stackable grid">
+                <div class="column">
+                    {% with url=request.build_absolute_uri|urlencode title=tag.title|urlencode %}
+                    <a href="mailto:?subject={{ tag.title }}&amp;body={{ url }}"
+                       title="Send via email">
+                        <i class="mail icon"></i>
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url=&text={{ tag.title }}%20{{ url }}">
+                        <i class="twitter icon"></i>
+                    </a>
+                    <a href="http://www.facebook.com/sharer/sharer.php?u={{ url }}">
+                        <i class="facebook icon"></i>
+                    </a>
+                    {% endwith %}
+                    <a onclick="window.print()" href="#">
+                        <i class="print icon"></i>
+                    </a>
+                </div>
+                <div class="right aligned column">
+                    {% if tag.formatted_image_credit %}
+                        <h4 class="ui header">
+                            <div class="sub header">
+                                <em>{{ tag.formatted_image_credit|safe }}</em>
+                            </div>
+                        </h4>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if tag.content %}
+        <div class="section">
+            {{ tag.formatted_content|safe }}
+            {% if tag.email %}
+            <br />
+            <h2 class="ui centered header">
+                Send pitches to <a
+                href="mailto:{{ tag.email }}" class="email-address">{{ tag.email }}</a>
+                <div class="sub header">
+                    Editors:
+                    {% for editor in tag.editors.all %}
+                    <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
+                    {% if editor.twitter %}
+                    (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a> on Twitter){% endif %}{% if not forloop.last %} and {% endif %}{% endfor %}.
+                </div>
+            </h2>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% include 'patreon.html' with padded=True %}
+    <div class="print-hide">
+        <div class="ui container">
+            <h3 class="section-header">articles</h3>
+            <div class="ui three column stackable grid">
+                {% for article in tag.get_articles %}
+                <div class="column">
+                {% include 'article_third.html' with article=article only %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

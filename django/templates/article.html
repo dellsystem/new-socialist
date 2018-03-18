@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
 
-{% block mastheadclass %}photo{% endblock %}
-{% block mastheadbg %}{{ article.image.url }}{% endblock %}
-{% block mastheadposition %}{{ article.background_position|default:"center" }}{% endblock %}
-
 {% block title %}{{ title }}{% if desired_language_name %} ({{ desired_language_name }}){% endif %}{% endblock %}
 {% block date %}{{ article.date|date:"Y-m-d" }}{% endblock %}
 
@@ -15,28 +11,33 @@
 
 {% block pagetype %}article{% endblock %}
 
-{% block masthead %}
-<div class="dark-screen">
+{% block content %}
+<article class="page-content">
     <div class="ui container">
-        {% if article.image_credit %}
-        <div class="image-credit">
-            <a href="{{ article.image_credit }}">Image credit</a>
+        <div class="article-photo print-hide"
+             style="background-image: url('{{ article.image.url }}'); background-position: {{ article.background_position|default:"center" }}">
         </div>
-        {% endif %}
-        <h3 class="ui inverted header article-category">
-            <a href="{{ article.category.get_absolute_url }}">
-                {{ article.category.slug }}
+        <br />
+        <h3 class="ui header article-category">
+            {% for tag in article.tags.all %}
+            <a href="{{ tag.get_absolute_url }}">
+                {{ tag.name }}
             </a>
+            {% if not forloop.last %}/{% endif %}
+            {% endfor %}
         </h3>
-        <h1 class="ui inverted header article-title">
+        <h1 class="ui header article-title">
             {{ title }}
             {% if desired_language_name %}({{ desired_language_name }}){% endif %}
             <div class="sub header">
                 {% if article.authors.count %}
                 by {% for author in article.authors.all %}
-                    <strong><a href="{{ author.get_absolute_url }}">{{ author.name }}</a></strong>{% if not forloop.last %}, {% endif %}
+                    <strong><a href="{{ author.get_absolute_url }}">{{ author.name }}</a>{% if author.twitter %} (<a href="https://twitter.com/{{ author.twitter }}">@{{ author.twitter }}</a>){% endif %}</strong>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
+                {% else %}
+                by anonymous
                 {% endif %}
+                on {{ article.date|date:"F j, Y" }}
                 {% if article.issue %}
                 in
                 <strong>
@@ -47,61 +48,43 @@
                 {% endif %}
             </div>
         </h1>
-    </div>
-</div>
-{% endblock %}
-
-{% block content %}
-<article class="page-content">
-    <div class="ui container">
-        <div class="print-only">
-            <h3 class="ui inverted header article-category">
-                <a href="{{ article.category.get_absolute_url }}">
-                    {{ article.category.slug }}
-                </a>
-            </h3>
-            <h1 class="ui inverted header article-title">
-                {{ article.title }}
-                <div class="sub header">
-                    {% if article.authors.count %}
-                    by {% for author in article.authors.all %}
-                        <strong><a href="{{ author.get_absolute_url }}">{{ author.name }}</a></strong>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                    {% if article.issue %}
-                    in
-                    <strong>
-                    <a href="{{ article.issue.get_absolute_url }}">
-                        {{ article.issue.title }} (#{{ article.issue.number }})
-                    </a>
-                    </strong>
-                    {% endif %}
-                    / {{ article.date|date:"F j, Y" }}
-                </div>
-            </h1>
-        </div>
         {% if not article.published %}
-        <div class="ui error message">
-            <div class="ui two column grid">
-                <div class="column">
-                    <div class="header">
-                        Not published
-                    </div>
-                    <p>This article won't yet show up elsewhere on the
-                    website.</p>
-                    <p>Here's what the thumbnail will look like when it is
-                    published:</p>
+        <div class="ui error message print-hide">
+            <div class="header">
+                Not published
+            </div>
+            <p>This article won't yet show up elsewhere on the
+            website.</p>
+        </div>
+        <br /><br />
+        {% endif %}
+        {% if request.user.is_staff %}
+        <div class="ui warning message print-hide">
+            <div class="ui stackable grid">
+                <div class="three wide column">
+                    <h2 class="ui header">
+                        Previews
+                        <div class="sub header">
+                            This only shows up because you are logged in as admin
+                        </div>
+                    </h2>
+                    <br />
+                    <a href="{% url 'admin:journal_article_change' article.pk %}"
+                       class="ui blue icon button">
+                        <i class="edit icon"></i>Edit in admin
+                    </a>
                 </div>
-                <div class="column">
+                <div class="five wide column">
+                    {% include 'article_third.html' with article=article only %}
+                </div>
+                <div class="eight wide column">
                     {% include 'article_thumb.html' with article=article only %}
                 </div>
             </div>
         </div>
-        <br /><br />
         {% endif %}
-        <div id="article-lead">
-            <p>{{ article.subtitle }}</p>
-            {% if languages %}
+        {% if languages %}
+        <div id="article-lead" class="print-hide">
             <br />
             <div class="ui buttons">
                 {% for language_code, language_name in languages %}
@@ -114,74 +97,70 @@
                 {% endif %}
                 {% endfor %}
             </div>
-            {% endif %}
         </div>
-        <hr />
-        <div class="ui two column stackable grid" id="article-metadata">
-            <div class="column">
-                <p>{{ article.date|date:"F j, Y" }}</p>
-            </div>
-            <div class="right aligned column">
-                {% with url=request.build_absolute_uri|urlencode title=article.title|urlencode %}
-                <a href="mailto:?subject={{ title }}&amp;body={{ url }}"
-                   title="Send via email">
-                    <i class="large mail icon"></i>
-                </a>
-                <a href="https://twitter.com/intent/tweet?url=&text={{ title }}%20{{ url }}">
-                    <i class="large twitter icon"></i>
-                </a>
-                <a href="http://www.facebook.com/sharer/sharer.php?u={{ url }}">
-                    <i class="large facebook icon"></i>
-                </a>
-                {% endwith %}
-                <a onclick="window.print()" href="#">
-                    <i class="large print icon"></i>
-                </a>
+        {% endif %}
+        <br />
+        <div class="print-hide">
+            <div class="ui stackable grid">
+                <div class="four wide column">
+                    {% with url=request.build_absolute_uri|urlencode title=title|urlencode %}
+                    <a href="mailto:?subject={{ title }}&amp;body={{ url }}"
+                       title="Send via email">
+                        <i class="mail icon"></i>
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url=&text={{ title }}%20{{ url }}">
+                        <i class="twitter icon"></i>
+                    </a>
+                    <a href="http://www.facebook.com/sharer/sharer.php?u={{ url }}">
+                        <i class="facebook icon"></i>
+                    </a>
+                    {% endwith %}
+                    <a onclick="window.print()" href="#">
+                        <i class="print icon"></i>
+                    </a>
+                </div>
+                <div class="right aligned twelve wide column">
+                    {% if article.formatted_image_credit %}
+                        <h4 class="ui header">
+                            <div class="sub header">
+                                <em>{{ article.formatted_image_credit|safe }}</em>
+                            </div>
+                        </h4>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="article-content section">
-            <p>
-                {{ formatted|safe }}
-            </p>
+            {{ formatted|safe }}
         </div>
-        {% with num_authors=article.authors.count %}
-        {% if num_authors %}
         <hr />
         <div class="section">
-            <h3 class="section-header">author{{ num_authors|pluralize }}</h3>
+            <h3 class="section-header">author</h3>
+            {% if article.authors.count %}
             {% for author in article.authors.all %}
             {% include 'author_bio.html' with author=author only %}
             {% endfor %}
+            {% else %}
+            <p>The author of this piece wishes to remain anonymous.</p>
+            {% endif %}
         </div>
-        {% endif %}
-        {% endwith %}
+    </div>
+    {% include 'patreon.html' %}
+    <div class="ui container">
         {% with related=article.get_related %}
         {% if related %}
-        <hr id="related-hr" />
-        <div class="section" id="article-related">
+        <div class="section print-hide" id="article-related">
             <h3 class="section-header">related</h3>
-            <div class="ui two column stackable grid">
-            {% for related_article in related %}
-            {% include 'article_thumb.html' with article=related_article only %}
-            {% endfor %}
+            <div class="ui two column bottom aligned stackable grid">
+                {% for related_article in related %}
+                <div class="column">
+                {% include 'article_thumb.html' with article=related_article only %}
+                </div>
+                {% endfor %}
             </div>
         </div>
         {% endif %}
         {% endwith %}
-        {% if article.issue %}
-        <hr />
-        <div class="section">
-            <h3 class="section-header">issue</h3>
-            <div class="ui center aligned basic segment">
-                <h2>
-                    From
-                    <a href="{{ article.issue.get_absolute_url }}">
-                        {{ article.issue.title }} (issue #{{ article.issue.number }})
-                    </a>
-                </h2>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </article>
 {% endblock %}

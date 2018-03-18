@@ -1,34 +1,90 @@
 {% extends 'page.html' %}
 
-{% block title %}Notes From Below{% endblock %}
-{% block fulltitle %}Notes From Below{% endblock %}
-{% block description %}No politics without inquiry{% endblock %}
+{% block title %}New Socialist{% endblock %}
+{% block fulltitle %}New Socialist{% endblock %}
+{% block description %}Robust intellectual discussion and intransigent rabble rousing {% endblock %}
 {% block twittercard %}summary{% endblock %}
 
-{% block masthead %}{% endblock %}
-{% block mastheadbg %}{% if LATEST_ISSUE.image %}{{ LATEST_ISSUE.image.url }}{% else %}/static/img/triangles.png{% endif %}{% endblock %}
-{% block mastheadclass %}photo fixed{% endblock %}
-
-{% block precontent %}
-<div class="section">
-    <div class="ui stackable grid">
-    {% for article in articles %}
-        {% include 'article_thumb.html' with article=article resize=True only %}
-    {% endfor %}
-    </div>
-</div>
-<hr />
-{% endblock %}
-
-{% block postcontent %}
-<div class="section">
-    <h1 class="ui centered header">
-        <a href="{{ LATEST_ISSUE.get_absolute_url }}">
-            {{ LATEST_ISSUE.title }} (#{{ LATEST_ISSUE.number }})
-        </a>
-        <div class="sub header">
-            View the latest issue ({{ LATEST_ISSUE.date|date:"F Y" }})
+{% block content %}
+<article class="page-content">
+    <div class="ui container">
+        <div class="ui two column relaxed middle aligned stackable grid">
+            {% include "featured_article.html" with article=featured.0 %}
+            <div class="column">
+                {% include "article_thumb.html" with article=non_featured.0 %}
+                {% include "article_thumb.html" with article=non_featured.1 %}
+            </div>
         </div>
-    </h1>
-</div>
+    </div>
+    <div class="shadow-section padded">
+        <div class="ui container">
+            <div class="ui middle aligned stackable grid">
+                <div class="thirteen wide column">
+                    <h2 class="ui grey header">
+                        Robust intellectual discussion and intransigent rabble
+                        rousing.
+                        <div class="sub header">
+                            An independent source of left thought based in the
+                            UK.
+                        </div>
+                    </h2>
+                </div>
+                <div class="three wide right aligned column">
+                    <a href="https://twitter.com/NewSocialistUK">
+                        <i class="big twitter icon">
+                        </i>
+                    </a>
+                    <a href="https://facebook.com/NewSocialistUK/">
+                        <i class="big facebook icon">
+                        </i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui container">
+        <div class="ui two column relaxed middle aligned stackable grid">
+            <div class="column">
+                {% include "article_thumb.html" with article=non_featured.2 %}
+                {% include "article_thumb.html" with article=non_featured.3 %}
+            </div>
+            {% include "featured_article.html" with article=featured.1 %}
+        </div>
+    </div>
+    {% include 'patreon.html' with padded=True %}
+    <div class="ui container">
+        <div class="ui three column relaxed bottom aligned stackable grid">
+            <div class="row">
+                <div class="column">
+                    {% include "article_third.html" with article=non_featured.4 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=non_featured.5 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=non_featured.6 %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    {% include "article_third.html" with article=non_featured.7 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=non_featured.8 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=non_featured.9 %}
+                </div>
+            </div>
+        </div>
+        <br /><br />
+        <h1 class="ui centered header">
+            <div class="sub header">
+                <a href="{% url 'archives' 1 %}">
+                    View archives &raquo;
+                </a>
+            </div>
+        </h1>
+    </div>
+</article>
 {% endblock %}

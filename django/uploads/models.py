@@ -12,6 +12,9 @@ class ImageUpload(models.Model):
         processors=[ResizeToFit(width=1115, upscale=False)],
     )
 
+    def __str__(self):
+        return self.title
+
 
 class PdfUpload(models.Model):
     title = models.CharField(max_length=100)

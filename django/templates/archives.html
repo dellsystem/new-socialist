@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Archives—Page {{ page_number }}{% endblock %}
+
+{% block content %}
+<article class="page-content">
+    <div class="ui container">
+        <div class="ui middle aligned stackable grid">
+            <div class="four wide column">
+                <h1 class="ui header">
+                    Archives
+                </h1>
+            </div>
+            <div class="eight wide center aligned column">
+                {% include 'pagination.html' with items=articles only %}
+            </div>
+            <div class="four wide column">
+            </div>
+        </div>
+        <div class="ui three column stackable grid">
+            {% for article in articles %}
+            <div class="column">
+                {% include 'article_third.html' with article=article only %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="ui basic center aligned segment">
+            {% include 'pagination.html' with items=articles only %}
+        </div>
+    </div>
+</article>
+{% endblock %}

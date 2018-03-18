@@ -13,7 +13,7 @@ def re():
 
 
 def up():
-    local('django/manage.py runserver')
+    local('django/manage.py runserver --insecure')
 
 
 def static():

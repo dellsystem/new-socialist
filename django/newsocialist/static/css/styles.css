@@ -1,29 +1,13 @@
-#masthead {
-    width: 100%;
-    height: 300px;
-    position: relative;
-}
-
-#masthead.photo {
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-    height: 450px;
-}
-
-#masthead.pattern {
-    background-repeat: repeat;
-}
-
-#masthead.fixed {
-    background-size: auto;
-    background-attachment: scroll;
-}
-
 #header {
     width: 100%;
     color: #fff;
-    background: #f62811;
+    background-image: url('/static/img/banner.png');
+    background-position: center;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
 }
 
 .logo img {
@@ -41,7 +25,7 @@
 }
 
 .article-category {
-    margin-bottom: 0 !important;
+    margin: 0 !important;
 }
 .article-title {
     margin-top: 5px !important;
@@ -52,12 +36,9 @@
 
 #article-lead {
     font-size: 1.1em;
+    line-height: 1.5em;
     text-align: center;
-    padding-bottom: 50px;
-}
-
-#article-metadata {
-    font-size: 0.8em;
+    padding: 30px 0;
 }
 
 .article-content p {
@@ -95,16 +76,23 @@ hr {
 }
 
 .page-content .section {
-    padding: 50px;
+    padding: 50px 0;
 }
 
 #footer {
-    background: url('/static/img/bottom.png');
+    position: relative;
+    background: #000;
     width: 100%;
-    height: 400px;
-    background-repeat: repeat-x;
-    padding: 40px 0;
+    margin-top: 75px;
+    padding-top: 100px;
+    padding-bottom: 50px;
     color: #fff;
+}
+
+#footer-logo {
+    position: absolute;
+    top: -50px;
+    width: 100%;
 }
 
 #footer p {
@@ -119,11 +107,36 @@ hr {
     padding: 50px 0;
 }
 
-.article-thumb {
-    position: relative;
+.article-thumb .details {
+    background: #000;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
-.article-thumb .dark-screen {
-    padding: 10px;
+.article-thumb .details .row {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.article-thumb .details .description {
+    padding-left: 0 !important;
+    padding-right: 30px !important;
+}
+.article-thumb + .article-thumb {
+    margin-top: 50px;
+}
+.article-third .details {
+    background: #000;
+}
+.article-third .description {
+    padding: 20px;
+}
+
+.shadow-section {
+    padding: 50px 0;
+    box-shadow: inset 0 35px 35px -35px rgba(0, 0, 0, 0.4),
+                inset 0 -35px 35px -35px rgba(0, 0, 0, 0.4);
+}
+.shadow-section.padded{
+    margin: 50px 0;
 }
 
 #hamburger {
@@ -157,6 +170,13 @@ hr {
     #header .right.menu.visible {
         display: flex;
     }
+    .page-content {
+        padding: 0;
+    }
+}
+
+#hamburger-item .logo {
+    width: 100%;
 }
 
 .inverted a {
@@ -168,41 +188,28 @@ hr {
 }
 
 .page-content {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .print-only {
     display: none;
 }
+
 #print-banner {
     display: none;
 }
 
 @media print {
-    #masthead {
+    .print-hide {
         display: none;
     }
-/*
+
     body {
-      padding: 50mm 25mm !important;
+      padding: 5mm 10mm !important;
       margin: 0 !important;
       margin-bottom: 20mm !important;
       }
-*/
-    #article-header {
-        margin-top: 0;
-        background: #fff;
-        height: auto;
-    }
-    .article-category {
-        font-size: 0.8em;
-    }
-    .article-title {
-        text-align: left;
-    }
-    .inverted a, .ui.inverted.header, .ui.inverted.header .sub.header {
-        color: #000;
-    }
+
     .page-content {
         font-size: 0.8rem;
         padding: 0;
@@ -213,15 +220,7 @@ hr {
     .print-only {
         display: block;
     }
-    #article-metadata {
-        display: none;
-    }
-    #article-lead {
-        padding: 30px;
-        text-align: left;
-    }
     .article-content {
-        margin-top: 30px;
         column-count: 2;
         -webkit-column-count: 2;
         -moz-column-count: 2;
@@ -229,21 +228,9 @@ hr {
         -webkit-column-gap: 25px;
         -moz-column-gap: 25px;
     }
-    .author-image {
-        display: none !important;
-    }
-    #article-related {
-        display: none;
-    }
-    #footer {
-        display: none;
-    }
     #print-banner {
         display: block;
         font-size: 0.8em;
-    }
-    #related-hr {
-        display: none;
     }
 }
 
@@ -270,32 +257,20 @@ blockquote {
     color: #666;
 }
 
+blockquote cite {
+    text-align: right;
+    display: block;
+}
+
+blockquote cite::before {
+    content: "\2014";
+}
+
 .author-bio {
     font-size: 0.8em;
 }
 
-.image-credit {
-    float: right;
-}
-
-.image-credit a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: underline;
-}
-
-.image-credit a:hover {
-    color: #fff;
-}
-
 @media only screen and (max-width: 767px) {
-    #masthead {
-        height: auto !important;
-    }
-
-    #masthead .dark-screen {
-        position: static;
-    }
-
     /* Otherwise it might be too big and cause overflow */
     h2.article-title.ui.header {
         font-size: 1.5rem;
@@ -305,16 +280,12 @@ blockquote {
         font-size: 1rem;
     }
 
-    .page-content {
-        font-size: 1.1rem;
-    }
-
     #article-metadata .column {
         text-align: center;
     }
 
     #footer {
-        background: #f62811;
+        background: #000;
     }
 
     #footer h2.ui.header {
@@ -327,6 +298,16 @@ blockquote {
 
     .page-content .section {
         padding: 30px 0;
+    }
+
+    .article-thumb .ui.stackable.grid > .row > .column {
+        padding: 0 1rem !important;
+    }
+    .article-thumb .description .ui.header {
+        padding: 1rem;
+    }
+    .email-address {
+        font-size: 1.1rem;
     }
 }
 
@@ -342,4 +323,43 @@ blockquote {
 
 .uploaded-image img {
     max-width: 100%;
+}
+
+.article-photo {
+    width: 100%;
+    height: 450px;
+    background-size: cover;
+}
+
+.featured-article {
+}
+
+.featured-article .overlay {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.7));
+}
+
+.featured-article .overlay-content {
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+}
+
+.featured-article .description {
+    padding: 20px;
+    background: #000;
+}
+
+.ui.header.article-metadata {
+    text-align: right;
+    margin-top: 10px;
+}
+
+#header-push {
+    height: 80px;
+}
+.footnote {
+    font-size: 0.8rem;
 }

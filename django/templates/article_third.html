@@ -1,5 +1,5 @@
 {% if article %}
-<div class="article-thumb">
+<div class="article-third">
     {% comment %}
     <h4>
         {% for tag in article.tags.all %}
@@ -15,21 +15,15 @@
     </{{ header }}>
     {% endwith %}
     <div class="details">
-        <div class="ui two column middle aligned stackable grid">
-            <div class="row">
-                <div class="column">
-                    <a href="{{ article.get_absolute_url }}">
-                        <img src="{{ article.image_thumbnail.url }}" class="ui fluid image" />
-                    </a>
+        <a href="{{ article.get_absolute_url }}">
+            <img src="{{ article.image_thumbnail.url }}" class="ui fluid image" />
+        </a>
+        <div class="description">
+            <h3 class="ui inverted header">
+                <div class="sub header">
+                    {{ article.subtitle }}
                 </div>
-                <div class="description column">
-                    <h3 class="ui inverted header">
-                        <div class="sub header">
-                            {{ article.subtitle }}
-                        </div>
-                    </h3>
-                </div>
-            </div>
+            </h3>
         </div>
     </div>
     <h3 class="ui header article-metadata">

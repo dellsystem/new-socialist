@@ -1,0 +1,72 @@
+{% extends 'page.html' %}
+
+{% block twittercard %}summary{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block postcontent %}
+</div>
+{% include 'patreon.html' %}
+<div class="ui container">
+    <div class="section">
+        <div class="ui three column stackable grid">
+        {% for title, editor in general_editors %}
+            <div class="column">
+                <h2 class="ui header">
+                    {{ title }}
+                    <div class="sub header">
+                        <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
+                        {% if editor.twitter %}
+                        (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a>){% endif %}
+                    </div>
+                </h2>
+            </div>
+        {% endfor %}
+        </div>
+        <br />
+        <hr />
+        <h1>Section editors</h1>
+        <br />
+        <div class="ui three column stackable grid">
+        {% for section in sections %}
+            <div class="column">
+                <h2 class="ui header">
+                    <a href="{{ section.get_absolute_url }}">{{ section.name }}</a>
+                    <div class="sub header">
+                        {{ section.email }}
+                    </div>
+                </h2>
+                <div class="ui list">
+                    {% for editor in section.editors.all %}
+                    <div class="item">
+                        <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
+                        {% if editor.twitter %}
+                        (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a>){% endif %}
+                        {% if not forloop.last %}<br />{% endif %}
+                    </div>
+                    {% endfor %}
+                    </div>
+            </div>
+        {% endfor %}
+        </div>
+        <br />
+        <hr />
+        <br />
+        <h1>Other contributors</h1>
+        <br />
+        <div class="ui three column stackable grid">
+        {% for title, editor in other_contributors %}
+            <div class="column">
+                <h2 class="ui header">
+                    {{ title }}
+                    <div class="sub header">
+                        <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
+                        {% if editor.twitter %}
+                        (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a>){% endif %}
+                    </div>
+                </h2>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

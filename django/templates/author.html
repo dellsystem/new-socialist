@@ -1,35 +1,24 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ author.name }}{% endblock %}
-{% block description %}{{ author.name }}'s writing at Notes From Below.{% endblock %}
+{% block description %}{{ author.name }} for New Socialist.{% endblock %}
 {% block image %}/static/img/favicon-180x180.png{% endblock %}
 {% block twittercard %}summary{% endblock %}
-
-{% block mastheadclass %}pattern{% endblock %}
-{% block mastheadbg %}/static/img/triangles.png{% endblock %}
-
-{% block masthead %}
-<div class="dark-screen">
-    <div class="ui container">
-        <h1 class="ui inverted header">
-            {{ author.name }}
-        </h1>
-    </div>
-</div>
-{% endblock %}
 
 {% block content %}
 <div class="page-content">
     <div class="ui container">
-        <div class="section">
-            {{ author.formatted_bio|safe }}
-        </div>
+        <h1 class="ui header">
+            {{ author.name }}
+        </h1>
+        {{ author.formatted_bio|safe }}
         <hr />
         <div class="section">
-            <h3 class="section-header">articles</h3>
-            <div class="ui two column stackable grid">
+            <div class="ui three column stackable grid">
                 {% for article in author.get_articles %}
-                {% include 'article_thumb.html' with article=article only %}
+                <div class="column">
+                {% include 'article_third.html' with article=article only %}
+                </div>
                 {% endfor %}
             </div>
         </div>
