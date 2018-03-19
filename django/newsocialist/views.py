@@ -93,9 +93,9 @@ def editors(request):
     section_editors = Author.objects.filter(is_editor=True)
     sections = Tag.objects.filter(editors__isnull=False).distinct()
     general_editors = [
-        ('General Editor', Author.objects.get(slug='tom-gann')),
-        ("Readers' Editor", Author.objects.get(slug='jude-wanga')),
-        ("Contributing Editor", Author.objects.get(slug='dan-frost')),
+        ('General Editor', Author.objects.get(slug='tom')),
+        ("Readers' Editor", Author.objects.get(slug='jude')),
+        ("Contributing Editor", Author.objects.get(slug='daniel')),
     ]
     other_contributors = [
         ('Design', Author.objects.get(slug='tom-munday')),

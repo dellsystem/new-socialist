@@ -183,6 +183,7 @@ MARTOR_MARKDOWN_EXTENSIONS = [
     'markdown.extensions.footnotes',
     'markdown.extensions.toc',
     # Custom markdown extensions.
+    'newsocialist.extensions.interview',
     'uploads.extensions.embed',
     #'martor.extensions.urlize',
     'martor.extensions.del_ins', # ~~strikethrough~~ and ++underscores++
