@@ -4,6 +4,7 @@
 
 {% block description %}{{ page.subtitle }}{% endblock %}
 {% block longdescription %}{{ page.formatted_content|striptags|truncatechars:500 }}{% endblock %}
+{% block twittercard %}summary{% endblock %}
 
 {% block content %}
 <article class="page-content">
