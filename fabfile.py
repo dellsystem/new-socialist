@@ -9,7 +9,7 @@ env.host_string = 'picric'
 
 
 def re():
-    local('sudo systemctl restart notesfrombelow')
+    local('sudo systemctl restart newsocialist')
 
 
 def up():
@@ -45,7 +45,7 @@ def backup_remote():
     remote_filename = get_backup_filename(hostname=env.host_string)
     print("Remote filename: " + remote_filename)
 
-    with cd('notes-from-below'):
+    with cd('new-socialist'):
         run('source env/bin/activate && ' + BACKUP_COMMAND + remote_filename)
         # scp the remote backup file to local.
         get(remote_filename, remote_filename)
@@ -83,13 +83,13 @@ def exp():
     local_filename = backup()
 
     # Move the local dump over to remote.
-    put(local_filename, 'notes-from-below/backups')
+    put(local_filename, 'new-socialist/backups')
 
     # Sync the media directories.
     #local('tar czvf media.tar.gz media/*')
-    #put('media.tar.gz', 'notes-from-below/media.tar.gz')
+    #put('media.tar.gz', 'new-socialist/media.tar.gz')
 
-    with cd('notes-from-below'):
+    with cd('new-socialist'):
         #run('tar xvzf media.tar.gz')
         # Then run loaddata.
         run('source env/bin/activate && django/manage.py loaddata ' + local_filename)
@@ -97,7 +97,7 @@ def exp():
 def deploy():
     confirm_local()
     local('git push')
-    with cd('notes-from-below'):
+    with cd('new-socialist'):
         run('git pull')
         sudo('systemctl restart gunicorn')
 
