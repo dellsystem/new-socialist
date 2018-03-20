@@ -6,6 +6,8 @@
 {% block description %}{{ tag.description }}{% endblock %}
 {% block longdescription %}{{ tag.formatted_content|striptags|truncatechars:500 }}{% endblock %}
 
+{% block image %}{{ tag.image.url }}{% endblock %}
+
 {% block content %}
 <div class="page-content">
     <div class="ui container">

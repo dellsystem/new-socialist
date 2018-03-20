@@ -1,5 +1,5 @@
-Notes From Below
-================
+New Socialist
+=============
 
 Django site for managing an online publication.
 
@@ -36,4 +36,4 @@ set the following environment variables within the virtualenv:
 
 * `POSTGRES_PASSWORD`: the password for PostgreSQL
 * `DJANGO_SECRET_KEY`: the `SECRET_KEY` used by Django (set to a random string)
-* `ALLOWED_HOST`: e.g., 'notesfrombelow.org'
+* `ALLOWED_HOST`: e.g., 'newsocialist.org.uk'
