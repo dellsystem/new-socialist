@@ -132,8 +132,8 @@ hr {
 
 .shadow-section {
     padding: 50px 0;
-    box-shadow: inset 0 35px 35px -35px rgba(0, 0, 0, 0.4),
-                inset 0 -35px 35px -35px rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 35px 35px -35px rgba(0, 0, 0, 0.1),
+                inset 0 -35px 35px -35px rgba(0, 0, 0, 0.1);
 }
 .shadow-section.padded{
     margin: 50px 0;
@@ -154,6 +154,12 @@ hr {
     }
     #header .ui.stackable.right.menu .item {
         width: auto!important;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    #hamburger-item .logo {
+        max-width: 200px;
     }
 }
 
@@ -272,6 +278,10 @@ blockquote cite::before {
 
 @media only screen and (max-width: 767px) {
     /* Otherwise it might be too big and cause overflow */
+    h1.article-title.ui.header {
+        font-size: 1.7rem;
+    }
+
     h2.article-title.ui.header {
         font-size: 1.5rem;
     }
@@ -298,6 +308,10 @@ blockquote cite::before {
 
     .page-content .section {
         padding: 30px 0;
+    }
+
+    .page-content {
+        font-size: 0.85em;
     }
 
     .article-thumb .ui.stackable.grid > .row > .column {

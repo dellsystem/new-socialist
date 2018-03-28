@@ -134,16 +134,22 @@
             {{ formatted|safe }}
         </div>
         <hr />
+        {% with author_count=article.authors.count %}
         <div class="section">
-            <h3 class="section-header">author</h3>
-            {% if article.authors.count %}
-            {% for author in article.authors.all %}
-            {% include 'author_bio.html' with author=author only %}
-            {% endfor %}
+            <h3 class="section-header">author{{ author_count|pluralize }}</h3>
+            {% if author_count %}
+            <div class="ui stackable grid">
+                {% for author in article.authors.all %}
+                <div class="{% if author_count > 1 %}eight{% else %}sixteen{% endif %} wide column">
+                {% include 'author_bio.html' with author=author only %}
+                </div>
+                {% endfor %}
+            </div>
             {% else %}
             <p>The author of this piece wishes to remain anonymous.</p>
             {% endif %}
         </div>
+        {% endwith %}
     </div>
     {% include 'patreon.html' %}
     <div class="ui container">
