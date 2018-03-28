@@ -67,7 +67,8 @@ class ArticleForm(forms.ModelForm):
 
 
 class ArticleAdmin(CompareVersionAdmin):
-    list_display = ['title', 'list_authors', 'list_tags', 'date', 'published', 'featured']
+    list_display = ['title', 'list_authors', 'list_tags', 'date',
+        'get_word_count','published', 'featured']
     readonly_fields = ['image_thumbnail']
     list_filter = ['issue', 'tags',]
     prepopulated_fields = {'slug': ('title',)}
