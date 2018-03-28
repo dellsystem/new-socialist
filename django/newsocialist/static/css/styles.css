@@ -238,6 +238,19 @@ hr {
         display: block;
         font-size: 0.8em;
     }
+    .interview-quote {
+        background: none !important;
+        border: 1px solid #000;
+        color: #000 !important;
+    }
+    .interview-quote.author-1, .interview-quote.author-2 {
+        margin-left: 0 !important;
+        margin-right: 10px;
+    }
+    .interview-quote.author-3, .interview-quote.author-4 {
+        margin-right: 0 !important;
+        margin-left: 10px;
+    }
 }
 
 blockquote::before {
