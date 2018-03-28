@@ -29,7 +29,7 @@ def index(request):
     featured = all_articles.filter(featured=True)[:2]
     non_featured = all_articles.exclude(
         pk__in=featured.values_list('pk', flat=True)
-    )
+    ).distinct()
 
     context = {
         'non_featured': non_featured,
