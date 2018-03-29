@@ -1,5 +1,3 @@
-import collections
-import math
 import operator
 
 from django.conf import settings
@@ -140,30 +138,33 @@ class Article(models.Model):
         self.formatted_image_credit = markdownify(self.image_credit)
         self.formatted_content = markdownify(self.content)
         self.unformatted_content = strip_tags(self.formatted_content)
-        words = self.unformatted_content.split()
 
-        # Find the two most similar articles based on cosine similarity. Only
-        # do this if they're missing!
+        # Only set the related articles if they haven't already been specified.
         if not self.related_1 or not self.related_2:
-            this_counter = collections.Counter(words)
-            articles = []
-            for article in Article.objects.exclude(slug=self.slug):
-                other_counter = collections.Counter(article.unformatted_content.split())
-                intersection = set(this_counter.keys()) & set(other_counter.keys())
-                numerator = sum([this_counter[x] * other_counter[x] for x in intersection])
+            # Check if the smallest tag has at least two other articles.
+            tags = []
+            for tag in self.tags.all():
+                articles = tag.articles.exclude(pk=self.pk).exclude(published=False)
+                if articles.count() >= 2:
+                    tags.append((articles, articles.count()))
+            tags.sort(key=operator.itemgetter(1))
+            if tags:
+                # Find two articles in this tag that are older, or just the oldest.
+                articles  = tags[0][0]
+                older_articles = articles.order_by('-date').exclude(date__gt=self.date)
+                if older_articles.count() < 2:
+                    related_articles = articles.order_by('date')
+                else:
+                    related_articles = older_articles
+            else:
+                related_articles = Article.objects.exclude(pk=self.pk).exclude(
+                    published=False
+                )
 
-                this_sum = sum([v**2 for v in this_counter.values()])
-                other_sum = sum([v**2 for v in this_counter.values()])
-                denominator = math.sqrt(this_sum) * math.sqrt(other_sum)
-
-                cosine = numerator / denominator if denominator else 0.0
-                articles.append((cosine, article))
-            articles.sort(key=operator.itemgetter(0), reverse=True)
-
-            if len(articles) > 1:
-                self.related_1 = articles[0][1]
-            if len(articles) > 1:
-                self.related_2 = articles[1][1]
+            if not self.related_1:
+                self.related_1 = related_articles[0]
+            if not self.related_2:
+                self.related_2 = related_articles[1]
 
         super().save(*args, **kwargs)
 
