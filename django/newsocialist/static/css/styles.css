@@ -177,6 +177,17 @@ hr {
     .page-content {
         padding: 0;
     }
+
+    .interview-quote.author-1, .interview-quote.author-2 {
+        margin-left: 0 !important;
+        margin-top: -10px !important;
+        margin-right: 10px !important;
+    }
+    .interview-quote.author-3, .interview-quote.author-4 {
+        margin-right: 0 !important;
+        margin-top: -10px !important;
+        margin-left: 10px !important;
+    }
 }
 
 #hamburger-item .logo {
@@ -333,16 +344,6 @@ blockquote cite::before {
     }
     .email-address {
         font-size: 1.1rem;
-    }
-    .interview-quote.author-1, .interview-quote.author-2 {
-        margin-left: 0 !important;
-        margin-top: 10px !important;
-        margin-right: 10px !important;
-    }
-    .interview-quote.author-3, .interview-quote.author-4 {
-        margin-right: 0 !important;
-        margin-top: 10px !important;
-        margin-left: 10px !important;
     }
 }
 
