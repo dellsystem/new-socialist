@@ -49,4 +49,5 @@ urlpatterns = [
     path('tag/<slug:slug>/', journal.views.TagView.as_view(), name='tag'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('<slug:slug>/', newsocialist.views.article_or_page, name='article_or_page'),
+    path('<slug:slug>/amp/', newsocialist.views.article_or_page, name='amp'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
