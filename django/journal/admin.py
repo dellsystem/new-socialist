@@ -110,6 +110,13 @@ class ArticleTranslationAdmin(CompareVersionAdmin):
     list_display = ['article', 'title', 'language']
 
 
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'user', 'action_time', 'content_type', 'object_id'
+    ]
+    list_filter = ('user',)
+
+
 editor_site.register(models.Issue, IssueAdmin)
 editor_site.register(models.Article, ArticleAdmin)
 editor_site.register(models.ArticleTranslation, ArticleTranslationAdmin)
@@ -121,3 +128,4 @@ admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.ArticleTranslation, ArticleTranslationAdmin)
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.Tag, TagAdmin)
+admin.site.register(admin.models.LogEntry, LogEntryAdmin)
