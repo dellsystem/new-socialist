@@ -53,6 +53,12 @@ def backup_remote():
     return remote_filename
 
 
+def media_backup_remote():
+    with cd('new-socialist'):
+        run('tar czvf media.tar.gz media')
+        get('media.tar.gz', 'media.tar.gz')
+
+
 def confirm_local():
     if socket.gethostname() == env.host_string:
         abort("You're on the remote machine (run this locally)")
