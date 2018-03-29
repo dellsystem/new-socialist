@@ -117,7 +117,7 @@ class Article(models.Model):
     related_2 = models.ForeignKey("self", related_name='related_2_articles',
         on_delete=models.CASCADE, blank=True, null=True)
     last_modified = models.DateField(auto_now=True)
-    published = models.BooleanField(default=True)
+    published = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
 
     class Meta:
