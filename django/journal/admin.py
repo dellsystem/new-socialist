@@ -1,6 +1,7 @@
 from django import forms
 from django.db.models import Count
 from django.contrib import admin
+from django.utils.html import mark_safe
 
 from reversion_compare.admin import CompareVersionAdmin
 
@@ -66,24 +67,43 @@ class ArticleForm(forms.ModelForm):
         }
 
 
+def make_published(modeladmin, request, queryset):
+    queryset.update(published=True)
+make_published.short_description = 'Mark selected articles as published'
+
+
 class ArticleAdmin(CompareVersionAdmin):
-    list_display = ['title', 'list_authors', 'list_tags', 'date',
+    list_display = ['title', 'show_image', 'list_authors', 'list_tags', 'date',
         'get_word_count','published', 'featured']
     readonly_fields = ['image_thumbnail']
-    list_filter = ['issue', 'tags',]
+    list_filter = ['tags', 'published']
     search_fields = ['title', 'authors__name']
     prepopulated_fields = {'slug': ('title',)}
     change_form_template = 'admin/edit_article.html'
+    actions = [make_published]
     form = ArticleForm
 
     def list_tags(self, obj):
         return ', '.join(t.name for t in obj.tags.all())
+    list_tags.short_description = 'Tag(s)'
 
     def list_authors(self, obj):
         if obj.authors.count():
             return ', '.join(a.name for a in obj.authors.all())
         else:
             return 'anonymous'
+    list_authors.short_description = 'Author(s)'
+
+    def get_word_count(self, obj):
+        return obj.get_word_count()
+    get_word_count.short_description = 'Words'
+
+    def show_image(self, obj):
+        to_return = '<img src="{}" class="ui small image" />'.format(
+            obj.image_thumbnail.url
+        )
+        return mark_safe(to_return)
+    show_image.short_description = 'Image'
 
 
 class ArticleTranslationAdmin(CompareVersionAdmin):

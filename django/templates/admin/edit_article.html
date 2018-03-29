@@ -16,19 +16,19 @@
                 </div>
             </div>
             <div class="ui field">
-                <label>Subtitle</label>
+                <label>Subtitle (this is what shows up in social media previews)</label>
                 <div class="ui huge fluid input">
                 {{ adminform.form.subtitle }}
                 </div>
             </div>
             <div class="ui field">
-                <label>Image credit (optional)</label>
+                <label>Image credit (optional, takes markdown). ex: Photo: [John Smith](http://johnsmith.com)</label>
                 {{ adminform.form.image_credit }}
             </div>
             <div class="ui grid">
                 <div class="eight wide column">
                     <div class="ui field">
-                        <label>Slug</label>
+                        <label>URL (automatically generated from the title)</label>
                         <div class="ui huge searchable fluid input">
                         {{ adminform.form.slug }}
                         </div>
@@ -36,36 +36,38 @@
                 </div>
                 <div class="four wide column">
                     <div class="ui field">
-                        <label>Related 1</label>
+                        <label>Related 1 (leave this empty)</label>
                         {{ adminform.form.related_1 }}
                     </div>
                 </div>
                 <div class="four wide column">
                     <div class="ui field">
-                        <label>Related 2</label>
+                        <label>Related 2 (leave this empty)</label>
                         {{ adminform.form.related_2 }}
                     </div>
                 </div>
             </div>
             <div class="ui grid">
-                <div class="five wide column">
+                <div class="six wide column">
                     <div class="ui field">
-                        <label>Authors</label>
+                        <label>Authors (leave empty if anonymous)</label>
                         {{ adminform.form.authors }}
                     </div>
                 </div>
-                <div class="four wide column">
+                <div class="seven wide column">
                     <div class="ui field">
-                        <label>Tags</label>
+                        <label>Tags (select at least one)</label>
                         {{ adminform.form.tags }}
                     </div>
                 </div>
+                <!--
                 <div class="four wide column">
                     <div class="ui field">
                         <label>Issue</label>
                         {{ adminform.form.issue }}
                     </div>
                 </div>
+                -->
                 <div class="three wide column">
                     <div class="ui field">
                         <label>Date</label>
@@ -77,21 +79,31 @@
     </div>
     <div class="four wide column">
         <div class="ui segment">
+            <h1 class="ui header">
+                Choose an image to upload
+                <div class="sub header">
+                    Will be cropped to 1115 wide x 450 high
+                </div>
+            </h1>
             {{ adminform.form.image }}
             {% if adminform.form.instance.image_thumbnail %}
             <img class="ui fluid image" src="{{ adminform.form.instance.image.url }}" />
             {% endif %}
-            <br />
+            <br /><hr /><br />
             <div class="ui field">
-                <label>Published?</label>
+                <label>Publish? (Only if it's fully ready)</label>
+                <div class="ui toggle checkbox">
                 {{ adminform.form.published }}
+                </div>
             </div>
             <div class="ui field">
-                <label>Featured (large picture)?</label>
+                <label>Featured (i.e., large pic on homepage)?</label>
+                <div class="ui toggle checkbox">
                 {{ adminform.form.featured }}
+                </div>
             </div>
             <div class="ui field">
-                <label>Background position (ignore)</label>
+                <label>Background position (ignore this)</label>
                 <div class="ui fluid input">
                     {{ adminform.form.background_position }}
                 </div>
