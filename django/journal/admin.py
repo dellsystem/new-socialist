@@ -71,6 +71,7 @@ class ArticleAdmin(CompareVersionAdmin):
         'get_word_count','published', 'featured']
     readonly_fields = ['image_thumbnail']
     list_filter = ['issue', 'tags',]
+    search_fields = ['title', 'authors__name']
     prepopulated_fields = {'slug': ('title',)}
     change_form_template = 'admin/edit_article.html'
     form = ArticleForm
