@@ -19,11 +19,11 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 
-from newsocialist.admin import editor_site
-
 import journal.views
 import newsocialist.views
 import cms.views
+from newsocialist.admin import editor_site
+from journal.feeds import ArticleFeed
 from journal.sitemaps import *
 from cms.sitemaps import *
 
@@ -48,6 +48,7 @@ urlpatterns = [
     path('author/<slug:slug>', journal.views.AuthorView.as_view(), name='author'),
     path('tag/<slug:slug>/', journal.views.TagView.as_view(), name='tag'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
+    path('rss/', ArticleFeed()),
     path('<slug:slug>/', newsocialist.views.article_or_page, name='article_or_page'),
     path('<slug:slug>/amp/', newsocialist.views.article_or_page, name='amp'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
