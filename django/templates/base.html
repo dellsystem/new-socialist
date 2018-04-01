@@ -14,9 +14,11 @@
 {% block body %}
 {% include 'header.html' %}
 {% include 'print.html' %}
-{% block content %}
-{% endblock %}
-{% include 'footer.html' %}
+<div id="scroll">
+    {% block content %}
+    {% endblock %}
+    {% include 'footer.html' %}
+</div>
 <script src="/static/js/jquery.min.js" type="text/javascript"></script>
 <script src="/static/js/semantic.min.js" type="text/javascript"></script>
 <script src="/static/js/scripts.js" type="text/javascript"></script>

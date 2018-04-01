@@ -3,9 +3,20 @@
     color: #fff;
     background-image: url('/static/img/banner.png');
     position: fixed;
+    height: 68px;
     top: 0;
     left: 0;
     z-index: 999;
+}
+
+/* I know this is an abomination but it's less bad than the alternative way of
+ * fixing footnote reference issues (given the fixed header) */
+#scroll {
+    position: fixed;
+    top: 68px;
+    bottom: 0;
+    width: 100%;
+    overflow-y: auto;
 }
 
 .logo img {
@@ -234,6 +245,10 @@ hr {
     }
     .print-only {
         display: block;
+    }
+    #scroll {
+        position: static;
+        overflow-y: visible;
     }
     .article-content {
         column-count: 2;
