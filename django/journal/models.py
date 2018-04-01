@@ -113,9 +113,11 @@ class Article(models.Model):
     image_credit = models.TextField(blank=True)
     formatted_image_credit = models.TextField(editable=False)
     related_1 = models.ForeignKey("self", related_name='related_1_articles',
-        on_delete=models.CASCADE, blank=True, null=True)
+        on_delete=models.CASCADE, limit_choices_to={'published': True}, blank=True,
+        null=True)
     related_2 = models.ForeignKey("self", related_name='related_2_articles',
-        on_delete=models.CASCADE, blank=True, null=True)
+        on_delete=models.CASCADE, limit_choices_to={'published': True}, blank=True,
+        null=True)
     last_modified = models.DateField(auto_now=True)
     published = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
