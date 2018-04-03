@@ -3,7 +3,6 @@
     color: #fff;
     background-image: url('/static/img/banner.png');
     position: fixed;
-    height: 68px;
     top: 0;
     left: 0;
     z-index: 999;
