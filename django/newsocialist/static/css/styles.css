@@ -3,7 +3,6 @@
     color: #fff;
     background-image: url('/static/img/banner.png');
     position: fixed;
-    height: 68px;
     top: 0;
     left: 0;
     z-index: 999;
@@ -75,7 +74,7 @@ hr {
     line-height: 1.5em;
 }
 .page-content li {
-    padding-top: 0.5em;
+    margin-top: 0.5em;
 }
 .page-content ol ol ol {
     list-style-type: lower-roman;
@@ -110,6 +109,14 @@ hr {
 
 .footnote hr {
     margin-top: 50px 0;
+}
+
+.footnote li {
+    transition: background 1s ease;
+}
+
+.footnote .highlighted {
+    background-color: #fce8ef;
 }
 
 .page-content {
