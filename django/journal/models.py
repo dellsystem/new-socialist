@@ -142,6 +142,9 @@ class Article(models.Model):
         self.formatted_content = markdownify(self.content)
         self.unformatted_content = strip_tags(self.formatted_content)
 
+        # Must save before attempting to access a ManyToManyField (tags)
+        super().save(*args, **kwargs)
+
         # Only set the related articles if they haven't already been specified.
         if not self.related_1 or not self.related_2:
             # Check if the smallest tag has at least two other articles.
