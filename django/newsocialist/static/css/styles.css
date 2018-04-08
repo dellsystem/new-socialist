@@ -9,6 +9,10 @@
     height: 66px;
 }
 
+#header.expanded {
+    height: auto !important;
+}
+
 /* I know this is an abomination but it's less bad than the alternative way of
  * fixing footnote reference issues (given the fixed header) */
 #scroll {

@@ -1,4 +1,5 @@
 function toggleHamburger() {
+    $('#header').toggleClass('expanded');
     $('#header .right.menu').toggleClass('visible');
     return false;
 };
