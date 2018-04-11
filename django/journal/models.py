@@ -17,7 +17,7 @@ class Author(models.Model):
     formatted_bio = models.TextField(editable=False)
     twitter = models.CharField(max_length=15, blank=True, null=True,
         help_text='Username (without the @)')
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     is_editor = models.BooleanField(default=False)
 
     def __str__(self):
@@ -87,7 +87,7 @@ class Issue(models.Model):
 class Article(models.Model):
     tags = models.ManyToManyField(Tag, related_name='articles', blank=True)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
     authors = models.ManyToManyField(Author, related_name='articles',
         blank=True)
     subtitle = models.TextField()
