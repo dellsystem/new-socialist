@@ -121,7 +121,6 @@ class Article(models.Model):
         null=True)
     last_modified = models.DateField(auto_now=True)
     published = models.BooleanField(default=False)
-    featured = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-date']

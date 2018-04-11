@@ -21,19 +21,12 @@ def archives(request, number):
 
 
 def index(request):
-    articles = Article.objects.filter(published=True, featured=False).order_by('-date')[:5]
     page = Page.objects.get(slug='')
 
-    all_articles = Article.objects.filter(published=True).order_by('-date')
-
-    featured = all_articles.filter(featured=True)[:2]
-    non_featured = all_articles.exclude(
-        pk__in=featured.values_list('pk', flat=True)
-    ).distinct()
+    articles = Article.objects.filter(published=True).order_by('-date').distinct()[:12]
 
     context = {
-        'non_featured': non_featured,
-        'featured': featured,
+        'articles': articles,
         'page': page,
     }
 

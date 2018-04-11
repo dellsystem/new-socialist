@@ -9,10 +9,10 @@
 <article class="page-content">
     <div class="ui container">
         <div class="ui two column relaxed middle aligned stackable grid">
-            {% include "featured_article.html" with article=featured.0 %}
+            {% include "featured_article.html" with article=articles.0 %}
             <div class="column">
-                {% include "article_thumb.html" with article=non_featured.0 %}
-                {% include "article_thumb.html" with article=non_featured.1 %}
+                {% include "article_thumb.html" with article=articles.1 %}
+                {% include "article_thumb.html" with article=articles.2 %}
             </div>
         </div>
     </div>
@@ -45,10 +45,10 @@
     <div class="ui container">
         <div class="ui two column relaxed middle aligned stackable grid">
             <div class="column">
-                {% include "article_thumb.html" with article=non_featured.2 %}
-                {% include "article_thumb.html" with article=non_featured.3 %}
+                {% include "article_thumb.html" with article=articles.3 %}
+                {% include "article_thumb.html" with article=articles.4 %}
             </div>
-            {% include "featured_article.html" with article=featured.1 %}
+            {% include "featured_article.html" with article=articles.5 %}
         </div>
     </div>
     {% include 'patreon.html' with padded=True %}
@@ -56,24 +56,24 @@
         <div class="ui three column relaxed bottom aligned stackable grid">
             <div class="row">
                 <div class="column">
-                    {% include "article_third.html" with article=non_featured.4 %}
+                    {% include "article_third.html" with article=articles.6 %}
                 </div>
                 <div class="column">
-                    {% include "article_third.html" with article=non_featured.5 %}
+                    {% include "article_third.html" with article=articles.7 %}
                 </div>
                 <div class="column">
-                    {% include "article_third.html" with article=non_featured.6 %}
+                    {% include "article_third.html" with article=articles.8 %}
                 </div>
             </div>
             <div class="row">
                 <div class="column">
-                    {% include "article_third.html" with article=non_featured.7 %}
+                    {% include "article_third.html" with article=articles.9 %}
                 </div>
                 <div class="column">
-                    {% include "article_third.html" with article=non_featured.8 %}
+                    {% include "article_third.html" with article=articles.10 %}
                 </div>
                 <div class="column">
-                    {% include "article_third.html" with article=non_featured.9 %}
+                    {% include "article_third.html" with article=articles.11 %}
                 </div>
             </div>
         </div>
