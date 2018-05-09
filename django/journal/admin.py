@@ -1,6 +1,8 @@
 from django import forms
 from django.db.models import Count
 from django.contrib import admin
+from django.contrib.humanize.templatetags.humanize import naturalday
+from django.urls import reverse
 from django.utils.html import mark_safe
 
 from reversion_compare.admin import CompareVersionAdmin
@@ -14,11 +16,20 @@ class IssueAdmin(CompareVersionAdmin):
 
 
 class TagAdmin(CompareVersionAdmin):
-    list_display = ['name', 'slug', 'get_article_count', 'list_editors']
+    list_display = ['name', 'display_label', 'slug', 'list_editors', 'get_article_count']
     prepopulated_fields = {'slug': ('name',)}
 
     def get_article_count(self, obj):
         return obj.articles.count()
+    get_article_count.short_description = 'Number of articles'
+
+    def display_label(self, obj):
+        return mark_safe(
+            '<div class="ui {c} label">{t}</div>'.format(
+                c=obj.colour,
+                t=obj.short_name or obj.name
+            )
+        )
 
     def list_editors(self, obj):
         if obj.editors.count():
@@ -28,13 +39,14 @@ class TagAdmin(CompareVersionAdmin):
 
 
 class AuthorAdmin(CompareVersionAdmin):
-    list_display = ['name', 'slug', 'get_article_count']
+    list_display = ['name', 'slug', 'is_male', 'get_article_count']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['name']
     list_filter = ['is_editor']
 
     def get_article_count(self, obj):
         return obj.articles.count()
+    get_article_count.short_description = 'Number of articles'
 
 
 class ArticleForm(forms.ModelForm):
@@ -73,8 +85,8 @@ make_published.short_description = 'Mark selected articles as published'
 
 
 class ArticleAdmin(CompareVersionAdmin):
-    list_display = ['title', 'show_image', 'list_authors', 'list_tags', 'date',
-        'get_word_count','published']
+    list_display = ['display_title', 'show_image', 'list_authors', 'list_tags',
+        'date', 'get_word_count','published']
     readonly_fields = ['image_thumbnail']
     list_filter = ['tags', 'published']
     search_fields = ['title', 'authors__name']
@@ -82,16 +94,55 @@ class ArticleAdmin(CompareVersionAdmin):
     change_form_template = 'admin/edit_article.html'
     actions = [make_published]
     form = ArticleForm
+    list_display_links = None
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {'title': 'Published and unpublished articles'}
+        return super(ArticleAdmin, self).changelist_view(
+            request, extra_context=extra_context
+        )
+
+    def display_title(self, obj):
+        to_return = (
+            '<h3 class="ui header"><a href="{u}">{t}</a><div class="sub header">{s}</div></h3>'.format(
+                u=reverse('admin:journal_article_change', args=[obj.id]),
+                t=obj.title,
+                s=obj.subtitle or '<em>No subtitle</em>'
+            )
+        )
+        if not obj.published:
+            text = 'UNPUBLISHED: scheduled for {}'.format(naturalday(obj.date))
+
+            if obj.editor_notes:
+                text += ' - ' + obj.editor_notes
+                colour = 'red'
+            else:
+                text += ' - Ready'
+                colour = 'green'
+            to_return += '<span class="ui large {c} label">{t}</span>'.format(
+                c=colour,
+                t=text,
+            )
+        return mark_safe(to_return)
 
     def list_tags(self, obj):
-        return ', '.join(t.name for t in obj.tags.all())
+        return mark_safe(
+            ''.join(
+                '<span class="ui {c} label">{t}</span>'.format(
+                    c=tag.colour,
+                    t=tag.short_name or tag.name
+                ) for tag in obj.tags.all())
+        )
     list_tags.short_description = 'Tag(s)'
 
     def list_authors(self, obj):
         if obj.authors.count():
-            return ', '.join(a.name for a in obj.authors.all())
+            to_return = ', '.join(a.name for a in obj.authors.all())
         else:
-            return 'anonymous'
+            to_return = 'anonymous'
+        if obj.is_all_male():
+            to_return += '<div class="ui black label">Male author(s)</div>'
+        return mark_safe(to_return)
     list_authors.short_description = 'Author(s)'
 
     def get_word_count(self, obj):
@@ -99,8 +150,8 @@ class ArticleAdmin(CompareVersionAdmin):
     get_word_count.short_description = 'Words'
 
     def show_image(self, obj):
-        to_return = '<img src="{}" class="ui small image" />'.format(
-            obj.image_thumbnail.url
+        to_return = '<img src="{}" class="ui medium image" />'.format(
+            obj.get_image_thumbnail_url()
         )
         return mark_safe(to_return)
     show_image.short_description = 'Image'

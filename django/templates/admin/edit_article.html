@@ -16,7 +16,8 @@
                 </div>
             </div>
             <div class="ui field">
-                <label>Subtitle (this is what shows up in social media previews)</label>
+                <label>Subtitle (this is what shows up in social media
+                previews) - 215 characters maximum (ideally 120-180)</label>
                 <div class="ui huge fluid input">
                 {{ adminform.form.subtitle }}
                 </div>
@@ -95,6 +96,10 @@
                 <div class="ui toggle checkbox">
                 {{ adminform.form.published }}
                 </div>
+            </div>
+            <div class="ui field">
+                <label>Editor notes (status of the piece - blank if ready)</label>
+                {{ adminform.form.editor_notes }}
             </div>
             <div class="ui field">
                 <label>Background position (ignore this)</label>
