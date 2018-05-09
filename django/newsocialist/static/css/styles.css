@@ -6,16 +6,22 @@
     top: 0;
     left: 0;
     z-index: 999;
+    height: 66px;
+}
+
+#header.expanded {
+    height: auto !important;
 }
 
 /* I know this is an abomination but it's less bad than the alternative way of
  * fixing footnote reference issues (given the fixed header) */
 #scroll {
     position: fixed;
-    top: 68px;
+    top: 66px;
     bottom: 0;
     width: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
 }
 

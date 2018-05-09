@@ -15,8 +15,9 @@ class Author(models.Model):
     name = models.CharField(max_length=100)
     bio = MartorField(blank=True)
     formatted_bio = models.TextField(editable=False)
-    twitter = models.CharField(max_length=15, blank=True, null=True)
-    slug = models.SlugField()
+    twitter = models.CharField(max_length=15, blank=True, null=True,
+        help_text='Username (without the @)')
+    slug = models.SlugField(unique=True)
     is_editor = models.BooleanField(default=False)
 
     def __str__(self):
@@ -86,7 +87,7 @@ class Issue(models.Model):
 class Article(models.Model):
     tags = models.ManyToManyField(Tag, related_name='articles', blank=True)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
     authors = models.ManyToManyField(Author, related_name='articles',
         blank=True)
     subtitle = models.TextField()
@@ -120,7 +121,6 @@ class Article(models.Model):
         null=True)
     last_modified = models.DateField(auto_now=True)
     published = models.BooleanField(default=False)
-    featured = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-date']
@@ -140,6 +140,9 @@ class Article(models.Model):
         self.formatted_image_credit = markdownify(self.image_credit)
         self.formatted_content = markdownify(self.content)
         self.unformatted_content = strip_tags(self.formatted_content)
+
+        # Must save before attempting to access a ManyToManyField (tags)
+        super().save(*args, **kwargs)
 
         # Only set the related articles if they haven't already been specified.
         if not self.related_1 or not self.related_2:

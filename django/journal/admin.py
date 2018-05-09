@@ -74,7 +74,7 @@ make_published.short_description = 'Mark selected articles as published'
 
 class ArticleAdmin(CompareVersionAdmin):
     list_display = ['title', 'show_image', 'list_authors', 'list_tags', 'date',
-        'get_word_count','published', 'featured']
+        'get_word_count','published']
     readonly_fields = ['image_thumbnail']
     list_filter = ['tags', 'published']
     search_fields = ['title', 'authors__name']
