@@ -19,6 +19,7 @@ class Author(models.Model):
         help_text='Username (without the @)')
     slug = models.SlugField(unique=True)
     is_editor = models.BooleanField(default=False)
+    is_male = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -37,6 +38,16 @@ class Author(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
+    short_name = models.CharField(
+        max_length=20,
+        blank=True,
+        help_text='For internal use only'
+    )
+    colour = models.CharField(
+        max_length=20,
+        blank=True,
+        help_text='For internal use only'
+    )
     slug = models.SlugField(max_length=50)
     description = models.TextField()
     content = MartorField(blank=True)
@@ -90,19 +101,21 @@ class Article(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     authors = models.ManyToManyField(Author, related_name='articles',
         blank=True)
-    subtitle = models.TextField()
-    content = MartorField()
+    subtitle = models.CharField(max_length=215, blank=True)
+    content = MartorField(blank=True)
     formatted_content = models.TextField(editable=False)
     # Store the formatted_content field with all tags removed (for related)
     unformatted_content = models.TextField(editable=False)
     date = models.DateField()
     issue = models.ForeignKey(Issue, related_name='articles', null=True,
         blank=True, on_delete=models.CASCADE)
+    editor_notes = models.CharField(max_length=255, blank=True)
     image = ProcessedImageField(
         upload_to='articles',
         processors=[ResizeToFill(1115, 450)],
         format='JPEG',
-        options={'quality': 100}
+        options={'quality': 100},
+        blank=True
     )
     image_thumbnail = ImageSpecField(
         source='image',
@@ -128,6 +141,25 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def is_all_male(self):
+        # Only if the article is not anonymous, and has no non-male authors.
+        return (
+            self.authors.exists() and
+            not self.authors.filter(is_male=False).exists()
+        )
+
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        else:
+            return '/static/img/banner.png'
+
+    def get_image_thumbnail_url(self):
+        if self.image_thumbnail:
+            return self.image_thumbnail.url
+        else:
+            return '/static/img/placeholder.png'
 
     def get_absolute_url(self):
         return reverse('article_or_page', args=[self.slug])

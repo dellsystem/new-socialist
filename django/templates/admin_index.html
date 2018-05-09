@@ -1,0 +1,71 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static admin_stats %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+<div class="ui container">
+    <div class="ui segment">
+        <h2 class="ui centered header">Article management</h2>
+        <div class="ui middle aligned grid">
+            <div class="ui four wide column">
+                <a class="ui green fluid icon button"
+                   href="{% url 'admin:journal_article_add' %}">
+                    Add a new article <i class="plus icon"></i>
+                </a>
+                <br />
+                <a class="ui blue fluid icon button"
+                   href="{% url 'admin:journal_article_changelist' %}">
+                    Manage existing articles
+                </a>
+            </div>
+            <div class="ui twelve wide column">
+                {% show_article_stats %}
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="ui segment">
+        <h2 class="ui center aligned header">Other website management</h2>
+        <div class="ui four column grid">
+            <div class="column">
+                <h3 class="ui icon center aligned header">
+                    <i class="archive icon"></i>
+                    <a href="{% url 'admin:cms_page_changelist' %}">
+                        Pages
+                    </a>
+                </h3>
+            </div>
+            <div class="column">
+                <h3 class="ui icon center aligned header">
+                    <i class="tags icon"></i>
+                    <a href="{% url 'admin:journal_tag_changelist' %}">
+                        Tags
+                    </a>
+                </h3>
+            </div>
+            <div class="column">
+                <h3 class="ui icon center aligned header">
+                    <i class="users icon"></i>
+                    <a href="{% url 'admin:journal_author_changelist' %}">
+                        Authors
+                    </a>
+                </h3>
+            </div>
+            <div class="column">
+                <h3 class="ui icon center aligned header">
+                    <i class="image outline icon"></i>
+                    <a href="{% url 'admin:uploads_imageupload_changelist' %}">
+                        Images
+                    </a>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <br />
+    <h3 class="ui centered header">
+        Need help? Some tips here: <a href="https://github.com/dellsystem/new-socialist/blob/master/TUTORIAL.md">Tutorial</a>
+    </h3>
+</div>
+{% endblock %}

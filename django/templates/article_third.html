@@ -16,7 +16,7 @@
     {% endwith %}
     <div class="details">
         <a href="{{ article.get_absolute_url }}">
-            <img src="{{ article.image_thumbnail.url }}" class="ui fluid image" />
+            <img src="{{ article.get_image_thumbnail_url }}" class="ui fluid image" />
         </a>
         <div class="description">
             <h3 class="ui inverted header">
