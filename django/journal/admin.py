@@ -3,7 +3,7 @@ from django.db.models import Count
 from django.contrib import admin
 from django.contrib.humanize.templatetags.humanize import naturalday
 from django.urls import reverse
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe, format_html
 
 from reversion_compare.admin import CompareVersionAdmin
 
@@ -137,11 +137,18 @@ class ArticleAdmin(CompareVersionAdmin):
 
     def list_authors(self, obj):
         if obj.authors.count():
-            to_return = ', '.join(a.name for a in obj.authors.all())
+            to_return = ', '.join(
+                format_html(
+                    '<a href="{}">{}</a>',
+                    reverse('admin:journal_author_change', args=[a.id]),
+                    a.name
+                )
+                for a in obj.authors.all()
+            )
         else:
             to_return = 'anonymous'
         if obj.is_all_male():
-            to_return += '<div class="ui black label">Male author(s)</div>'
+            to_return += '<br /><div class="ui black label">Male author(s)</div>'
         return mark_safe(to_return)
     list_authors.short_description = 'Author(s)'
 

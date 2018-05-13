@@ -39,3 +39,7 @@ div.breadcrumbs {
 .object-tools a {
     font-size: 18px !important;
 }
+
+.module pre {
+    white-space: pre-line;
+}
