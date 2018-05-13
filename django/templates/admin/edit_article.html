@@ -6,7 +6,7 @@
 
 {% block field_sets %}
 {{ adminform.form.errors }}
-<div class="ui grid form">
+<div class="ui stackable grid form">
     <div class="twelve wide column">
         <div class="ui segment">
             <div class="ui field">
@@ -26,7 +26,7 @@
                 <label>Image credit (optional, takes markdown). ex: Photo: [John Smith](http://johnsmith.com)</label>
                 {{ adminform.form.image_credit }}
             </div>
-            <div class="ui grid">
+            <div class="ui stackable grid">
                 <div class="eight wide column">
                     <div class="ui field">
                         <label>URL (automatically generated from the title)</label>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="ui grid">
+            <div class="ui stackable grid">
                 <div class="six wide column">
                     <div class="ui field">
                         <label>Authors (leave empty if anonymous)</label>
