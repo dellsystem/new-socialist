@@ -53,10 +53,8 @@ def backup_remote():
     return remote_filename
 
 
-def media_backup_remote():
-    with cd('new-socialist'):
-        run('tar czvf media.tar.gz media')
-        get('media.tar.gz', 'media.tar.gz')
+def media_backup():
+    local('tar czvf media.tar.gz media')
 
 
 def confirm_local():
@@ -76,6 +74,10 @@ def imp():
 
     # Then run loaddata.
     local('django/manage.py loaddata ' + remote_filename)
+
+    # Backup the local media dir then rsync with the remote dir.
+    media_backup()
+    local('rsync -Prz %s:new-socialist/media/ media/' % env.host_string)
 
 
 # ONLY RUN THIS LOCALLY. Exports the local database dump.
