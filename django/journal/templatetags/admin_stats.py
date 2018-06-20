@@ -45,7 +45,7 @@ def show_article_stats():
                     {}
                 </div>
                 <div class="label">
-                    scheduled
+                    scheduled {}
                 </div>
             </div>
             <div class="statistic">
