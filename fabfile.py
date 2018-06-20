@@ -5,11 +5,11 @@ from fabric.api import *
 
 
 env.use_ssh_config = True
-env.host_string = 'picric'
+env.host_string = 'ns'
 
 
 def re():
-    local('sudo systemctl restart newsocialist')
+    local('sudo systemctl restart gunicorn')
 
 
 def up():

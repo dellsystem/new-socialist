@@ -37,3 +37,7 @@ set the following environment variables within the virtualenv:
 * `POSTGRES_PASSWORD`: the password for PostgreSQL
 * `DJANGO_SECRET_KEY`: the `SECRET_KEY` used by Django (set to a random string)
 * `ALLOWED_HOST`: e.g., 'newsocialist.org.uk'
+
+Currently running as a systemd service. Edit /etc/systemd/gunicorn.service and
+restart it by running `fab re`. Nginx: /etc/nginx/sites-enabled/default for now
+(cert stuff is in /etc/letsencrypt/).
