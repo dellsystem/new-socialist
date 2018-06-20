@@ -24,6 +24,10 @@ def show_article_stats():
     male_percent = int(male_count / 12 * 100)
 
     scheduled = Article.objects.filter(published=False).order_by('date')
+    if scheduled.exists():
+        scheduled_until = ' - until ' + scheduled.last().date.strftime('%b %d')
+    else:
+        scheduled_until = ''
 
     return format_html(
         """
@@ -41,7 +45,7 @@ def show_article_stats():
                     {}
                 </div>
                 <div class="label">
-                    scheduled (until {})
+                    scheduled
                 </div>
             </div>
             <div class="statistic">
@@ -56,6 +60,6 @@ def show_article_stats():
         """,
         last_30_days,
         scheduled.count(),
-        scheduled.last().date.strftime('%b %d'),
+        scheduled_until,
         male_percent,
     )
