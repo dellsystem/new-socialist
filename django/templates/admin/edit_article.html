@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block field_sets %}
+{% include "article_checklist.html" %}
 {{ adminform.form.errors }}
 <div class="ui stackable grid form">
     <div class="twelve wide column">
@@ -92,13 +93,13 @@
             {% endif %}
             <br /><hr /><br />
             <div class="ui field">
-                <label>Publish? (Only if it's fully ready)</label>
+                <label>Publish? (READ THE <a href="https://github.com/dellsystem/new-socialist/tree/master/docs/README.md">CHECKLIST</a> FIRST)</label>
                 <div class="ui toggle checkbox">
                 {{ adminform.form.published }}
                 </div>
             </div>
             <div class="ui field">
-                <label>Editor notes (status of the piece - blank if ready)</label>
+                <label>Editor notes on status (blank if ready)</label>
                 {{ adminform.form.editor_notes }}
             </div>
             <div class="ui field">

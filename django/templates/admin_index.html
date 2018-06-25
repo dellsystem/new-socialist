@@ -6,6 +6,8 @@
 
 {% block content %}
 <div class="ui container">
+	{% include "article_checklist.html" %}
+	<br />
     <div class="ui segment">
         <h2 class="ui centered header">Article management</h2>
         <div class="ui middle aligned stackable grid">
@@ -63,9 +65,5 @@
             </div>
         </div>
     </div>
-    <br />
-    <h3 class="ui centered header">
-        Need help? Some tips here: <a href="https://github.com/dellsystem/new-socialist/blob/master/TUTORIAL.md">Tutorial</a>
-    </h3>
 </div>
 {% endblock %}
