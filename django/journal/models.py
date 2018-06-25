@@ -97,7 +97,7 @@ class Issue(models.Model):
 
 class Article(models.Model):
     tags = models.ManyToManyField(Tag, related_name='articles', blank=True)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=120)
     slug = models.SlugField(max_length=100, unique=True)
     authors = models.ManyToManyField(Author, related_name='articles',
         blank=True)

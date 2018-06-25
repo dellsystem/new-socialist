@@ -17,7 +17,14 @@
             <div class="four wide column">
             </div>
         </div>
-        <div class="ui three column stackable grid">
+        <div class="ui computer only three column stackable grid">
+            {% for article in articles %}
+            <div class="column">
+                {% include 'article_third.html' with article=article only %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="ui tablet mobile only two column stackable grid">
             {% for article in articles %}
             <div class="column">
                 {% include 'article_third.html' with article=article only %}

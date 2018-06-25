@@ -72,7 +72,14 @@
     <div class="print-hide">
         <div class="ui container">
             <h3 class="section-header">articles</h3>
-            <div class="ui three column stackable grid">
+            <div class="ui computer only three column stackable grid">
+                {% for article in tag.get_articles %}
+                <div class="column">
+                {% include 'article_third.html' with article=article only %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="ui tablet mobile only two column stackable grid">
                 {% for article in tag.get_articles %}
                 <div class="column">
                 {% include 'article_third.html' with article=article only %}

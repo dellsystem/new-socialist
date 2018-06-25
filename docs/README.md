@@ -27,6 +27,8 @@ The constraining factor is the design on the left, where it should never exceed 
 
 This particular title, `"The sorts of areas that a party has to win": Britain's spatial contradictions and the 2018 local elections`, at 107 characters, is straining the limits of what's possible with the design. Aim for below 100 characters if possible. Ideally, below 50, even.
 
+It can be sentence case or title case, but there should not be a full stop at the end.
+
 ## Subtitle
 
 Maximum of 215 characters. Ideally, 120-180. Constrained by the display on the right, where it should never exceed 7 lines. Here's how it looks when it gets to 8 lines:
@@ -39,7 +41,7 @@ Maximum of 215 characters. Ideally, 120-180. Constrained by the display on the r
 
 This particular subtitle, `In the wake of the local election results how should strategies for local government sit in Britain's geography` is fine in terms of length, but should really be made into a proper sentence, with full punctuation:
 
-`In the wake of the local election results, how should strategies for local government sit in Britain's geography?`
+> In the wake of the local election results, how should strategies for local government sit in Britain's geography?
 
 ## Image
 
