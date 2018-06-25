@@ -44,8 +44,8 @@
     </div>
     {% include 'patreon.html' with padded=True %}
     <div class="ui container">
-        <div class="ui three column computer mobile only relaxed top aligned stackable grid">
-            <div class="row">
+        <div class="ui relaxed top aligned stackable grid">
+            <div class="three column computer mobile only row">
                 <div class="column">
                     {% include "article_third.html" with article=articles.6 %}
                 </div>
@@ -56,26 +56,23 @@
                     {% include "article_third.html" with article=articles.8 %}
                 </div>
             </div>
-        </div>
-        <div class="ui tablet only two column grid">
-            <div class="column">
-                {% include "article_third.html" with article=articles.4 %}
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.4 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.5 %}
+                </div>
             </div>
-            <div class="column">
-                {% include "article_third.html" with article=articles.5 %}
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.6 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.7 %}
+                </div>
             </div>
-            <div class="column">
-                {% include "article_third.html" with article=articles.6 %}
-            </div>
-            <div class="column">
-                {% include "article_third.html" with article=articles.7 %}
-            </div>
-        </div>
-    </div>
-    {% include "quote-banner.html" %}
-    <div class="ui container">
-        <div class="ui three column computer mobile only relaxed top aligned stackable grid">
-            <div class="row">
+            <div class="three column computer mobile only row">
                 <div class="column">
                     {% include "article_third.html" with article=articles.9 %}
                 </div>
@@ -86,19 +83,21 @@
                     {% include "article_third.html" with article=articles.11 %}
                 </div>
             </div>
-        </div>
-        <div class="ui tablet only two column grid">
-            <div class="column">
-                {% include "article_third.html" with article=articles.8 %}
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.8 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.9 %}
+                </div>
             </div>
-            <div class="column">
-                {% include "article_third.html" with article=articles.9 %}
-            </div>
-            <div class="column">
-                {% include "article_third.html" with article=articles.10 %}
-            </div>
-            <div class="column">
-                {% include "article_third.html" with article=articles.11 %}
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.10 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.11 %}
+                </div>
             </div>
         </div>
         <br /><br />
