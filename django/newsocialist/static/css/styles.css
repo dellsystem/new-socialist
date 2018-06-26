@@ -284,6 +284,9 @@ hr {
     }
 }
 
+#hamburger-item {
+    padding-left: 0;
+}
 #hamburger-item .logo {
     width: 100%;
 }
