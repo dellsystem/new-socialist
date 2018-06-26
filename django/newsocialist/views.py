@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect, render
 
@@ -129,3 +130,29 @@ def get_involved(request):
     }
 
     return render(request, 'get_involved.html', context)
+
+
+def search(request):
+    query = request.GET.get('q', '')
+
+    if not query:
+        return redirect('archives', number=1)
+
+    if len(query) < 3:
+        articles = None
+        authors = None
+    else:
+        articles = Article.objects.filter(
+            Q(title__icontains=query) | Q(subtitle__icontains=query)
+        )
+        authors = Author.objects.filter(
+            Q(name__icontains=query) | Q(twitter__icontains=query)
+        )
+
+    context = {
+        'authors': authors,
+        'articles': articles,
+        'query': query,
+    }
+
+    return render(request, 'search.html', context)
