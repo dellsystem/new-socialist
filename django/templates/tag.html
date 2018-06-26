@@ -11,6 +11,25 @@
 {% block content %}
 <div class="page-content">
     <div class="ui container">
+        <div class="ui segment">
+            <div class="ui breadcrumb">
+                <a href="{% url 'archives' 1 %}" class="section">All</a>
+                <div class="divider"> / </div>
+                {% for section in sections %}
+                {% if section.slug == tag.slug %}
+                <div class="active section">{{ section.name }}</div>
+                {% else %}
+                <a class="section" href="{% url 'tag' section.slug %}">
+                    {{ section.name }}
+                </a>
+                {% endif %}
+                {% if not forloop.last %}
+                <div class="divider"> / </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <br />
         <img src="{{ tag.image.url }}" alt="" class="ui image print-hide" />
         <h1 class="ui header">
             {{ tag.name }}

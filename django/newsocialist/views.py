@@ -10,11 +10,13 @@ def archives(request, number):
     all_articles = Article.objects.filter(published=True).order_by('-date')
     paginator = Paginator(all_articles, 6)
     articles = paginator.get_page(number)
+    sections = Tag.objects.exclude(editors=None).order_by('name')
 
     context = {
         'articles': articles,
         'page_number': number,
         'total_pages': paginator.num_pages,
+        'sections': sections,
     }
 
     return render(request, 'archives.html', context)
