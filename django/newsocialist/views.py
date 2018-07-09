@@ -144,7 +144,7 @@ def search(request):
     else:
         articles = Article.objects.filter(
             Q(title__icontains=query) | Q(subtitle__icontains=query)
-        )
+        ).exclude(published=False)
         authors = Author.objects.filter(
             Q(name__icontains=query) | Q(twitter__icontains=query)
         )
