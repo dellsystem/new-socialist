@@ -67,6 +67,8 @@
 
 .page-content .article-content.section {
     padding-top: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 .article-content hr {

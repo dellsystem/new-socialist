@@ -3,7 +3,7 @@ import re
 import markdown
 
 
-INTERVIEW_RE = r'^~(?P<author>[A-Z]{1,3})(?P<number>[1-4]) '
+INTERVIEW_RE = r'^~(?P<author>[A-Z][A-Za-z]?)(?P<number>[1-4]) '
 class InterviewPattern(markdown.inlinepatterns.Pattern):
     def handleMatch(self, m):
         """
