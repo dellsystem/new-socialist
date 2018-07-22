@@ -67,8 +67,6 @@
 
 .page-content .article-content.section {
     padding-top: 25px;
-    padding-left: 50px;
-    padding-right: 50px;
 }
 
 .article-content hr {
@@ -232,6 +230,13 @@ hr {
     right: 10px;
 }
 
+@media only screen and (min-width: 1200px) {
+    .page-content .article-content.section {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
 @media only screen and (max-width: 1200px) and (min-width: 767px)  {
     #header .stackable.secondary.menu {
         flex-direction: column;
@@ -278,6 +283,11 @@ hr {
         margin-left: 0 !important;
         margin-top: -10px !important;
         margin-right: 10px !important;
+    }
+
+    .page-content .article-content.section {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 
