@@ -123,6 +123,13 @@ class Article(models.Model):
         format='JPEG',
         options={'quality': 90}
     )
+    custom_thumbnail = ProcessedImageField(
+        upload_to='thumbnails',
+        processors=[ResizeToFill(540, 350)],
+        format='JPEG',
+        options={'quality': 100},
+        blank=True
+    )
     background_position = models.CharField(max_length=50, blank=True)
     image_credit = models.TextField(blank=True)
     formatted_image_credit = models.TextField(editable=False)
@@ -156,7 +163,9 @@ class Article(models.Model):
             return '/static/img/banner.png'
 
     def get_image_thumbnail_url(self):
-        if self.image_thumbnail:
+        if self.custom_thumbnail:
+            return self.custom_thumbnail.url
+        elif self.image_thumbnail:
             return self.image_thumbnail.url
         else:
             return '/static/img/placeholder.png'
