@@ -86,7 +86,6 @@ def article_or_page(request, slug):
 
 def editors(request):
     page = Page.objects.get(slug='the-new-socialist-collective')
-    section_editors = Author.objects.filter(is_editor=True)
     sections = Tag.objects.filter(editors__isnull=False).distinct()
     general_editors = [
         ('General Editor', Author.objects.get(slug='tom')),

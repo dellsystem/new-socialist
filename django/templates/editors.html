@@ -42,9 +42,9 @@
                 <div class="ui list">
                     {% for editor in section.editors.all %}
                     <div class="item">
-                        <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
-                        {% if editor.twitter %}
-                        (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a>){% endif %}
+                        <a href="{{ editor.author.get_absolute_url }}">{{ editor.author.name }}</a>
+                        {% if editor.author.twitter %}
+                        (<a href="https://twitter.com/{{ editor.author.twitter }}">@{{ editor.author.twitter }}</a>){% endif %}
                         {% if not forloop.last %}<br />{% endif %}
                     </div>
                     {% endfor %}

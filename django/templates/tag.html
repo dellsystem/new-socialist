@@ -78,9 +78,9 @@
                 <div class="sub header">
                     Editors:
                     {% for editor in tag.editors.all %}
-                    <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
-                    {% if editor.twitter %}
-                    (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a> on Twitter){% endif %}{% if not forloop.last %} and {% endif %}{% endfor %}.
+                    <a href="{{ editor.author.get_absolute_url }}">{{ editor.author.name }}</a>
+                    {% if editor.author.twitter %}
+                    (<a href="https://twitter.com/{{ editor.author.twitter }}">@{{ editor.author.twitter }}</a> on Twitter){% endif %}{% if not forloop.last %} and {% endif %}{% endfor %}.
                 </div>
             </h2>
             {% endif %}

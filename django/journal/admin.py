@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.db.models import Count
 from django.contrib import admin
@@ -42,7 +44,6 @@ class AuthorAdmin(CompareVersionAdmin):
     list_display = ['name', 'slug', 'is_male', 'get_article_count']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['name']
-    list_filter = ['is_editor']
 
     def get_article_count(self, obj):
         return obj.articles.count()
@@ -175,15 +176,99 @@ class LogEntryAdmin(admin.ModelAdmin):
     list_filter = ('user',)
 
 
+class CommissionAdmin(admin.ModelAdmin):
+    list_display = ['get_details', 'editor', 'list_tags', 'get_remind_after',
+        'link_to_action'
+    ]
+    list_filter = ['is_complete', 'editor', 'tags']
+    list_display_links = None
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {'title': 'Manage commissions (highlighted rows = yours)'}
+        self.user = request.user
+        return super(CommissionAdmin, self).changelist_view(
+            request, extra_context=extra_context
+        )
+
+    def get_details(self, obj):
+        if obj.last_updated:
+            updated = ' (last updated {})'.format(naturalday(obj.last_updated))
+        else:
+            updated = ''
+
+        if self.user == obj.editor.user:
+            segment_class = 'yellow inverted'
+        else:
+            segment_class = ''
+
+
+        to_return = '<div class="ui basic compact {segment} segment"><h3 class="ui header"><a href="{url}">{writer} ~ {topic}</a><div class="sub header">{status}{updated}</div></h3></div>'.format(
+            url=reverse('admin:journal_commission_change', args=[obj.id]),
+            writer=obj.writer,
+            topic=obj.topic,
+            status=obj.status,
+            segment=segment_class,
+            updated=updated,
+        )
+        return mark_safe(to_return)
+    get_details.short_description = 'Details'
+
+    def link_to_action(self, obj):
+        if obj.is_complete:
+            return mark_safe(
+                '<div class="ui green icon button"><i class="check icon"></i>Done</div>'
+            )
+        if obj.article:
+            return mark_safe(
+                '<a href="{}" class="ui black button">Article</a>'.format(
+                    reverse('admin:journal_article_change', args=[obj.article.id])
+                )
+            )
+
+        if obj.link:
+            return mark_safe(
+                '<a href="{}" class="ui button">Draft</a>'.format(obj.link)
+            )
+
+    link_to_action.short_description = 'Edit'
+
+    def get_remind_after(self, obj):
+        if obj.remind_after <= datetime.date.today():
+            return mark_safe(
+                '<strong>{}</strong>'.format(naturalday(obj.remind_after))
+            )
+        else:
+            return naturalday(obj.remind_after)
+    get_remind_after.short_description = 'Follow up after'
+
+    def list_tags(self, obj):
+        return mark_safe(
+            ''.join(
+                '<span class="ui {c} label">{t}</span>'.format(
+                    c=tag.colour,
+                    t=tag.short_name or tag.name
+                ) for tag in obj.tags.all())
+        )
+    list_tags.short_description = 'Tag(s)'
+
+
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ['author', 'user', 'section']
+    list_filter = ['section']
+
+
 editor_site.register(models.Issue, IssueAdmin)
 editor_site.register(models.Article, ArticleAdmin)
 editor_site.register(models.ArticleTranslation, ArticleTranslationAdmin)
 editor_site.register(models.Author, AuthorAdmin)
 editor_site.register(models.Tag, TagAdmin)
+editor_site.register(models.Commission, CommissionAdmin)
 
 admin.site.register(models.Issue, IssueAdmin)
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.ArticleTranslation, ArticleTranslationAdmin)
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.Tag, TagAdmin)
+admin.site.register(models.Commission, CommissionAdmin)
 admin.site.register(admin.models.LogEntry, LogEntryAdmin)
+admin.site.register(models.Editor, EditorAdmin)
