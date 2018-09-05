@@ -6,7 +6,9 @@ from imagekit.models import ProcessedImageField
 
 class ImageUpload(models.Model):
     title = models.CharField(max_length=100)
-    slug = models.SlugField()
+    slug = models.SlugField(
+        help_text='For including the image in the article body. If the slug is "image-1", include it with [img:image-1]'
+    )
     file = ProcessedImageField(
         upload_to='images',
         processors=[ResizeToFit(width=1115, upscale=False)],
