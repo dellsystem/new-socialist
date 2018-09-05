@@ -283,13 +283,10 @@ class Commission(models.Model):
     writer = models.CharField(max_length=255)
     status = models.TextField()
     last_updated = models.DateField(
-        blank=True,
-        null=True,
+        auto_now_add=True,
         help_text='Date of last contact with the writer (outbound or inbound).'
     )
     remind_after = models.DateField(
-        blank=True,
-        null=True,
         help_text='Check in on (or respond to) the author after this date.'
     )
     link = models.URLField(blank=True, help_text='Link to Google doc')
