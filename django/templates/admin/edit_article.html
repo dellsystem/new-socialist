@@ -126,7 +126,7 @@
     </div>
 </div>
 {% with commission=adminform.form.instance.commission %}
-{% if commission and not commission.complete %}
+{% if commission %}
 <div class="ui error message">
     <h1 class="ui header">
         This piece is part of an outstanding

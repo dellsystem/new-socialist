@@ -180,7 +180,7 @@ class CommissionAdmin(admin.ModelAdmin):
     list_display = ['get_details', 'editor', 'list_tags', 'get_remind_after',
         'link_to_action'
     ]
-    list_filter = ['is_complete', 'editor', 'tags']
+    list_filter = ['editor', 'tags']
     list_display_links = None
 
     def changelist_view(self, request, extra_context=None):
@@ -214,10 +214,6 @@ class CommissionAdmin(admin.ModelAdmin):
     get_details.short_description = 'Details'
 
     def link_to_action(self, obj):
-        if obj.is_complete:
-            return mark_safe(
-                '<div class="ui green icon button"><i class="check icon"></i>Done</div>'
-            )
         if obj.article:
             return mark_safe(
                 '<a href="{}" class="ui black button">Article</a>'.format(

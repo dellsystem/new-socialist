@@ -282,7 +282,6 @@ class Commission(models.Model):
     tags = models.ManyToManyField(Tag, related_name='commissions')
     writer = models.CharField(max_length=255)
     status = models.TextField()
-    is_complete = models.BooleanField(default=False)
     last_updated = models.DateField(
         blank=True,
         null=True,
