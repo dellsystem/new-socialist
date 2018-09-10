@@ -86,8 +86,8 @@ make_published.short_description = 'Mark selected articles as published'
 
 
 class ArticleAdmin(CompareVersionAdmin):
-    list_display = ['display_title', 'show_image', 'list_authors', 'list_tags',
-        'date', 'get_word_count','published']
+    list_display = ['display_title', 'date', 'show_image', 'list_authors',
+        'list_tags', 'get_word_count','published']
     readonly_fields = ['image_thumbnail']
     list_filter = ['tags', 'published']
     search_fields = ['title', 'authors__name']
@@ -112,19 +112,27 @@ class ArticleAdmin(CompareVersionAdmin):
             )
         )
         if not obj.published:
-            text = 'UNPUBLISHED: scheduled for {}'.format(naturalday(obj.date))
+            text = 'UNPUBLISHED - '
 
             if obj.editor_notes:
-                text += ' - ' + obj.editor_notes
+                text += obj.editor_notes
                 colour = 'red'
+                try:
+                    if obj.commission.link:
+                        text += ' (<a href="{}">Google docs</a>)'.format(
+                            obj.commission.link
+                        )
+                except models.Commission.DoesNotExist:
+                    pass
             else:
-                text += ' - Ready'
                 colour = 'green'
+                text += 'ready'
             to_return += '<span class="ui large {c} label">{t}</span>'.format(
                 c=colour,
                 t=text,
             )
         return mark_safe(to_return)
+    display_title.admin_order_field = 'article__title'
 
     def list_tags(self, obj):
         return mark_safe(
@@ -176,19 +184,30 @@ class LogEntryAdmin(admin.ModelAdmin):
     list_filter = ('user',)
 
 
-class CommissionAdmin(admin.ModelAdmin):
-    list_display = ['get_details', 'editor', 'list_tags', 'get_remind_after',
-        'link_to_action'
+class CommissionAdmin(CompareVersionAdmin):
+    list_display = ['get_details', 'display_editor', 'list_tags',
+        'get_remind_after', 'get_scheduled_for', 'link_to_action'
     ]
     list_filter = ['editor', 'tags']
     list_display_links = None
 
     def changelist_view(self, request, extra_context=None):
-        extra_context = {'title': 'Manage commissions (highlighted rows = yours)'}
+        extra_context = {
+            'title': 'Manage commissions (highlighted = needs action from us)'
+        }
         self.user = request.user
         return super(CommissionAdmin, self).changelist_view(
             request, extra_context=extra_context
         )
+
+    def display_editor(self, obj):
+        if self.user == obj.editor.user:
+            return mark_safe(
+                '<div class="ui black button">You</div>'
+            )
+        else:
+            return obj.editor
+    display_editor.short_description = 'Lead editor'
 
     def get_details(self, obj):
         if obj.last_updated:
@@ -196,7 +215,7 @@ class CommissionAdmin(admin.ModelAdmin):
         else:
             updated = ''
 
-        if self.user == obj.editor.user:
+        if obj.needs_action:
             segment_class = 'yellow inverted'
         else:
             segment_class = ''
@@ -237,6 +256,16 @@ class CommissionAdmin(admin.ModelAdmin):
             return naturalday(obj.remind_after)
     get_remind_after.short_description = 'Follow up after'
 
+    def get_scheduled_for(self, obj):
+        if obj.article:
+            return mark_safe(
+                '<strong>{}</strong>'.format(naturalday(obj.article.date))
+            )
+        else:
+            return 'No article yet'
+    get_scheduled_for.short_description = 'Scheduled for'
+    get_scheduled_for.admin_order_field = 'article__date'
+
     def list_tags(self, obj):
         return mark_safe(
             ''.join(
@@ -248,7 +277,7 @@ class CommissionAdmin(admin.ModelAdmin):
     list_tags.short_description = 'Tag(s)'
 
 
-class EditorAdmin(admin.ModelAdmin):
+class EditorAdmin(CompareVersionAdmin):
     list_display = ['author', 'user', 'section']
     list_filter = ['section']
 
