@@ -282,9 +282,10 @@ class Commission(models.Model):
     tags = models.ManyToManyField(Tag, related_name='commissions')
     writer = models.CharField(max_length=255)
     status = models.TextField()
-    last_updated = models.DateField(
-        auto_now_add=True,
-        help_text='Date of last contact with the writer (outbound or inbound).'
+    last_updated = models.DateField(auto_now=True)
+    needs_action = models.BooleanField(
+        default=False,
+        help_text='whether it needs action from us (otherwise - waiting for author)'
     )
     remind_after = models.DateField(
         help_text='Check in on (or respond to) the author after this date.'
