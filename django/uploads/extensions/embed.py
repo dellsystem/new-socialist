@@ -31,10 +31,10 @@ class EmbedPattern(markdown.inlinepatterns.Pattern):
             if image_upload:
                 div_el = markdown.util.etree.Element('div')
                 div_el.set('class' , 'uploaded-image')
-                span_el = markdown.util.etree.SubElement(div_el, 'span')
-                span_el.text = caption
                 image_el = markdown.util.etree.SubElement(div_el, 'img')
                 image_el.set('src', image_upload.file.url)
+                span_el = markdown.util.etree.SubElement(div_el, 'span')
+                span_el.text = caption
                 return div_el
             else:
                 return 'INVALID FILE: ' + slug
