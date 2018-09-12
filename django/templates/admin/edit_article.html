@@ -126,13 +126,14 @@
     </div>
 </div>
 {% with commission=adminform.form.instance.commission %}
-{% if commission and not commission.complete %}
+{% if commission %}
 <div class="ui error message">
     <h1 class="ui header">
         This piece is part of an outstanding
         <a href="{% url 'admin:journal_commission_change' commission.id %}">
         commission
-        </a> managed by {{ commission.editor }} - mark it as complete when published!
+        </a> managed by {{ commission.editor }} - delete the commission when
+        this is done!
         <div class="sub header">
             Last updated {{ commission.last_updated }}; scheduled for a follow up
             on {{ commission.remind_after }}

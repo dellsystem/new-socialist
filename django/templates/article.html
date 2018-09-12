@@ -75,6 +75,13 @@
                        class="ui blue icon button">
                         <i class="edit icon"></i>Edit in admin
                     </a>
+                    {% if article.commission and article.commission.link %}
+                    <br /><br />
+                    <a href="{{ article.commission.link }}"
+                       class="ui icon button">
+                        <i class="edit icon"></i>Google docs
+                    </a>
+                    {% endif %}
                 </div>
                 <div class="five wide column">
                     {% include 'article_third.html' with article=article only %}
