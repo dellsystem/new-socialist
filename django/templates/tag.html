@@ -6,7 +6,7 @@
 {% block description %}{{ tag.description }}{% endblock %}
 {% block longdescription %}{{ tag.formatted_content|striptags|truncatechars:500 }}{% endblock %}
 
-{% block image %}{{ tag.image.url }}{% endblock %}
+{% block image %}{{ tag.get_image_url }}{% endblock %}
 
 {% block content %}
 <div class="page-content">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <br />
-        <img src="{{ tag.image.url }}" alt="" class="ui image print-hide" />
+        <img src="{{ tag.get_image_url }}" alt="" class="ui image print-hide" />
         <h1 class="ui header">
             {{ tag.name }}
         </h1>
