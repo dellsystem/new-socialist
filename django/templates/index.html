@@ -8,53 +8,44 @@
 {% block content %}
 <article class="page-content">
     <div class="ui container">
-        <div class="ui two column relaxed middle aligned stackable grid">
+        <div class="ui two column computer mobile only relaxed middle aligned stackable grid">
             {% include "featured_article.html" with article=articles.0 %}
             <div class="column">
                 {% include "article_thumb.html" with article=articles.1 %}
                 {% include "article_thumb.html" with article=articles.2 %}
             </div>
         </div>
-    </div>
-    <div class="shadow-section padded">
-        <div class="ui container">
-            <div class="ui middle aligned stackable grid">
-                <div class="thirteen wide column">
-                    <h2 class="ui grey header">
-                        Robust intellectual discussion and intransigent rabble
-                        rousing.
-                        <div class="sub header">
-                            An independent source of left thought based in the
-                            UK.
-                        </div>
-                    </h2>
-                </div>
-                <div class="three wide right aligned column">
-                    <a href="https://twitter.com/NewSocialistUK">
-                        <i class="big twitter icon">
-                        </i>
-                    </a>
-                    <a href="https://facebook.com/NewSocialistUK/">
-                        <i class="big facebook icon">
-                        </i>
-                    </a>
-                </div>
+        <div class="ui tablet only two column grid">
+            <div class="column">
+                {% include "article_third.html" with article=articles.0 %}
+            </div>
+            <div class="column">
+                {% include "article_third.html" with article=articles.1 %}
             </div>
         </div>
     </div>
+    {% include "intro-banner.html" %}
     <div class="ui container">
-        <div class="ui two column relaxed middle aligned stackable grid">
+        <div class="ui two column computer mobile only relaxed middle aligned stackable grid">
             <div class="column">
                 {% include "article_thumb.html" with article=articles.3 %}
                 {% include "article_thumb.html" with article=articles.4 %}
             </div>
             {% include "featured_article.html" with article=articles.5 %}
         </div>
+        <div class="ui tablet only two column grid">
+            <div class="column">
+                {% include "article_third.html" with article=articles.2 %}
+            </div>
+            <div class="column">
+                {% include "article_third.html" with article=articles.3 %}
+            </div>
+        </div>
     </div>
     {% include 'patreon.html' with padded=True %}
     <div class="ui container">
-        <div class="ui three column relaxed top aligned stackable grid">
-            <div class="row">
+        <div class="ui relaxed top aligned stackable grid">
+            <div class="three column computer mobile only row">
                 <div class="column">
                     {% include "article_third.html" with article=articles.6 %}
                 </div>
@@ -65,7 +56,23 @@
                     {% include "article_third.html" with article=articles.8 %}
                 </div>
             </div>
-            <div class="row">
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.4 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.5 %}
+                </div>
+            </div>
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.6 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.7 %}
+                </div>
+            </div>
+            <div class="three column computer mobile only row">
                 <div class="column">
                     {% include "article_third.html" with article=articles.9 %}
                 </div>
@@ -76,14 +83,28 @@
                     {% include "article_third.html" with article=articles.11 %}
                 </div>
             </div>
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.8 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.9 %}
+                </div>
+            </div>
+            <div class="tablet only two column row">
+                <div class="column">
+                    {% include "article_third.html" with article=articles.10 %}
+                </div>
+                <div class="column">
+                    {% include "article_third.html" with article=articles.11 %}
+                </div>
+            </div>
         </div>
         <br /><br />
-        <h1 class="ui centered header">
-            <div class="sub header">
-                <a href="{% url 'archives' 1 %}">
-                    View archives &raquo;
-                </a>
-            </div>
+        <div class="ui basic center aligned segment">
+            <a href="{% url 'archives' 3 %}" class="ui basic button">
+                View more <i class="angle double right icon"></i>
+            </a>
         </h1>
     </div>
 </article>

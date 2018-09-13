@@ -15,7 +15,14 @@
         {{ author.formatted_bio|safe }}
         <hr />
         <div class="section">
-            <div class="ui three column stackable grid">
+            <div class="ui three column computer only stackable grid">
+                {% for article in author.get_articles %}
+                <div class="column">
+                {% include 'article_third.html' with article=article only %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="ui two column mobile tablet only stackable grid">
                 {% for article in author.get_articles %}
                 <div class="column">
                 {% include 'article_third.html' with article=article only %}

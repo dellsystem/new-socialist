@@ -11,6 +11,25 @@
 {% block content %}
 <div class="page-content">
     <div class="ui container">
+        <div class="ui segment">
+            <div class="ui breadcrumb">
+                <a href="{% url 'archives' 1 %}" class="section">All</a>
+                <div class="divider"> / </div>
+                {% for section in sections %}
+                {% if section.slug == tag.slug %}
+                <div class="active section">{{ section.name }}</div>
+                {% else %}
+                <a class="section" href="{% url 'tag' section.slug %}">
+                    {{ section.name }}
+                </a>
+                {% endif %}
+                {% if not forloop.last %}
+                <div class="divider"> / </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <br />
         <img src="{{ tag.image.url }}" alt="" class="ui image print-hide" />
         <h1 class="ui header">
             {{ tag.name }}
@@ -59,9 +78,9 @@
                 <div class="sub header">
                     Editors:
                     {% for editor in tag.editors.all %}
-                    <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
-                    {% if editor.twitter %}
-                    (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a> on Twitter){% endif %}{% if not forloop.last %} and {% endif %}{% endfor %}.
+                    <a href="{{ editor.author.get_absolute_url }}">{{ editor.author.name }}</a>
+                    {% if editor.author.twitter %}
+                    (<a href="https://twitter.com/{{ editor.author.twitter }}">@{{ editor.author.twitter }}</a> on Twitter){% endif %}{% if not forloop.last %} and {% endif %}{% endfor %}.
                 </div>
             </h2>
             {% endif %}
@@ -72,7 +91,14 @@
     <div class="print-hide">
         <div class="ui container">
             <h3 class="section-header">articles</h3>
-            <div class="ui three column stackable grid">
+            <div class="ui computer only three column stackable grid">
+                {% for article in tag.get_articles %}
+                <div class="column">
+                {% include 'article_third.html' with article=article only %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="ui tablet mobile only two column stackable grid">
                 {% for article in tag.get_articles %}
                 <div class="column">
                 {% include 'article_third.html' with article=article only %}

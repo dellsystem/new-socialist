@@ -1,5 +1,5 @@
 <div class="column featured-article">
-    <div class="article-photo" style="background-image: url('{{ article.image.url }}'); background-position: {{ article.background_position|default:"center" }}">
+    <div class="article-photo" style="background-image: url('{{ article.get_image_thumbnail_url }}'); background-position: {{ article.background_position|default:"center" }}">
         <div class="overlay">
             <div class="overlay-content">
                 {% comment %}

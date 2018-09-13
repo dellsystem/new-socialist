@@ -5,6 +5,21 @@
 {% block content %}
 <article class="page-content">
     <div class="ui container">
+        <div class="ui segment">
+            <div class="ui breadcrumb">
+                <div class="active section">All</div>
+                <div class="divider"> / </div>
+                {% for section in sections %}
+                <a class="section" href="{% url 'tag' section.slug %}">
+                    {{ section.name }}
+                </a>
+                {% if not forloop.last %}
+                <div class="divider"> / </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <br />
         <div class="ui middle aligned stackable grid">
             <div class="four wide column">
                 <h1 class="ui header">
@@ -17,7 +32,14 @@
             <div class="four wide column">
             </div>
         </div>
-        <div class="ui three column stackable grid">
+        <div class="ui computer only three column stackable grid">
+            {% for article in articles %}
+            <div class="column">
+                {% include 'article_third.html' with article=article only %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="ui tablet mobile only two column stackable grid">
             {% for article in articles %}
             <div class="column">
                 {% include 'article_third.html' with article=article only %}

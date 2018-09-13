@@ -5,12 +5,35 @@
 {% endblock %}
 
 {% block field_sets %}
+{% include "article_checklist.html" %}
 {{ adminform.form.errors }}
 <div class="ui stackable grid form">
     <div class="twelve wide column">
         <div class="ui segment">
+            <div class="ui stackable grid">
+                <div class="twelve wide column">
+                    <div class="ui field">
+                        <label>
+                            Status of the piece (e.g., "waiting for author confirmation"; leave blank if ready to go)
+                        </label>
+                        {{ adminform.form.editor_notes }}
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <div class="ui field">
+                        <label>Publish?
+                            (READ <a href="https://github.com/dellsystem/new-socialist/tree/master/docs/README.md">CHECKLIST</a>)
+                        </label>
+                        <div class="ui toggle checkbox">
+                            {{ adminform.form.published }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment">
             <div class="ui field">
-                <label>Title</label>
+                <label>Title - 120 characters maximum (ideally under 100)</label>
                 <div class="ui huge fluid input">
                 {{ adminform.form.title }}
                 </div>
@@ -61,14 +84,6 @@
                         {{ adminform.form.tags }}
                     </div>
                 </div>
-                <!--
-                <div class="four wide column">
-                    <div class="ui field">
-                        <label>Issue</label>
-                        {{ adminform.form.issue }}
-                    </div>
-                </div>
-                -->
                 <div class="three wide column">
                     <div class="ui field">
                         <label>Date</label>
@@ -90,19 +105,19 @@
             {% if adminform.form.instance.image_thumbnail %}
             <img class="ui fluid image" src="{{ adminform.form.instance.image.url }}" />
             {% endif %}
-            <br /><hr /><br />
-            <div class="ui field">
-                <label>Publish? (Only if it's fully ready)</label>
-                <div class="ui toggle checkbox">
-                {{ adminform.form.published }}
+            <h2 class="ui header">
+                Custom thumbnail (optional)
+                <div class="sub header">
+                    Only if the automatic one looks weird. 540x350.
                 </div>
-            </div>
+            </h2>
+            {{ adminform.form.custom_thumbnail }}
+            {% if adminform.form.instance.custom_thumbnail %}
+            <img class="ui small image" src="{{ adminform.form.instance.custom_thumbnail.url }}" />
+            {% endif %}
+            <br />
             <div class="ui field">
-                <label>Editor notes (status of the piece - blank if ready)</label>
-                {{ adminform.form.editor_notes }}
-            </div>
-            <div class="ui field">
-                <label>Background position (ignore this)</label>
+                <label>Image background position (optional)</label>
                 <div class="ui fluid input">
                     {{ adminform.form.background_position }}
                 </div>
@@ -110,6 +125,30 @@
         </div>
     </div>
 </div>
+{% with commission=adminform.form.instance.commission %}
+{% if commission %}
+<div class="ui error message">
+    <h1 class="ui header">
+        This piece is part of an outstanding
+        <a href="{% url 'admin:journal_commission_change' commission.id %}">
+        commission
+        </a> managed by {{ commission.editor }} - delete the commission when
+        this is done!
+        <div class="sub header">
+            Last updated {{ commission.last_updated }}; scheduled for a follow up
+            on {{ commission.remind_after }}
+        </div>
+    </h1>
+    {% if commission.link %}
+        <h2 class="ui centered header">
+        <a href="{{ commission.link }}" target="_blank">
+        Google docs link
+        </a>
+        </h2>
+    {% endif %}
+</div>
+{% endif %}
+{% endwith %}
 <div class="ui segment">
     {{ adminform.form.content }}
 </div>

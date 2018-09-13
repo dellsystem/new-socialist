@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="ui container">
+        <h1 class="ui header">
+            Search
+            <div class="sub header">
+                Showing results for: {{ query }}
+            </div>
+        </h1>
+        {% if query|length > 2 %}
+        <h2 class="ui horizontal divider header">
+            Authors ({{ authors.count }})
+        </h2>
+        <br />
+        {% if authors.count %}
+        <div class="ui three column stackable grid">
+            {% for author in authors %}
+            <div class="column">
+                <h4 class="ui header">
+                    <a href="{{ author.get_absolute_url }}">
+                        {{ author.name }}
+                    </a>
+                    <div class="sub header">
+                        {% with count=author.articles.count %}
+                        {{ count }} article{{ count|pluralize }}
+                        {% endwith %}
+                    </div>
+                </h4>
+                {% if author.twitter %}
+                <a class="ui small twitter icon button"
+                   href="https://twitter.com/{{ author.twitter }}">
+                    <i class="twitter icon"></i> @{{ author.twitter }}
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No authors found.</p>
+        {% endif %}
+
+        <br />
+        <h2 class="ui horizontal divider header">
+            Articles ({{ articles.count }})
+        </h2>
+        <br />
+        {% if articles.count %}
+        <div class="ui computer only three column stackable grid">
+            {% for article in articles %}
+            <div class="column">
+                {% include 'article_third.html' with article=article only %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="ui tablet mobile only two column stackable grid">
+            {% for article in articles %}
+            <div class="column">
+                {% include 'article_third.html' with article=article only %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No articles found.</p>
+        {% endif %}
+        {% else %}
+        <div class="ui warning message">
+        <p>Your query was too short! Please use at least 3 characters.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

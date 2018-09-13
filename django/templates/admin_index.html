@@ -6,6 +6,8 @@
 
 {% block content %}
 <div class="ui container">
+    {% include "article_checklist.html" %}
+    <br />
     <div class="ui segment">
         <h2 class="ui centered header">Article management</h2>
         <div class="ui middle aligned stackable grid">
@@ -28,7 +30,15 @@
     <br />
     <div class="ui segment">
         <h2 class="ui center aligned header">Other website management</h2>
-        <div class="ui four column doubling grid">
+        <div class="ui five column doubling grid">
+            <div class="column">
+                <h3 class="ui icon center aligned header">
+                    <i class="money icon"></i>
+                    <a href="{% url 'admin:journal_commission_changelist' %}">
+                        Commissions
+                    </a>
+                </h3>
+            </div>
             <div class="column">
                 <h3 class="ui icon center aligned header">
                     <i class="archive icon"></i>
@@ -63,9 +73,5 @@
             </div>
         </div>
     </div>
-    <br />
-    <h3 class="ui centered header">
-        Need help? Some tips here: <a href="https://github.com/dellsystem/new-socialist/blob/master/TUTORIAL.md">Tutorial</a>
-    </h3>
 </div>
 {% endblock %}

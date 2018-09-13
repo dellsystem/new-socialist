@@ -42,6 +42,7 @@ urlpatterns = [
     path('about/', newsocialist.views.about, name='about'),
     path('get-involved/', newsocialist.views.get_involved, name='get-involved'),
     path('the-new-socialist-collective/', newsocialist.views.editors, name='editors'),
+    path('search/', newsocialist.views.search, name='search'),
     path('martor/', include('martor.urls')),
     path('sudo/', admin.site.urls),
     path('editor/', editor_site.urls),

@@ -59,7 +59,7 @@
         <br /><br />
         {% endif %}
         {% if request.user.is_staff %}
-        <div class="ui warning message print-hide">
+        <div class="ui yellow segment print-hide">
             <div class="ui stackable grid">
                 <div class="three wide column">
                     <h2 class="ui header">
@@ -68,11 +68,20 @@
                             {{ article.get_word_count }} words
                         </div>
                     </h2>
+                    <p>Make sure to view the previews on a computer (otherwise the dimensions won't be right).</p>
+                    <p>This box will only show up for admins.</p>
                     <br />
                     <a href="{% url 'admin:journal_article_change' article.pk %}"
                        class="ui blue icon button">
                         <i class="edit icon"></i>Edit in admin
                     </a>
+                    {% if article.commission and article.commission.link %}
+                    <br /><br />
+                    <a href="{{ article.commission.link }}"
+                       class="ui icon button">
+                        <i class="edit icon"></i>Google docs
+                    </a>
+                    {% endif %}
                 </div>
                 <div class="five wide column">
                     {% include 'article_third.html' with article=article only %}
@@ -130,6 +139,8 @@
                 </div>
             </div>
         </div>
+        <br />
+        <div class="ui divider"></div>
         <div class="article-content section">
             {{ formatted|safe }}
         </div>
@@ -157,10 +168,17 @@
         {% if related %}
         <div class="section print-hide" id="article-related">
             <h3 class="section-header">related</h3>
-            <div class="ui two column bottom aligned stackable grid">
+            <div class="ui two column computer mobile only stackable grid">
                 {% for related_article in related %}
                 <div class="column">
                 {% include 'article_thumb.html' with article=related_article only %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="ui two column tablet only grid">
+                {% for related_article in related %}
+                <div class="column">
+                {% include 'article_third.html' with article=related_article only %}
                 </div>
                 {% endfor %}
             </div>

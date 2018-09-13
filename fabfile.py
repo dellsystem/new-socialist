@@ -5,11 +5,11 @@ from fabric.api import *
 
 
 env.use_ssh_config = True
-env.host_string = 'picric'
+env.host_string = 'ns'
 
 
 def re():
-    local('sudo systemctl restart newsocialist')
+    local('sudo systemctl restart gunicorn')
 
 
 def up():
@@ -45,9 +45,9 @@ def backup_remote():
     remote_filename = get_backup_filename(hostname=env.host_string)
     print("Remote filename: " + remote_filename)
 
+    run(BACKUP_COMMAND + remote_filename)
+    # scp the remote backup file to local.
     with cd('new-socialist'):
-        run('source env/bin/activate && ' + BACKUP_COMMAND + remote_filename)
-        # scp the remote backup file to local.
         get(remote_filename, remote_filename)
 
     return remote_filename

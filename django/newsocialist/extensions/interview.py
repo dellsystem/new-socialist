@@ -3,32 +3,14 @@ import re
 import markdown
 
 
-class InterviewProcessorOld(markdown.blockprocessors.BlockProcessor):
-    """Interview quote processor.
-    
-    ~A
-    One paragraph here (left bar)
-    
-    Another paragraph here
-    ~
-
-    ~B>
-    One paragraph here (right bar)
-    
-    Another paragraph here
-    ~
-    """
-    #RE = re.compile(r'~(?P<author>[A-Z]{1,3})(?P<side>>?)\n(?P<')
-
-
-INTERVIEW_RE = r'^~(?P<author>[A-Z]{1,3})(?P<number>[1-4]) '
+INTERVIEW_RE = r'^~(?P<author>[A-Z][A-Za-z]?)(?P<number>[1-4]) '
 class InterviewPattern(markdown.inlinepatterns.Pattern):
     def handleMatch(self, m):
         """
         ~A1 Text here (on the left, first colour)
         ~B2 Text here (on the left, second colour)
-        ~C3 Text here (on the right, third colour)
-        ~D4 Text here (on the right, fourth colour)
+        ~C3 Text here (on the left, third colour)
+        ~D4 Text here (on the left, fourth colour)
         """
         author = m.group('author')
         number = m.group('number')

@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect, render
 
@@ -10,11 +11,13 @@ def archives(request, number):
     all_articles = Article.objects.filter(published=True).order_by('-date')
     paginator = Paginator(all_articles, 6)
     articles = paginator.get_page(number)
+    sections = Tag.objects.exclude(editors=None).order_by('name')
 
     context = {
         'articles': articles,
         'page_number': number,
         'total_pages': paginator.num_pages,
+        'sections': sections,
     }
 
     return render(request, 'archives.html', context)
@@ -83,7 +86,6 @@ def article_or_page(request, slug):
 
 def editors(request):
     page = Page.objects.get(slug='the-new-socialist-collective')
-    section_editors = Author.objects.filter(is_editor=True)
     sections = Tag.objects.filter(editors__isnull=False).distinct()
     general_editors = [
         ('General Editor', Author.objects.get(slug='tom')),
@@ -127,3 +129,29 @@ def get_involved(request):
     }
 
     return render(request, 'get_involved.html', context)
+
+
+def search(request):
+    query = request.GET.get('q', '')
+
+    if not query:
+        return redirect('archives', number=1)
+
+    if len(query) < 3:
+        articles = None
+        authors = None
+    else:
+        articles = Article.objects.filter(
+            Q(title__icontains=query) | Q(subtitle__icontains=query)
+        ).exclude(published=False)
+        authors = Author.objects.filter(
+            Q(name__icontains=query) | Q(twitter__icontains=query)
+        )
+
+    context = {
+        'authors': authors,
+        'articles': articles,
+        'query': query,
+    }
+
+    return render(request, 'search.html', context)

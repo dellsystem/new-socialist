@@ -1,6 +1,7 @@
 import operator
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils.html import strip_tags
@@ -18,7 +19,6 @@ class Author(models.Model):
     twitter = models.CharField(max_length=15, blank=True, null=True,
         help_text='Username (without the @)')
     slug = models.SlugField(unique=True)
-    is_editor = models.BooleanField(default=False)
     is_male = models.BooleanField(default=True)
 
     def __str__(self):
@@ -52,9 +52,6 @@ class Tag(models.Model):
     description = models.TextField()
     content = MartorField(blank=True)
     formatted_content = models.TextField(editable=False)
-    editors = models.ManyToManyField(Author, limit_choices_to={
-        'is_editor': True,
-    }, blank=True)
     email = models.EmailField(blank=True)
     image_credit = models.TextField(blank=True)
     formatted_image_credit = models.TextField(editable=False)
@@ -81,6 +78,21 @@ class Tag(models.Model):
         return self.name
 
 
+class Editor(models.Model):
+    author = models.OneToOneField(
+        Author, on_delete=models.CASCADE, primary_key=True
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    section = models.ForeignKey(
+        Tag, on_delete=models.CASCADE, blank=True, null=True,
+        help_text='Leave blank if not a section editor',
+        related_name='editors',
+    )
+
+    def __str__(self):
+        return self.author.name
+
+
 class Issue(models.Model):
     title = models.CharField(max_length=50)
     date = models.DateField(help_text='Day ignored')
@@ -97,7 +109,7 @@ class Issue(models.Model):
 
 class Article(models.Model):
     tags = models.ManyToManyField(Tag, related_name='articles', blank=True)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=120)
     slug = models.SlugField(max_length=100, unique=True)
     authors = models.ManyToManyField(Author, related_name='articles',
         blank=True)
@@ -122,6 +134,13 @@ class Article(models.Model):
         processors=[ResizeToFill(540, 350)],
         format='JPEG',
         options={'quality': 90}
+    )
+    custom_thumbnail = ProcessedImageField(
+        upload_to='thumbnails',
+        processors=[ResizeToFill(540, 350)],
+        format='JPEG',
+        options={'quality': 100},
+        blank=True
     )
     background_position = models.CharField(max_length=50, blank=True)
     image_credit = models.TextField(blank=True)
@@ -156,7 +175,9 @@ class Article(models.Model):
             return '/static/img/banner.png'
 
     def get_image_thumbnail_url(self):
-        if self.image_thumbnail:
+        if self.custom_thumbnail:
+            return self.custom_thumbnail.url
+        elif self.image_thumbnail:
             return self.image_thumbnail.url
         else:
             return '/static/img/placeholder.png'
@@ -247,3 +268,32 @@ class ArticleTranslation(models.Model):
 
     def get_absolute_url(self):
         return reverse('article', args=[self.article.slug]) + '?language=' + self.language
+
+
+class Commission(models.Model):
+    article = models.OneToOneField(Article,
+        on_delete=models.CASCADE,
+        related_name='commission',
+        blank=True,
+        null=True,
+    )
+    editor = models.ForeignKey(Editor, on_delete=models.CASCADE)
+    topic = models.CharField(max_length=255)
+    tags = models.ManyToManyField(Tag, related_name='commissions')
+    writer = models.CharField(max_length=255)
+    status = models.TextField()
+    last_updated = models.DateField(auto_now=True)
+    needs_action = models.BooleanField(
+        default=False,
+        help_text='whether it needs action from us (otherwise - waiting for author)'
+    )
+    remind_after = models.DateField(
+        help_text='Check in on (or respond to) the author after this date.'
+    )
+    link = models.URLField(blank=True, help_text='Link to Google doc')
+
+    class Meta:
+        ordering =  ['remind_after']
+
+    def __str__(self):
+        return self.topic

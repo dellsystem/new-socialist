@@ -9,72 +9,36 @@
                     <i class="big content icon"></i>
                 </a>
             </div>
-            <div class="right menu">
-                <div class="ui dropdown item">
-                    <strong>Sections</strong> <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a class="item" href="{% url 'tag' 'westminster' %}">Westminster</a>
-                        <a class="item" href="{% url 'tag' 'beyond-westminster' %}">Beyond Westminster</a>
-                        <a class="item" href="{% url 'tag' 'economics' %}">Economics</a>
-                        <a class="item" href="{% url 'tag' 'theory-and-strategy' %}">Theory and Strategy</a>
-                        <a class="item" href="{% url 'tag' 'international-and-foreign-policy' %}">International & Foreign Policy</a>
-                        <a class="item" href="{% url 'tag' 'culture' %}">Culture</a>
+            <form class="right menu" method="get" action="{% url 'search' %}">
+                    <div class="ui right aligned category search item">
+                        <div class="ui icon input">
+                            <input class="prompt" type="text" 
+                                   autocomplete="off"
+                                   name="q" placeholder="Search">
+                            <i class="search link icon"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="ui dropdown item">
-                    <strong>Series</strong> <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a class="item" href="{% url 'tag' 'million-member-party' %}">
-                            Million Member Party
-                        </a>
-                        <a class="item" href="{% url 'tag' 'general-election-2017' %}">
-                            General Election 2017
-                        </a>
-                        <a class="item" href="{% url 'tag' 'conference-2017' %}">
-                            Conference 2017
-                        </a>
-                        <a class="item" href="{% url 'tag' 'motherhood' %}">
-                            Motherhood
-                        </a>
-                        <a class="item" href="{% url 'tag' 'red-october' %}">
-                            Red October
-                        </a>
-                        <a class="item" href="{% url 'tag' 'radical-tv' %}">
-                            Radical TV
-                        </a>
-                        <a class="item" href="{% url 'tag' 'new-economics-conference' %}">
-                            New Economics Conference
-                        </a>
-                        <a class="item" href="{% url 'tag' 'announcements' %}">
-                            Announcements
-                        </a>
-                    </div>
-                </div>
                 <a class="item" href="{% url 'archives' 1 %}">
                     <strong>Archives</strong>
                 </a>
-            </div>
+            </form>
 			<div class="right menu">
-		        <div class="ui dropdown item">
-		            <strong>About</strong> <i class="dropdown icon"></i>
-				    <div class="menu">
-				        <a class="item" href="{% url 'about' %}">About us</a>
-				        <a class="item" href="{% url 'editors' %}">Editors</a>
-				        <a class="item" href="{% url 'get-involved' %}">Get involved</a>
-				        <!--<a class="item" href="">
-				            <i class="search link icon"></i>
-				        </a>-->
-				    </div>
-				</div>
-		        <a class="item" href="https://www.facebook.com/NewSocialistUK">
-		            <i class="facebook icon"></i>
-		        </a>
-		        <a class="item" href="https://twitter.com/NewSocialistUK">
-		            <i class="twitter icon"></i>
-		        </a>
-		        <a class="item" href="/rss/">
-		            <i class="rss icon"></i>
-		        </a>
+                <a class="item" href="{% url 'about' %}">About</a>
+                <a class="item" href="{% url 'editors' %}">Editors</a>
+                <a class="item" href="{% url 'get-involved' %}">Get involved</a>
+		        <div class="item">
+                    <a href="https://www.facebook.com/NewSocialistUK">
+                        <i class="facebook icon"></i>
+                    </a>
+                    &nbsp;
+                    <a href="https://twitter.com/NewSocialistUK">
+                        <i class="twitter icon"></i>
+                    </a>
+                    &nbsp;
+                    <a href="/rss/">
+                        <i class="rss icon"></i>
+                    </a>
+                </div>
 			</div>
         </div>
     </div>

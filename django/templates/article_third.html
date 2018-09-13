@@ -1,12 +1,5 @@
 {% if article %}
 <div class="article-third">
-    {% comment %}
-    <h4>
-        {% for tag in article.tags.all %}
-        <strong><a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a></strong>{% if not forloop.last %}, {% endif %}
-        {% endfor %}
-    </h4>
-    {% endcomment %}
     {% with header=article.get_title_header %}
     <{{ header }} class="ui header article-title">
         <a href="{{ article.get_absolute_url }}">
@@ -39,7 +32,7 @@
             {{ article.date }}
             /
             {% for tag in article.tags.all %}
-            <a href="{{ tag.get_absolute_url }}">
+            <a href="{{ tag.get_absolute_url }}" class="article-tag">
                 <strong>{{ tag.name }}</strong></a>{% if not forloop.last %}, {% endif %}
             {% endfor %}
         </div>
