@@ -35,7 +35,7 @@ class TagAdmin(CompareVersionAdmin):
 
     def list_editors(self, obj):
         if obj.editors.count():
-            return ', '.join(e.name for e in obj.editors.all())
+            return ', '.join(e.author.name for e in obj.editors.all())
         else:
             return '--'
 
