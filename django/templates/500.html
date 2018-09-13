@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Internal server error{% endblock %}
+{% block description %}This page is currently not working. Try again later{% endblock %}
+
+{% block content %}
+<article class="page-content">
+    <div class="ui container">
+        <h1 class="ui header">
+            Internal server error
+            <div class="sub header">
+                We've been notified of this error and will fix it ASAP!
+            </div>
+        </h1>
+        <br />
+        <hr />
+        <br />
+        <img src="/static/img/banner.png" class="ui fluid image" />
+    </div>
+</article>
+{% endblock %}
