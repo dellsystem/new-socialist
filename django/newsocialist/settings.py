@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'journal',
     'cms',
     'uploads',
+    'django_cron',
 ]
 ADD_REVERSION_ADMIN = True
 
@@ -79,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'newsocialist.context_processors.site',
             ],
         },
     },
@@ -210,3 +212,15 @@ LANGUAGES = (
     ('es', 'Español'),
     ('pl', 'Polish'),
 )
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'newsocialist'
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+SITE_URL = 'https://newsocialist.org.uk'
+
+CRON_CLASSES = [
+    'journal.cron.DailyCommissionUpdate',
+]

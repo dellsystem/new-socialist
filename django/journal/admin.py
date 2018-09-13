@@ -114,6 +114,11 @@ class ArticleAdmin(CompareVersionAdmin):
         if not obj.published:
             text = 'UNPUBLISHED - '
 
+            try:
+                obj.commission
+            except models.Commission.DoesNotExist:
+                text += 'NO COMMISSION - '
+
             if obj.editor_notes:
                 text += obj.editor_notes
                 colour = 'red'
@@ -278,7 +283,8 @@ class CommissionAdmin(CompareVersionAdmin):
 
 
 class EditorAdmin(CompareVersionAdmin):
-    list_display = ['author', 'user', 'section']
+    list_display = ['author', 'user', 'section', 'is_online_editor',
+        'wants_emails']
     list_filter = ['section']
 
 

@@ -1,4 +1,5 @@
 import operator
+import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -48,7 +49,7 @@ class Tag(models.Model):
         blank=True,
         help_text='For internal use only'
     )
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(unique=True, max_length=50)
     description = models.TextField()
     content = MartorField(blank=True)
     formatted_content = models.TextField(editable=False)
@@ -88,9 +89,19 @@ class Editor(models.Model):
         help_text='Leave blank if not a section editor',
         related_name='editors',
     )
+    wants_emails = models.BooleanField(default=False)
+    is_online_editor = models.BooleanField(
+        default=False,
+        help_text='Will have the ability to approve articles + gets email reminders'
+    )
 
     def __str__(self):
         return self.author.name
+
+
+    def get_overdue_commissions(self):
+        return self.commissions.filter(remind_after__lte=datetime.date.today())
+
 
 
 class Issue(models.Model):
@@ -160,6 +171,13 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_days_overdue(self):
+        if not self.published:
+            today = datetime.date.today()
+            days = (today - self.date).days
+            if days > 0:
+                return days
 
     def is_all_male(self):
         # Only if the article is not anonymous, and has no non-male authors.
@@ -277,7 +295,10 @@ class Commission(models.Model):
         blank=True,
         null=True,
     )
-    editor = models.ForeignKey(Editor, on_delete=models.CASCADE)
+    editor = models.ForeignKey(Editor,
+        related_name='commissions',
+        on_delete=models.CASCADE
+    )
     topic = models.CharField(max_length=255)
     tags = models.ManyToManyField(Tag, related_name='commissions')
     writer = models.CharField(max_length=255)
@@ -297,3 +318,9 @@ class Commission(models.Model):
 
     def __str__(self):
         return self.topic
+
+    def get_days_overdue(self):
+        today = datetime.date.today()
+        days = (today - self.remind_after).days
+        if days > 0:
+            return days
