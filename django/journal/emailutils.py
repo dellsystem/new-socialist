@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template import loader
 
-from journal.models import Article, Commission
+from journal.models import Article, Commission, Editor
 
 
 
@@ -52,8 +52,17 @@ def send_commission_reminder(editor):
         articles = Article.objects.filter(date__lte=today).exclude(published=True)
         if articles.count():
             should_send = True
+
+        # For online editors, also show the commissions that others should be
+        # taking care of.
+        other_commissions = Commission.objects.exclude(
+            editor=editor,
+        ).filter(
+            remind_after__lte=today,
+        )
     else:
         articles = Article.objects.none()
+        other_commissions = commisions.none()
 
     if should_send:
         send_email(
@@ -65,6 +74,7 @@ def send_commission_reminder(editor):
                 'name': editor.user.first_name,
                 'active_commissions': active_commissions,
                 'inactive_commissions': inactive_commissions,
+                'other_commissions': other_commissions,
                 'articles': articles,
                 'counts': counts,
             },
@@ -72,3 +82,8 @@ def send_commission_reminder(editor):
         print("sending")
     else:
         print("Not sending")
+
+
+def send_test():
+    editor = Editor.objects.get(pk=5)
+    send_commission_reminder(editor)

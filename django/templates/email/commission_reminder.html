@@ -30,7 +30,7 @@
 
 <ul style="padding: 0; margin: 0 0 10px 0; list-style-type: disc;">
 {% for commission in inactive_commissions %}
-    {% include 'email/commission_li.html' with commission=commission only %}
+    {% include 'email/commission_li.html' with commission=commission host=host only %}
 {% endfor %}
 </ul>
 {% endif %}
@@ -57,6 +57,22 @@
         {% endif %}
         {% endwith %}
     </li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if other_commissions.count %}
+<h2 style="margin: 0 0 10px 0; font-family: sans-serif; font-size: 18px; line-height: 22px; color: #333333; font-weight: bold;">
+    Other commissions: {{ other_commissions.count }}
+</h2>
+<p>
+    The following commissions are assigned to other people but maybe you should
+    check in on them anyway:
+</p>
+
+<ul style="padding: 0; margin: 0 0 10px 0; list-style-type: disc;">
+{% for commission in other_commissions %}
+    {% include 'email/commission_li.html' with commission=commission host=host show_editor=True only %}
 {% endfor %}
 </ul>
 {% endif %}
