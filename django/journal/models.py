@@ -48,7 +48,7 @@ class Tag(models.Model):
         blank=True,
         help_text='For internal use only'
     )
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(unique=True, max_length=50)
     description = models.TextField()
     content = MartorField(blank=True)
     formatted_content = models.TextField(editable=False)
