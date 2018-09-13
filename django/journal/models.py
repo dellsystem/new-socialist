@@ -63,6 +63,12 @@ class Tag(models.Model):
         blank=True
     )
 
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        else:
+            return '/static/img/banner.png'
+
     def get_articles(self):
         return self.articles.filter(published=True)
 
