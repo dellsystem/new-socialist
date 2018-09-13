@@ -4,7 +4,7 @@
 <meta name="google-site-verification" content="DyqkqrKtdTgbugQZ90XPd_kgVJOwk9xrdIyMGvID5jE" />
 <meta property="og:title" content="{% block title %}{% endblock %}">
 <meta property="og:description" content="{% block description %}{% endblock %}">
-<meta property="og:image" content="http://{{ request.get_host }}{% block image %}/static/img/splash.png{% endblock %}">
+<meta property="og:image" content="{{ SITE_URL }}{% block image %}/static/img/splash.png{% endblock %}">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
 <meta property="og:type" content="{% block pagetype %}website{% endblock %}" />
 <meta property="og:site_name" content="New Socialist" />
