@@ -1,0 +1,76 @@
+{% extends "email/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1 style="margin: 0 0 10px 0; font-family: sans-serif; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal;">
+    Commission & article reminders for {{ name }}
+</h1>
+{% if active_commissions.count %}
+<h2 style="margin: 0 0 10px 0; font-family: sans-serif; font-size: 18px; line-height: 22px; color: #333333; font-weight: bold;">
+    Commissions requiring action: {{ active_commissions.count }}
+</h2>
+<p>The following commissions are still awaiting action from you:</p>
+
+<ul style="padding: 0; margin: 0 0 10px 0; list-style-type: disc;">
+{% for commission in active_commissions %}
+    {% include 'email/commission_li.html' with commission=commission host=host only %}
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if inactive_commissions.count %}
+<h2 style="margin: 0 0 10px 0; font-family: sans-serif; font-size: 18px; line-height: 22px; color: #333333; font-weight: bold;">
+    Inactive commissions: {{ inactive_commissions.count }}
+</h2>
+<p>
+    The following commissions require action from someone else (likely the
+    author) and you may need to send them a reminder:
+</p>
+
+<ul style="padding: 0; margin: 0 0 10px 0; list-style-type: disc;">
+{% for commission in inactive_commissions %}
+    {% include 'email/commission_li.html' with commission=commission only %}
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if articles.count %}
+<h2 style="margin: 0 0 10px 0; font-family: sans-serif; font-size: 18px; line-height: 22px; color: #333333; font-weight: bold;">
+    Articles due to go out: {{ articles.count }}
+</h2>
+
+<ul style="padding: 0; margin: 0 0 10px 0; list-style-type: disc;">
+{% for article in articles %}
+    <li style="margin:0 0 10px 30px;">
+        <a href="{{ host }}{% url 'admin:journal_article_change' article.pk %}">
+            <strong>{{ article.title }}</strong>
+        </a>
+        <br />
+        by {{ article.authors.all|join:" ," }}
+        / {{ article.tags.all|join:" ," }}
+        <br />
+        Status: {{ article.status|default:"READY" }}
+        {% with days_overdue=article.get_days_overdue %}
+        {% if days_overdue %}
+        (<strong>{{ days_overdue }} day{{ days_overdue|pluralize }} overdue</strong>)
+        {% endif %}
+        {% endwith %}
+    </li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+    {{ counts.total }} commission{{ counts.total|pluralize }} total
+    ({{ counts.active }} active / {{ counts.inactive }} inactive)
+{% endblock %}
+
+{% block button %}
+<a class="button-a button-a-primary"
+    href="https://newsocialist.org.uk/editor/journal/commission/"
+    style="background: #222222; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">
+    View all commissions
+</a>
+{% endblock %}

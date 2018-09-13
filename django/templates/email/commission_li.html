@@ -1,0 +1,30 @@
+<li style="margin:0 0 10px 30px;">
+    <strong>
+        <a href="{{ host }}{% url 'admin:journal_commission_change' commission.pk %}">
+            {{ commission.topic }}
+        </a>
+    </strong>
+    by {{ commission.writer }}<br />
+    last updated {{ commission.last_updated }}
+    {% with days_overdue=commission.get_days_overdue %}
+    {% if days_overdue %}
+    (<strong>{{ days_overdue }} day{{ days_overdue|pluralize }} overdue</strong>)
+    {% endif %}
+    {% endwith %}
+    <br />
+    {% if commission.link %}
+    <a href="{{ commission.link }}">
+        Google docs
+    </a>
+    {% endif %}
+    {% if commission.article %}
+    /
+    <a href="{{ host }}{{ article.get_absolute_url }}">
+        View article
+    </a>
+    /
+    <a href="{{ host }}{% url 'admin:journal_article_change' commission.article.pk %}">
+        Edit article
+    </a>
+    {% endif %}
+</li>

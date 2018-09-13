@@ -283,7 +283,8 @@ class CommissionAdmin(CompareVersionAdmin):
 
 
 class EditorAdmin(CompareVersionAdmin):
-    list_display = ['author', 'user', 'section']
+    list_display = ['author', 'user', 'section', 'is_online_editor',
+        'wants_emails']
     list_filter = ['section']
 
 
