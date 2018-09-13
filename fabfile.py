@@ -94,11 +94,9 @@ def exp():
     put(local_filename, 'new-socialist/backups')
 
     # Sync the media directories.
-    #local('tar czvf media.tar.gz media/*')
-    #put('media.tar.gz', 'new-socialist/media.tar.gz')
+    local('rsync -Prz media/ %s:new-socialist/media/' % env.host_string)
 
     with cd('new-socialist'):
-        #run('tar xvzf media.tar.gz')
         # Then run loaddata.
         run('source env/bin/activate && django/manage.py loaddata ' + local_filename)
 

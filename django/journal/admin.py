@@ -35,7 +35,7 @@ class TagAdmin(CompareVersionAdmin):
 
     def list_editors(self, obj):
         if obj.editors.count():
-            return ', '.join(e.name for e in obj.editors.all())
+            return ', '.join(e.author.name for e in obj.editors.all())
         else:
             return '--'
 
@@ -113,6 +113,11 @@ class ArticleAdmin(CompareVersionAdmin):
         )
         if not obj.published:
             text = 'UNPUBLISHED - '
+
+            try:
+                obj.commission
+            except models.Commission.DoesNotExist:
+                text += 'NO COMMISSION - '
 
             if obj.editor_notes:
                 text += obj.editor_notes
@@ -278,7 +283,8 @@ class CommissionAdmin(CompareVersionAdmin):
 
 
 class EditorAdmin(CompareVersionAdmin):
-    list_display = ['author', 'user', 'section']
+    list_display = ['author', 'user', 'section', 'is_online_editor',
+        'wants_emails']
     list_filter = ['section']
 
 
