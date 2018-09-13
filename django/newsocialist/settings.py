@@ -224,3 +224,8 @@ SITE_URL = 'https://newsocialist.org.uk'
 CRON_CLASSES = [
     'journal.cron.DailyCommissionUpdate',
 ]
+
+ADMINS = [
+    ('Wendy', 'ilostwaldo@gmail.com'),
+]
+SERVER_EMAIL = 'website@newsocialist.org.uk'
