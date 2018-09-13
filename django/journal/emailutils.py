@@ -8,16 +8,23 @@ from journal.models import Article, Commission
 
 
 
+ADMIN_EMAIL = 'ilostwaldo@gmail.com'
 def send_email(to_email, subject, template, context):
     title = subject
     context['title'] = subject
     html_message = loader.render_to_string(template, context)
     message = subject  # surely this should never show?
+
+    # Add ilostwaldo@gmail.com if that's not the to_email
+    recipient_list = [to_email]
+    if to_email != ADMIN_EMAIL:
+        recipient_list.append(to_email)
+
     send_mail(
         subject=title,
         message=message,
         from_email='New Socialist <website@newsocialist.org.uk>',
-        recipient_list=[to_email],
+        recipient_list=recipient_list,
         html_message=html_message,
         fail_silently=False
     )
