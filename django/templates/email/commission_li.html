@@ -10,6 +10,9 @@
     {% if days_overdue %}
     (<strong>{{ days_overdue }} day{{ days_overdue|pluralize }} overdue</strong>)
     {% endif %}
+    {% if show_editor %}
+    - assigned to <strong>{{ commission.editor }}</strong>
+    {% endif %}
     {% endwith %}
     <br />
     {% if commission.link %}
@@ -19,7 +22,7 @@
     {% endif %}
     {% if commission.article %}
     /
-    <a href="{{ host }}{{ article.get_absolute_url }}">
+    <a href="{{ host }}{{ commission.article.get_absolute_url }}">
         View article
     </a>
     /
