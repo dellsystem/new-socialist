@@ -10,6 +10,9 @@
     {% if days_overdue %}
     (<strong>{{ days_overdue }} day{{ days_overdue|pluralize }} overdue</strong>)
     {% endif %}
+    {% if commission.status %}
+    <em>{{ commission.status }}</em>
+    {% endif %}
     {% if show_editor %}
     - assigned to <strong>{{ commission.editor }}</strong>
     {% endif %}
