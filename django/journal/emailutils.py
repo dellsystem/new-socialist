@@ -18,9 +18,9 @@ def send_email(to_email, subject, template, context):
     # Add ilostwaldo@gmail.com if that's not the to_email
     recipient_list = [to_email]
     if to_email != ADMIN_EMAIL:
-        recipient_list.append(to_email)
+        recipient_list.append(ADMIN_EMAIL)
 
-    send_mail(
+    sent = send_mail(
         subject=title,
         message=message,
         from_email='New Socialist <website@newsocialist.org.uk>',
@@ -28,6 +28,10 @@ def send_email(to_email, subject, template, context):
         html_message=html_message,
         fail_silently=False
     )
+    if sent:
+        return "Sent"
+    else:
+        return "Failed to send"
 
 
 def send_commission_reminder(editor):
@@ -62,10 +66,10 @@ def send_commission_reminder(editor):
         )
     else:
         articles = Article.objects.none()
-        other_commissions = commisions.none()
+        other_commissions = Commission.objects.none()
 
     if should_send:
-        send_email(
+        return send_email(
             to_email=editor.user.email,
             subject='NS Commission Reminder',
             template='email/commission_reminder.html',
@@ -79,9 +83,8 @@ def send_commission_reminder(editor):
                 'counts': counts,
             },
         )
-        print("sending")
     else:
-        print("Not sending")
+        return "Not sending"
 
 
 def send_test():

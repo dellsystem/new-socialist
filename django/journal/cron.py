@@ -11,6 +11,14 @@ class DailyCommissionUpdate(CronJobBase):
     code = 'journal.daily_commission_update'
 
     def do(self):
+        output = []
         for editor in Editor.objects.filter(wants_emails=True):
-            print(editor.author.name)
-            send_commission_reminder(editor)
+            status = send_commission_reminder(editor)
+            output.append(
+                "{name}: {status}".format(
+                    name=editor.author.name,
+                    status=status
+                )
+            )
+
+        return '\n'.join(output)

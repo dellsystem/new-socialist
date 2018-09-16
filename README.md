@@ -131,3 +131,16 @@ managed by Certbot
     }
 }
 ```
+
+### cron
+
+To send daily commission reminder emails with sendgrid, add this to your
+crontab:
+
+```
+SHELL=/bin/bash
+0 * * * * source /path/to/dir/new-socialist/env/bin/activate && python /path/to/dir/new-socialist/django/manage.py runcrons
+```
+
+(setting the shell to bash is necessary as otherwise `source` won't work, and
+`source` is needed for the activate script to function)
