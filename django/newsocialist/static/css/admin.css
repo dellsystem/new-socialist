@@ -43,3 +43,7 @@ div.breadcrumbs {
 .module pre {
     white-space: pre-line;
 }
+
+.highlighted.column {
+    background: #ffdba8;
+}

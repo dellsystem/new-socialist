@@ -6,10 +6,7 @@
 
 {% block content %}
 <div class="ui container">
-    {% include "article_checklist.html" %}
-    <br />
     <div class="ui segment">
-        <h2 class="ui centered header">Article management</h2>
         <div class="ui middle aligned stackable grid">
             <div class="ui four wide column">
                 <a class="ui green fluid icon button"
@@ -27,6 +24,8 @@
             </div>
         </div>
     </div>
+    <br />
+    {% show_article_calendar %}
     <br />
     <div class="ui segment">
         <h2 class="ui center aligned header">Other website management</h2>
