@@ -47,7 +47,7 @@ def show_article_calendar():
                     full_title=article.title,
                     authors=', '.join(a.name for a in article.authors.all()),
                     title=title,
-                    url=reverse('admin:journal_article_change', args=[article.pk]),
+                    url=reverse('editor:journal_article_change', args=[article.pk]),
                     male_label=MALE_LABEL if article.is_all_male() else '',
                     status_label=status_label,
                 )
