@@ -25,9 +25,8 @@ def show_article_calendar():
     days_html = []
     for i in range(num_days):
         day = i + 1
-        articles = Article.objects.filter(
-            date=datetime.date(today.year, today.month, day)
-        )
+        date = datetime.date(today.year, today.month, day)
+        articles = Article.objects.filter(date=date)
         articles_html = []
         for article in articles:
             title = article.title
@@ -43,7 +42,7 @@ def show_article_calendar():
                     status_label = READY_LABEL
 
             articles_html.append(
-                '<a href="{url}" title="{full_title} by {authors}">{title}</a><br />{male_label}{status_label}'.format(
+                '<div><a href="{url}" title="{full_title} by {authors}">{title}</a><br />{male_label}{status_label}</div>'.format(
                     full_title=article.title,
                     authors=', '.join(a.name for a in article.authors.all()),
                     title=title,
@@ -56,12 +55,13 @@ def show_article_calendar():
         days_html.append(
             """
                 <div class="{colour}column">
-                    <h3 class="ui header">{day}</h3>
+                    <h3 class="ui header">{day} - {dow}</h3>
                     {articles}
                 </div>
             """.format(
                 colour='highlighted ' if current_day == day else '',
                 day=day,
+                dow=calendar.day_name[date.weekday()][:3],
                 articles=format_html(''.join(articles_html)),
             )
         )
@@ -69,7 +69,7 @@ def show_article_calendar():
     return format_html(
         """
         <h1>Article calendar - {current_month}</h1>
-        <div class="ui celled seven column grid">
+        <div class="ui celled seven column stackable grid">
             {non_days}
             {days}
         </div>
