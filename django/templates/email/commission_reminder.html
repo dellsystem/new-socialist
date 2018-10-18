@@ -43,7 +43,7 @@
 <ul style="padding: 0; margin: 0 0 10px 0; list-style-type: disc;">
 {% for article in articles %}
     <li style="margin:0 0 10px 30px;">
-        <a href="{{ host }}{% url 'admin:journal_article_change' article.pk %}">
+        <a href="{{ host }}{% url 'editor:journal_article_change' article.pk %}">
             <strong>{{ article.title }}</strong>
         </a>
         <br />

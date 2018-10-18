@@ -1,6 +1,6 @@
 <li style="margin:0 0 10px 30px;">
     <strong>
-        <a href="{{ host }}{% url 'admin:journal_commission_change' commission.pk %}">
+        <a href="{{ host }}{% url 'editor:journal_commission_change' commission.pk %}">
             {{ commission.topic }}
         </a>
     </strong>
@@ -29,7 +29,7 @@
         View article
     </a>
     /
-    <a href="{{ host }}{% url 'admin:journal_article_change' commission.article.pk %}">
+    <a href="{{ host }}{% url 'editor:journal_article_change' commission.article.pk %}">
         Edit article
     </a>
     {% endif %}

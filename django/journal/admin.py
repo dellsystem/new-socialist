@@ -106,7 +106,7 @@ class ArticleAdmin(CompareVersionAdmin):
     def display_title(self, obj):
         to_return = (
             '<h3 class="ui header"><a href="{u}">{t}</a><div class="sub header">{s}</div></h3>'.format(
-                u=reverse('admin:journal_article_change', args=[obj.id]),
+                u=reverse('editor:journal_article_change', args=[obj.id]),
                 t=obj.title,
                 s=obj.subtitle or '<em>No subtitle</em>'
             )
@@ -154,7 +154,7 @@ class ArticleAdmin(CompareVersionAdmin):
             to_return = ', '.join(
                 format_html(
                     '<a href="{}">{}</a>',
-                    reverse('admin:journal_author_change', args=[a.id]),
+                    reverse('editor:journal_author_change', args=[a.id]),
                     a.name
                 )
                 for a in obj.authors.all()
@@ -227,7 +227,7 @@ class CommissionAdmin(CompareVersionAdmin):
 
 
         to_return = '<div class="ui basic compact {segment} segment"><h3 class="ui header"><a href="{url}">{writer} ~ {topic}</a><div class="sub header">{status}{updated}</div></h3></div>'.format(
-            url=reverse('admin:journal_commission_change', args=[obj.id]),
+            url=reverse('editor:journal_commission_change', args=[obj.id]),
             writer=obj.writer,
             topic=obj.topic,
             status=obj.status,
@@ -241,7 +241,7 @@ class CommissionAdmin(CompareVersionAdmin):
         if obj.article:
             return mark_safe(
                 '<a href="{}" class="ui black button">Article</a>'.format(
-                    reverse('admin:journal_article_change', args=[obj.article.id])
+                    reverse('editor:journal_article_change', args=[obj.article.id])
                 )
             )
 
