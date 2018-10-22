@@ -1,0 +1,53 @@
+{% if article.published %}
+    <div class="ui message">
+        <h2 class="ui header">
+            This piece was published on {{ article.date }}.
+            If you need to unpublish it (not recommended),
+            <a href="{% url 'unpublish-article' article.slug %}">click here</a>
+        </h2>
+    </div>
+{% else %}
+<div class="ui grid">
+    <div class="twelve wide column">
+        {% with commission=article.commission %}
+        {% if commission %}
+            <div class="ui warning message">
+                <h2 class="ui header">
+                    Commissioned by {{ commission.editor }}.
+                    <a href="{{ commission.link }}" target="_blank">
+                    View draft document
+                    </a>
+                    /
+                    <a href="{% url 'editor:journal_commission_change' commission.id %}">
+                    View commission
+                    </a> (delete after publication)
+                    <div class="sub header">
+                        Last updated {{ commission.last_updated }}; scheduled for a follow up
+                        on {{ commission.remind_after }}
+                    </div>
+                </h2>
+                {% if commission.link %}
+                    <h2 class="ui centered header">
+                    </h2>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="ui warning message">
+                <h2 class="ui header">
+                    Is the piece ready to go? Click the button on the right
+                    (or <a href="{{ article.get_absolute_url }}">click here for
+                    preview</a>)
+                </h2>
+            </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+    <div class="four wide column">
+        <a class="ui fluid massive green icon button"
+           href="{% url 'manage-article' article.slug %}">
+            <i class="tasks icon"></i>
+            Prepare for publication
+        </a>
+    </div>
+</div>
+{% endif %}

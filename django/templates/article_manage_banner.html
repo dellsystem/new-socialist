@@ -1,0 +1,67 @@
+<div class="ui black segment print-hide">
+    <h2 class="ui header">
+        Article management
+        <div class="sub header">
+            {{ article.get_word_count }} words
+        </div>
+    </h2>
+    <div class="ui centered four column grid">
+        <div class="column">
+            <a href="{% url 'editor:journal_article_change' article.pk %}"
+               class="ui fluid blue icon button">
+                <i class="edit icon"></i>Edit article
+            </a>
+        </div>
+        <div class="column">
+            <a href="{% url 'manage-article' article.slug %}"
+               class="ui fluid green icon button">
+                <i class="tasks icon"></i>
+                {% if article.published %}
+                Manage article
+                {% else %}
+                Prepare for publication
+                {% endif %}
+            </a>
+        </div>
+        <div class="column">
+            <a href="{% url 'share-article' article.slug %}"
+               class="ui fluid icon button">
+                <i class="share icon"></i>Share article
+            </a>
+        </div>
+        <div class="column">
+            <a href="{% url 'unpublish-article' article.slug %}"
+               class="ui fluid grey icon button">
+                <i class="hide icon"></i>Unpublish article
+            </a>
+        </div>
+        {% if article.commission %}
+        <div class="column">
+            <a href="{% url 'editor:journal_commission_change' article.commission.pk %}"
+               class="ui fluid icon button">
+                <i class="edit icon"></i>Edit commission
+            </a>
+        </div>
+        {% if article.commission.link %}
+        <div class="column">
+            <a href="{{ article.commission.link }}"
+               class="ui fluid icon button">
+                <i class="edit icon"></i>Google docs
+            </a>
+        </div>
+        {% endif %}
+        {% endif %}
+        <div class="column">
+            <a href="https://cards-dev.twitter.com/validator"
+               class="ui fluid twitter icon button">
+                <i class="twitter icon"></i>Refresh Twitter preview
+            </a>
+        </div>
+        <div class="column">
+            <a href="https://developers.facebook.com/tools/debug/sharing/?q={{ url }}"
+               class="ui fluid facebook icon button">
+                <i class="facebook icon"></i>Refresh FB preview
+            </a>
+        </div>
+    </div>
+</div>

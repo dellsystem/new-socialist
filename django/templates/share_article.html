@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Share article - {{ title }}{% endblock %}
+{% block date %}{{ article.date|date:"Y-m-d" }}{% endblock %}
+
+{% block longdescription %}You must logged in to view this page.{% endblock %}
+{% block description %}You must logged in to view this page.{% endblock %}
+{% block image %}{{ article.get_image_thumbnail_url }}{% endblock %}
+
+{% block pagetype %}article{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="six wide column">
+                <h1 class="ui header">
+                    Share article
+                </h1>
+            </div>
+            {% include "article_buttons.html" with hide='share' %}
+        </div>
+        <div class="ui two column middle aligned grid">
+            <div class="column">
+                {% include "article_thumb.html" with article=article %}
+            </div>
+            <div class="column">
+                {% if not article.published %}
+                <div class="ui error message">
+                    <h2 class="header">
+                        This article is not yet published. Make sure you publish it before you
+                        post on social media.
+                    </h2>
+                </div>
+                {% else %}
+                <div class="ui success message">
+                    <h2 class="header">
+                        Published! Go ahead and share it on social media.
+                    </h2>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <br /><br />
+        <h2 class="ui horizontal divider header">
+            Share on Twitter
+        </h2>
+        <div class="ui center aligned segment">
+            <p>{{ article_details.twitter_text }}</p>
+            <a class="ui twitter icon button"
+               href="https://twitter.com/intent/tweet?url=&text={{ article_details.twitter_text|urlencode }}">
+                <i class="twitter icon"></i>
+                Click to tweet
+            </a>
+        </div>
+        <div class="ui stackable two column grid">
+            <div class="column">
+                {% if article_details.screenshot_1 %}
+                <img class="ui fluid image" src="{{ article_details.screenshot_1.url }}" />
+                {% endif %}
+            </div>
+            <div class="column">
+                {% if article_details.screenshot_2 %}
+                <img class="ui fluid image" src="{{ article_details.screenshot_2.url }}" />
+                {% endif %}
+            </div>
+        </div>
+        <h2 class="ui horizontal divider header">
+            Share on Facebook
+        </h2>
+        <div class="ui segment">
+            {{ article_details.facebook_text }}
+        </div>
+    </div>
+</div>
+{% endblock %}

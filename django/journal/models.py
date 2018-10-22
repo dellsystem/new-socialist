@@ -169,6 +169,7 @@ class Article(models.Model):
         on_delete=models.CASCADE, limit_choices_to={'published': True}, blank=True,
         null=True)
     last_modified = models.DateField(auto_now=True)
+    verified = models.BooleanField(default=False)
     published = models.BooleanField(default=False)
 
     class Meta:
@@ -206,8 +207,22 @@ class Article(models.Model):
         else:
             return '/static/img/placeholder.png'
 
+    def get_full_url(self):
+        return settings.SITE_URL + self.get_absolute_url()
+
     def get_absolute_url(self):
-        return reverse('article_or_page', args=[self.slug])
+        return reverse('article-or-page', args=[self.slug])
+
+    def get_description(self):
+        if self.authors.count():
+            authors = ', '.join(a.name for a in self.authors.all())
+        else:
+            authors = 'anonymous'
+
+        return 'by {authors} // {subtitle}'.format(
+            authors=authors,
+            subtitle=self.subtitle
+        )
 
     def get_word_count(self):
         return len(self.unformatted_content.split())
@@ -292,6 +307,30 @@ class ArticleTranslation(models.Model):
 
     def get_absolute_url(self):
         return reverse('article', args=[self.article.slug]) + '?language=' + self.language
+
+
+class ArticleDetails(models.Model):
+    """For managing the social media sharing details."""
+    article = models.OneToOneField(
+        Article,
+        on_delete=models.CASCADE,
+        related_name='details',
+    )
+    twitter_text = models.TextField(
+        null=True,
+        blank=True,
+        help_text="Draft tweet text here."
+    )
+    facebook_text = models.TextField(
+        null=True,
+        blank=True,
+        help_text="Draft Facebook post text here."
+    )
+    screenshot_1 = models.ImageField(null=True, blank=True)
+    screenshot_2 = models.ImageField(null=True, blank=True)
+
+    def __str__(self):
+        return self.article.title
 
 
 class Commission(models.Model):
