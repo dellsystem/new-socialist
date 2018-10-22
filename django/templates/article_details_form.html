@@ -1,0 +1,45 @@
+<form method="post" action="" class="ui form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h4 class="ui centered header">
+        {{ article.get_full_url }}
+    </h4>
+    <div class="ui segment">
+        <h3>
+            Advice on:
+            <a href="https://github.com/dellsystem/new-socialist/tree/master/docs#screenshots">
+                taking screenshots
+            </a>
+            /
+            <a href="https://github.com/dellsystem/new-socialist/tree/master/docs#tweet-text">
+                composing tweets
+            </a>
+        </h3>
+        <div class="ui field">
+            <label>
+                Twitter (tag author(s) and keep the URL at the end)
+            </label>
+            {{ form.twitter_text }}
+        </div>
+        <div class="ui two fields">
+            <div class="field">
+                <label>First Twitter screenshot</label>
+                {{ form.screenshot_1 }}
+            </div>
+            <div class="field">
+                <label>Second Twitter screenshot</label>
+                {{ form.screenshot_2 }}
+            </div>
+        </div>
+        <div class="ui field">
+            <label>Facebook (name author(s) + put in the URL to get the preview, then delete it)</label>
+            {{ form.facebook_text }}
+        </div>
+    </div>
+    <div class="ui center aligned basic segment">
+        <button type="submit" name="submit" value="details"
+                class="ui green icon button">
+            <i class="save icon"></i>
+            Save
+        </button>
+    </div>
+</form>

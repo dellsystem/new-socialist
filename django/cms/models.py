@@ -24,7 +24,7 @@ class Page(models.Model):
 
     def get_absolute_url(self):
         if self.slug:
-            return reverse('article_or_page', args=[self.slug])
+            return reverse('article-or-page', args=[self.slug])
         else:
             return '/'
 

@@ -1,0 +1,33 @@
+<div class="ten wide right aligned column">
+    <a class="ui icon black button" href="{{ article.get_absolute_url }}">
+        <i class="file icon"></i>
+        View article
+    </a>
+    {% if hide != 'manage' %}
+    <a class="ui green icon button" href="{% url 'manage-article' article.slug %}">
+        <i class="tasks icon"></i>
+        {% if article.published %}
+        Manage article
+        {% else %}
+        Prepare for publication
+        {% endif %}
+    </a>
+    {% endif %}
+    {% if hide != 'share' %}
+    <a class="ui icon button" href="{% url 'share-article' article.slug %}">
+        <i class="share icon"></i>
+        Share article
+    </a>
+    {% endif %}
+    {% if hide != 'unpublish' and article.published %}
+    <a class="ui grey icon button" href="{% url 'unpublish-article' article.slug %}">
+        <i class="hide icon"></i>
+        Unpublish article
+    </a>
+    {% endif %}
+    <a class="ui blue icon button"
+       href="{% url 'editor:journal_article_change' article.pk %}">
+        <i class="edit icon"></i>
+        Edit article
+    </a>
+</div>

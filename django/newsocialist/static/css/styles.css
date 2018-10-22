@@ -535,3 +535,9 @@ blockquote cite::before {
 .interview-quote.author-4 {
     background: black;
 }
+
+.twitter-preview-image {
+    width: 540px;
+    height: 270px;
+    background-position: center;
+}

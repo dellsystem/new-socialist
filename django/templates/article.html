@@ -5,7 +5,7 @@
 
 {% block longdescription %}{{ unformatted|truncatechars:500 }}{% endblock %}
 
-{% block description %}{% if article.authors.count %}by {{ article.authors.all|join:", " }} // {% endif %}{{ article.subtitle }}{% endblock %}
+{% block description %}{{ article.get_description }}{% endblock %}
 
 {% block image %}{{ article.get_image_thumbnail_url }}{% endblock %}
 
@@ -50,47 +50,14 @@
         </h1>
         {% if not article.published %}
         <div class="ui error message print-hide">
-            <div class="header">
-                Not published
-            </div>
-            <p>This article won't yet show up elsewhere on the
-            website.</p>
+            <h2 class="header">
+                Not published (preview only)
+            </h2>
+            <p>This article won't show up elsewhere on the website yet.</p>
         </div>
-        <br /><br />
         {% endif %}
         {% if request.user.is_staff %}
-        <div class="ui yellow segment print-hide">
-            <div class="ui stackable grid">
-                <div class="three wide column">
-                    <h2 class="ui header">
-                        Previews
-                        <div class="sub header">
-                            {{ article.get_word_count }} words
-                        </div>
-                    </h2>
-                    <p>Make sure to view the previews on a computer (otherwise the dimensions won't be right).</p>
-                    <p>This box will only show up for admins.</p>
-                    <br />
-                    <a href="{% url 'editor:journal_article_change' article.pk %}"
-                       class="ui blue icon button">
-                        <i class="edit icon"></i>Edit in admin
-                    </a>
-                    {% if article.commission and article.commission.link %}
-                    <br /><br />
-                    <a href="{{ article.commission.link }}"
-                       class="ui icon button">
-                        <i class="edit icon"></i>Google docs
-                    </a>
-                    {% endif %}
-                </div>
-                <div class="five wide column">
-                    {% include 'article_third.html' with article=article only %}
-                </div>
-                <div class="eight wide column">
-                    {% include 'article_thumb.html' with article=article only %}
-                </div>
-            </div>
-        </div>
+        {% include 'article_manage_banner.html' with article=article url=request.build_absolute_uri|urlencode only %}
         {% endif %}
         {% if languages %}
         <div id="article-lead" class="print-hide">

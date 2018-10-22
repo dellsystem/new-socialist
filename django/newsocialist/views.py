@@ -1,9 +1,13 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.decorators.http import require_POST
 
-from journal.models import Article, Author, Tag
+from journal.forms import ArticleDetailsForm
+from journal.models import Article, ArticleDetails, Author, Tag
 from cms.models import Page
 
 
@@ -34,6 +38,97 @@ def index(request):
     }
 
     return render(request, 'index.html', context)
+
+
+@staff_member_required
+def share_article(request, slug):
+    try:
+        article = Article.objects.filter(slug=slug).first()
+    except Article.DoesNotExist:
+        raise Http404
+
+    article_details, created = ArticleDetails.objects.get_or_create(
+        article=article,
+    )
+
+    context = {
+        'article': article,
+        'article_details': article_details,
+    }
+
+    return render(request, 'share_article.html', context)
+
+
+@staff_member_required
+def manage_article(request, slug):
+    try:
+        article = Article.objects.filter(slug=slug).first()
+    except Article.DoesNotExist:
+        raise Http404
+
+    article_details, created = ArticleDetails.objects.get_or_create(
+        article=article,
+    )
+
+    if request.method == 'POST':
+        form = ArticleDetailsForm(request.POST, request.FILES, instance=article_details)
+        if form.is_valid():
+            form.save()
+    else:
+        article_url = article.get_full_url()
+        initial = {}
+        if article_details.twitter_text is None:
+            initial['twitter_text'] = '{authors} {url}'.format(
+                authors=' ,'.join('@' + a.twitter if a.twitter else a.name for a in article.authors.all()),
+                url=article_url
+            )
+        if article_details.facebook_text is None:
+            initial['facebook_text'] = '{authors} {url}'.format(
+                authors=' ,'.join(a.name for a in article.authors.all()),
+                url=article_url
+            )
+        form = ArticleDetailsForm(instance=article_details, initial=initial)
+
+    context = {
+        'article': article,
+        'form': form,
+    }
+
+    return render(request, 'manage_article.html', context)
+
+
+@staff_member_required
+@require_POST
+def publish_article(request, slug):
+    try:
+        article = Article.objects.filter(slug=slug).first()
+    except Article.DoesNotExist:
+        raise Http404
+
+    if not article.published:
+        article.published = True
+        article.save()
+
+    return redirect('share-article', slug=article.slug)
+
+
+@staff_member_required
+def unpublish_article(request, slug):
+    try:
+        article = Article.objects.filter(slug=slug).first()
+    except Article.DoesNotExist:
+        raise Http404
+
+    if request.POST:
+        article.published = False
+        article.save()
+        return redirect(article)
+
+    context = {
+        'article': article,
+    }
+
+    return render(request, 'unpublish_article.html', context)
 
 
 def article_or_page(request, slug):

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Unpublish article - {{ title }}{% endblock %}
+{% block date %}{{ article.date|date:"Y-m-d" }}{% endblock %}
+
+{% block longdescription %}You must logged in to view this page.{% endblock %}
+{% block description %}You must logged in to view this page.{% endblock %}
+{% block image %}{{ article.get_image_thumbnail_url }}{% endblock %}
+
+{% block pagetype %}article{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="six wide column">
+                <h1 class="ui header">
+                    Unpublish article
+                </h1>
+            </div>
+            {% include "article_buttons.html" with hide='unpublish' %}
+        </div>
+        <div class="ui two column middle aligned grid">
+            <div class="column">
+                {% include "article_thumb.html" with article=article %}
+            </div>
+            <div class="column">
+                {% if article.published %}
+                <div class="ui success message">
+                    <h2 class="header">
+                        You can unpublish this if you accidentally published it
+                        too early.
+                    </h2>
+                </div>
+                {% else %}
+                <div class="ui error message">
+                    <h2 class="header">
+                        This article isn't published yet. Nothing to do here.
+                    </h2>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <br /><br />
+        {% if article.published %}
+        <div class="ui basic center aligned segment">
+            <form method="post" action="" class="ui form">
+                {% csrf_token %}
+                <button type="submit"  class="ui black button">
+                    <i class="checkmark icon"></i>
+                    Unpublish article
+                </button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

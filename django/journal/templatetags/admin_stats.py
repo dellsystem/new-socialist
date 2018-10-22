@@ -16,16 +16,18 @@ PUBLISHED_LABEL = '<i class="circular small checkmark icon" title="Published"></
 READY_LABEL = '<i class="circular small inverted green warning icon" title="Unpublished but ready"></i>'
 NOT_READY_LABEL = '<i class="circular small inverted red x icon" title="Unpublished and not ready"></i>'
 @register.simple_tag
-def show_article_calendar():
+def show_article_calendar(month_delta=0):
     today = datetime.datetime.today()
+    current_month = (today.month + month_delta) % 12
+    current_year = today.year + (today.month == 12)
     current_day = today.day
 
-    num_non_days, num_days = calendar.monthrange(2018, 10)
+    num_non_days, num_days = calendar.monthrange(current_year, current_month)
     non_days_html = format_html('<div class="column"></div>' * num_non_days)
     days_html = []
     for i in range(num_days):
         day = i + 1
-        date = datetime.date(today.year, today.month, day)
+        date = datetime.date(current_year, current_month, day)
         articles = Article.objects.filter(date=date)
         articles_html = []
         for article in articles:
@@ -59,24 +61,34 @@ def show_article_calendar():
                     {articles}
                 </div>
             """.format(
-                colour='highlighted ' if current_day == day else '',
+                colour='highlighted ' if current_day == day and month_delta == 0 else '',
                 day=day,
                 dow=calendar.day_name[date.weekday()][:3],
                 articles=format_html(''.join(articles_html)),
             )
         )
 
+    # If we're showing the current month, and we're nearing the end of the
+    # month, then show the next month as well.
+    if month_delta:
+        next_month = ''
+    elif current_day >= 15:
+        next_month = show_article_calendar(1)
+
     return format_html(
         """
-        <h1>Article calendar - {current_month}</h1>
+        <h2>{current_month} {current_year}</h1>
         <div class="ui celled seven column stackable grid">
             {non_days}
             {days}
         </div>
+        {next_month}
         """,
-        current_month=calendar.month_name[today.month],
+        current_year=current_year,
+        current_month=calendar.month_name[current_month],
         non_days=non_days_html,
         days=format_html(''.join(days_html)),
+        next_month=next_month,
     )
 
 

@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage article - {{ title }}{% endblock %}
+{% block date %}{{ article.date|date:"Y-m-d" }}{% endblock %}
+
+{% block longdescription %}You must logged in to view this page.{% endblock %}
+{% block description %}You must logged in to view this page.{% endblock %}
+{% block image %}{{ article.get_image_thumbnail_url }}{% endblock %}
+
+{% block pagetype %}article{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="six wide column">
+                <h1 class="ui header">
+                    {% if article.published %}
+                    Manage article
+                    {% else %}
+                    Prepare for publication
+                    {% endif %}
+                </h1>
+            </div>
+            {% include "article_buttons.html" with hide='manage' %}
+        </div>
+        <div class="ui two column middle aligned grid">
+            <div class="column">
+                {% include "article_thumb.html" with article=article %}
+            </div>
+            <div class="column">
+                {% if not article.published %}
+                <div class="ui error message">
+                    <h2 class="header">
+                        Not yet published. Go through this page to make sure this
+                        article is ready for publication.
+                    </h2>
+                </div>
+                {% else %}
+                <div class="ui success message">
+                    <h2 class="header">
+                        Already published! To see the social media share details, see
+                        the <a href="{% url 'share-article' article.slug %}">share
+                        page</a>.
+                    </h2>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <br /><br />
+        <h2 class="ui horizontal divider header">
+            1. Prepare Twitter/Facebook posts
+        </h2>
+        {% include "article_details_form.html" %}
+        <h2 class="ui horizontal divider header">
+            2. Check 
+            <a href="{{ article.get_absolute_url }}" target="_blank">article preview page</a>
+        </h2>
+        <div class="ui warning message">
+            <ul>
+                <li>
+                    <strong>Image</strong>:
+                    cropped to 1115x450. Use a Creative Commons-licensed photo
+                    and link to the credit page in the "Image credit" field.
+                    Suggestions: Flickr, Unsplash, Wikimedia Commons.
+                </li>
+                <li>
+                    <strong>Title</strong>:
+                    Either sentence case or title case.
+                </li>
+                <li>
+                    <strong>Subtitle</strong>:
+                    Sentence case, with a full stop. Do not mention the
+                    author's name. Either quote directly from the piece or
+                    write a summary.
+                </li>
+                <li>
+                    <strong>URL</strong>:
+                    Should be something like "my-article-name". The
+                    auto-suggested URL may not be very good - rewrite it
+                    if necessary, and add back stop words (like "the", "and",
+                    etc) at your discretion.
+                </li>
+                <li>
+                    <strong>Content</strong>:
+                    We use Markdown for formatting. See
+                    <a href="https://github.com/dellsystem/new-socialist/tree/master/docs#formatting">this cheat sheet</a>
+                    for details.
+                </li>
+            </ul>
+        </div>
+        <h2 class="ui horizontal divider header">
+            3. Check link previews
+        </h2>
+        <p>
+            On the left, we have previews of how the article will look when linked from
+            other pages; on the right, we have an explanation and a list of
+            things to look out for.
+        </p>
+        <div class="ui relaxed grid">
+            <div class="row">
+                <div class="eight wide column">
+                    {% include "featured_article.html" with article=article %}
+                </div>
+                <div class="eight wide column">
+                    <div class="ui warning message">
+                        <h3 class="ui header">
+                            "Featured article" preview
+                            <div class="sub header">
+                                On homepage, when it's the 1st or 6th most
+                                recent article
+                            </div>
+                        </h3>
+                        <ul>
+                            <li>
+                                <strong>Image</strong>: cropped to 530x450 via
+                                CSS. If it looks weird, change "Image background
+                                position" in the
+                                <a href="{% url 'editor:journal_article_change' article.pk %}">admin panel</a>
+                                to "left" or "right" or
+                                something like "10% 0%" for a 10% left offset.
+                            </li>
+                            <li>
+                                <strong>Title</strong>:
+                                2 lines max.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="eight wide column">
+                    {% include "article_thumb.html" with article=article %}
+                </div>
+                <div class="eight wide column">
+                    <div class="ui warning message">
+                        <h3 class="ui header">
+                            Smaller article preview
+                            <div class="sub header">
+                                On homepage (2nd-5th most recent article) +
+                                related articles
+                            </div>
+                        </h3>
+                        <ul>
+                            <li>
+                                <strong>Image</strong>: Cropped
+                                to 540x350. Looks weird? Upload
+                                a "Custom thumbnail"
+                                <a href="{% url 'editor:journal_article_change' article.pk %}">here</a>.
+                            </li>
+                            <li>
+                                <strong>Title</strong>:
+                                2 lines max.
+                            </li>
+                            <li>
+                                <strong>Description</strong>: 7 lines max.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="three column row">
+                <div class="column">
+                    {% include "article_third.html" with article=article %}
+                </div>
+                <div class="column">
+                </div>
+                <div class="column">
+                    <div class="ui warning message">
+                        <h3 class="ui header">
+                            1/3 article preview
+                            <div class="sub header">
+                                On homepage (7th-12th most recent) + various
+                                other pages
+                            </div>
+                        </h3>
+                        <ul>
+                            <li>
+                                <strong>Image</strong>:
+                                cropped to 540x350 (same as previous
+                                preview).
+                            </li>
+                            <li>
+                                <strong>Title</strong>:
+                                2 lines max.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2 class="ui horizontal divider header">
+            4. Check Twitter preview
+        </h2>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Content</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Title</strong></td>
+                    <td>{{ article.title|truncatechars:70 }}</td>
+                    {% if article.title|length > 70 %}
+                    <td class="warning">
+                        <i class="error icon"></i>
+                        <strong>Title is too long</strong> -
+                        only the first 70 chars will appear
+                        in the Twitter preview
+                    </td>
+                    {% else %}
+                    <td class="positive">
+                        <i class="checkmark icon"></i>
+                        Less than 70 chars ({{ article.title|length }})
+                    </td>
+                    {% endif %}
+                </tr>
+                {% with description=article.get_description %}
+                <tr>
+                    <td><strong>Description</strong></td>
+                    <td>
+                        {{ description|truncatechars:200 }}
+                    </td>
+                    {% if description|length > 200 %}
+                    <td class="warning">
+                        <i class="error icon"></i>
+                        <strong>Authors + description is too long</strong> -
+                        only the first 200 chars will appear
+                        in the Twitter preview
+                    </td>
+                    {% else %}
+                    <td class="positive">
+                        <i class="checkmark icon"></i>
+                        Less than 200 chars ({{ description|length }})
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endwith %}
+                <tr>
+                    <td><strong>Twitter preview image</strong></td>
+                    <td>
+                        <div class="twitter-preview-image" style="background-image: url('{{ article.get_image_thumbnail_url }}')">
+                        </div>
+                    </td>
+                    <td>
+                        It'll be automatically cropped to a 2:1 aspect ratio
+                        (540x270) along the center. If this looks weird, upload
+                        a custom thumbnail image.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            To see exactly how the card will look when shared on Twitter, use
+            <a href="https://cards-dev.twitter.com/validator" target="_blank">Twitter's card
+            validator</a>.
+        </p>
+        <h2 class="ui horizontal divider header">
+            5. Check Facebook preview
+        </h2>
+        <p>
+            Unfortunately, Facebook is less predictable about how they'll
+            display the link. You'll have to use Facebook's own debugger tool
+            for now.
+        </p>
+        <div class="ui center aligned segment">
+            <a href="https://developers.facebook.com/tools/debug/sharing/?q={{ url }}"
+               class="ui facebook icon button">
+                <i class="facebook icon"></i> Check Facebook preview
+            </a>
+        </div>
+        <h2 class="ui horizontal divider header">
+            6. Publish!
+        </h2>
+        <div class="ui center aligned segment">
+            {% if article.published %}
+            <p>
+                This article is already published. If you need to unpublish it,
+                go to the
+                <a href="{% url 'unpublish-article' article.slug %}">unpublish page</a>.
+            </p>
+            {% else %}
+            <form method="post" action="{% url 'publish-article' article.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="ui black icon button">
+                    <i class="checkmark icon"></i>
+                    Publish article
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

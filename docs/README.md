@@ -1,25 +1,24 @@
 # Article checklist
 
-* [Title](#title)
-* [Subtitle](#subtitle)
-* [Image](#image)
-* [Author](#author)
-* [Tags](#tags)
-* [Date](#date)
+* [General guidelines](#general-guidelines)
 * [Formatting](#formatting)
 * [Posting to Twitter](#posting-to-twitter)
 
 A list of things for editors (and particular the online editor) to check before making the article live.
 
-To preview an article before it's published, make sure the "Publish?" field (under the image) is untoggled (i.e., grey not blue), and click the "View on site" button (top right) on the article edit page after the article has been created:
+To preview an article before it's published, click the "View on site" button (top right) on the article edit page after the article has been created:
 
-![](article-unpublished.png)
+![](article-preview.png)
 
-You should then verify the following attributes of the article before setting it live (i.e., toggling "Publish?") . Note that the "Preview" box will only show up if you're logged in as an editor (go to /editor/ to log in).
+If you're logged in as an editor, you'll then the "Article maagement" box:
 
-![Screenshot of the article page, including the "Preview" box](article-preview.png)
+![Screenshot of the article page, including the "Article management" box](article-management.png)
 
-## Title
+Once the article is ready to go live, click the "Prepare for publication" button. That page will walk you through all the necessary steps.
+
+## General guidelines
+
+### Title
 
 The constraining factor is the design on the left, where it should never exceed 3 lines; otherwise the remaining bits will get cut off, like this:
 
@@ -29,7 +28,7 @@ This particular title, `"The sorts of areas that a party has to win": Britain's 
 
 It can be sentence case or title case, but there should not be a full stop at the end.
 
-## Subtitle
+### Subtitle
 
 Maximum of 215 characters. Ideally, 120-180. Constrained by the display on the right, where it should never exceed 7 lines. Here's how it looks when it gets to 8 lines:
 
@@ -43,7 +42,7 @@ This particular subtitle, `In the wake of the local election results how should 
 
 > In the wake of the local election results, how should strategies for local government sit in Britain's geography?
 
-## Image
+### Image
 
 This photo is decent because it looks fine in all cropped variants. Note that all the cropping happens automatically, on the server side: the large photo will get cropped to 1115x450, while the thumbnails in the preview box are 540x350 (taking the centre of the photo as the locus point). Try to choose photos that will look good when cropped.
 
@@ -57,15 +56,15 @@ will show up as
 
 > Photo: [John Smith](http://johnsmith.com)
 
-## Author
+### Author
 
 Make sure the author's name and Twitter handle are correct. If the author has provided a bio, it will show up at the bottom of the page (Markdown formatting accepted).
 
-## Tags
+### Tags
 
 Make sure the appropriate sections are added as tags. This particular article has two tags: `Theory and Strategy` and `Taking Stock`.
 
-## Date
+### Date
 
 Make sure the date is correct.
 

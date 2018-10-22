@@ -50,6 +50,10 @@ urlpatterns = [
     path('tag/<slug:slug>/', journal.views.TagView.as_view(), name='tag'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('rss/', ArticleFeed()),
-    path('<slug:slug>/', newsocialist.views.article_or_page, name='article_or_page'),
+    path('<slug:slug>/', newsocialist.views.article_or_page, name='article-or-page'),
+    path('<slug:slug>/manage', newsocialist.views.manage_article, name='manage-article'),
+    path('<slug:slug>/publish', newsocialist.views.publish_article, name='publish-article'),
+    path('<slug:slug>/share', newsocialist.views.share_article, name='share-article'),
+    path('<slug:slug>/unpublish', newsocialist.views.unpublish_article, name='unpublish-article'),
     path('<slug:slug>/amp/', newsocialist.views.article_or_page, name='amp'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,37 +5,25 @@
 {% endblock %}
 
 {% block field_sets %}
-{% include "article_checklist.html" %}
+{% include "admin/publishing_details.html" with article=adminform.form.instance %}
 {{ adminform.form.errors }}
 <div class="ui stackable grid form">
     <div class="twelve wide column">
         <div class="ui segment">
-            <div class="ui stackable grid">
-                <div class="twelve wide column">
-                    <div class="ui field">
-                        <label>
-                            Status of the piece (e.g., "waiting for author confirmation"; leave blank if ready to go)
-                        </label>
+            <div class="ui fields">
+                <div class="ui ten wide field">
+                    <label>Title - 120 characters maximum (ideally under 100)</label>
+                    <div class="ui huge fluid input">
+                    {{ adminform.form.title }}
+                    </div>
+                </div>
+                <div class="ui six wide field">
+                    <label>
+                        Status (eg "needs confirmation"; leave blank if done)
+                    </label>
+                    <div class="ui huge fluid input">
                         {{ adminform.form.editor_notes }}
                     </div>
-                </div>
-                <div class="four wide column">
-                    <div class="ui field">
-                        <label>Publish?
-                            (READ <a href="https://github.com/dellsystem/new-socialist/tree/master/docs/README.md">CHECKLIST</a>)
-                        </label>
-                        <div class="ui toggle checkbox">
-                            {{ adminform.form.published }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui segment">
-            <div class="ui field">
-                <label>Title - 120 characters maximum (ideally under 100)</label>
-                <div class="ui huge fluid input">
-                {{ adminform.form.title }}
                 </div>
             </div>
             <div class="ui field">
@@ -125,30 +113,6 @@
         </div>
     </div>
 </div>
-{% with commission=adminform.form.instance.commission %}
-{% if commission %}
-<div class="ui error message">
-    <h1 class="ui header">
-        This piece is part of an outstanding
-        <a href="{% url 'editor:journal_commission_change' commission.id %}">
-        commission
-        </a> managed by {{ commission.editor }} - delete the commission when
-        this is done!
-        <div class="sub header">
-            Last updated {{ commission.last_updated }}; scheduled for a follow up
-            on {{ commission.remind_after }}
-        </div>
-    </h1>
-    {% if commission.link %}
-        <h2 class="ui centered header">
-        <a href="{{ commission.link }}" target="_blank">
-        Google docs link
-        </a>
-        </h2>
-    {% endif %}
-</div>
-{% endif %}
-{% endwith %}
 <div class="ui segment">
     {{ adminform.form.content }}
 </div>
