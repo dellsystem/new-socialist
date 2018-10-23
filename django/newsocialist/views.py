@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -32,7 +34,11 @@ def index(request):
 
     articles = Article.objects.filter(published=True).order_by('-date').distinct()[:12]
 
+    today = datetime.date.today()
+    unpublished = Article.objects.filter(published=False, date__lte=today)
+
     context = {
+        'unpublished': unpublished,
         'articles': articles,
         'page': page,
     }
