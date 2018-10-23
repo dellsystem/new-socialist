@@ -550,3 +550,17 @@ blockquote cite::before {
     height: 270px;
     background-position: center;
 }
+
+@media only screen and (max-width: 600px) {
+    /* Otherwise it'll stretch out the table on the manage article page */
+    .twitter-preview-image {
+        width: 270px;
+        height: 135px;
+        background-size: cover;
+    }
+}
+
+/* So the section headers don't get cut off on the manage article page */
+.ui.horizontal.divider.header {
+    white-space: unset;
+}
