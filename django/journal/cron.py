@@ -6,7 +6,7 @@ from journal.emailutils import send_commission_reminder
 
 # To make this actually run, add `python manage.py runcrons` to crontab.
 class DailyCommissionUpdate(CronJobBase):
-    RUN_EVERY_MINS = 1440  # 24 hours
+    RUN_EVERY_MINS = 1400  # 24 hours
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = 'journal.daily_commission_update'
 
