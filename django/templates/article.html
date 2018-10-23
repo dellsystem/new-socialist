@@ -17,6 +17,9 @@
         <div class="article-photo print-hide"
              style="background-image: url('{{ article.get_image_url }}'); background-position: {{ article.background_position|default:"center" }}">
         </div>
+        <div class="article-photo-mobile print-hide">
+            <img src="{{ article.get_image_thumbnail_url }}" class="ui fluid image" />
+        </div>
         <br />
         <h3 class="ui header article-category">
             {% for tag in article.tags.all %}

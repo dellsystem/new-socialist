@@ -392,6 +392,9 @@ blockquote cite::before {
 .author-bio {
     font-size: 0.8em;
 }
+.article-photo-mobile {
+    display: none;
+}
 
 @media only screen and (max-width: 767px) {
     /* Otherwise it might be too big and cause overflow */
@@ -446,6 +449,12 @@ blockquote cite::before {
     }
     .article-third .article-title a {
         position: static;
+    }
+    .article-photo {
+        display: none;
+    }
+    .article-photo-mobile {
+        display: block;
     }
 }
 
