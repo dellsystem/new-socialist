@@ -52,23 +52,5 @@
             </div>
         {% endfor %}
         </div>
-        <br />
-        <hr />
-        <br />
-        <h1>Other contributors</h1>
-        <br />
-        <div class="ui three column stackable grid">
-        {% for title, editor in other_contributors %}
-            <div class="column">
-                <h2 class="ui header">
-                    {{ title }}
-                    <div class="sub header">
-                        <a href="{{ editor.get_absolute_url }}">{{ editor.name }}</a>
-                        {% if editor.twitter %}
-                        (<a href="https://twitter.com/{{ editor.twitter }}">@{{ editor.twitter }}</a>){% endif %}
-                    </div>
-                </h2>
-            </div>
-        {% endfor %}
     </div>
 {% endblock %}

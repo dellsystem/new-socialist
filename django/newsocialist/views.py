@@ -192,18 +192,15 @@ def editors(request):
         ('General Editor', Author.objects.get(slug='tom')),
         ("Readers' Editor", Author.objects.get(slug='jude')),
         ("Contributing Editor", Author.objects.get(slug='daniel')),
-    ]
-    other_contributors = [
+        ('Contributing Editor', Author.objects.get(slug='josie-moore')),
         ('Design', Author.objects.get(slug='tom-munday')),
         ('Web', Author.objects.get(slug='joe-corcoran')),
-        ('Editing', Author.objects.get(slug='josie-moore')),
     ]
 
     context = {
         'page': page,
         'sections': sections,
         'general_editors': general_editors,
-        'other_contributors': other_contributors,
     }
 
     return render(request, 'editors.html', context)
