@@ -190,6 +190,7 @@ def editors(request):
     other_contributors = [
         ('Design', Author.objects.get(slug='tom-munday')),
         ('Web', Author.objects.get(slug='joe-corcoran')),
+        ('Editing', Author.objects.get(slug='josie-moore')),
     ]
 
     context = {
