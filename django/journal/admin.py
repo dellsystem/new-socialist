@@ -53,7 +53,7 @@ class AuthorAdmin(CompareVersionAdmin):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = models.Article
-        fields = '__all__'
+        exclude = ['published']
         widgets = {
             'image_credit': forms.Textarea(attrs={'rows': 2}),
             'tags': forms.SelectMultiple(
