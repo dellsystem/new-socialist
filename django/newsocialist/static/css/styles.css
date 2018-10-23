@@ -392,6 +392,9 @@ blockquote cite::before {
 .author-bio {
     font-size: 0.8em;
 }
+.article-photo-mobile {
+    display: none;
+}
 
 @media only screen and (max-width: 767px) {
     /* Otherwise it might be too big and cause overflow */
@@ -446,6 +449,12 @@ blockquote cite::before {
     }
     .article-third .article-title a {
         position: static;
+    }
+    .article-photo {
+        display: none;
+    }
+    .article-photo-mobile {
+        display: block;
     }
 }
 
@@ -540,4 +549,18 @@ blockquote cite::before {
     width: 540px;
     height: 270px;
     background-position: center;
+}
+
+@media only screen and (max-width: 600px) {
+    /* Otherwise it'll stretch out the table on the manage article page */
+    .twitter-preview-image {
+        width: 270px;
+        height: 135px;
+        background-size: cover;
+    }
+}
+
+/* So the section headers don't get cut off on the manage article page */
+.ui.horizontal.divider.header {
+    white-space: unset;
 }
