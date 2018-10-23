@@ -8,6 +8,43 @@
 {% block content %}
 <article class="page-content">
     <div class="ui container">
+        {% if request.user.is_staff %}
+        <div class="ui {% if unpublished.count %}warning{% else %}green{% endif %} message">
+            <div class="ui grid">
+                <div class="ten wide column">
+                    <h3 class="ui header">
+                        Welcome, {{ request.user.first_name }}
+                        <div class="sub header">
+                            {{ unpublished.count }}
+                            article{{ unpublished.count|pluralize }}
+                            waiting to be published today
+                        </div>
+                    </h3>
+                    <p>
+                </div>
+                <div class="six wide right aligned column">
+                    <a class="ui large blue button" href="{% url 'editor:index' %}">
+                        Admin panel
+                    </a>
+                </div>
+            </div>
+            {% if unpublished.count %}
+            <ul>
+                {% for u in unpublished %}
+                <li>
+                    <strong>{{ u.title }}</strong>
+                    in
+                    {% for tag in u.tags.all %}
+                    <div class="ui {{ tag.colour }} label">{{ tag.short_name|default:tag.name}}</div>
+                    {% endfor %}
+                    (<a href="{% url 'editor:journal_article_change' u.pk %}">Edit</a>)
+                    (<a href="{{ u.get_absolute_url }}">Preview</a>)
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endif %}
         <div class="ui two column computer mobile only relaxed middle aligned stackable grid">
             {% include "featured_article.html" with article=articles.0 %}
             <div class="column">
