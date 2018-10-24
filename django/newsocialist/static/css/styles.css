@@ -397,6 +397,11 @@ blockquote cite::before {
 }
 
 @media only screen and (max-width: 767px) {
+    /* So the "manage article" page section headers aren't cut off on mobile */
+    .ui.horizontal.divider.header {
+        white-space: unset;
+    }
+
     /* Otherwise it might be too big and cause overflow */
     h1.article-title.ui.header {
         font-size: 1.7rem;
@@ -558,9 +563,4 @@ blockquote cite::before {
         height: 135px;
         background-size: cover;
     }
-}
-
-/* So the section headers don't get cut off on the manage article page */
-.ui.horizontal.divider.header {
-    white-space: unset;
 }
