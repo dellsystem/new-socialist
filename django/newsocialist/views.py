@@ -115,6 +115,10 @@ def publish_article(request, slug):
         article.published = True
         article.save()
 
+    # Delete the commission if there is one.
+    if hasattr(article, 'commission') and article.commission is not None:
+        article.commission.delete()
+
     return redirect('share-article', slug=article.slug)
 
 
