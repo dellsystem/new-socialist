@@ -70,9 +70,8 @@ def show_article_calendar(month_delta=0):
 
     # If we're showing the current month, and we're nearing the end of the
     # month, then show the next month as well.
-    if month_delta:
-        next_month = ''
-    elif current_day >= 15:
+    next_month = ''
+    if not month_delta and current_day >= 15:
         next_month = show_article_calendar(1)
 
     return format_html(
