@@ -19,6 +19,8 @@ NOT_READY_LABEL = '<i class="circular small inverted red x icon" title="Unpublis
 def show_article_calendar(month_delta=0):
     today = datetime.datetime.today()
     current_month = (today.month + month_delta) % 12
+    if current_month == 0:
+        current_month = 12
     current_year = today.year + (today.month == 12)
     current_day = today.day
 
