@@ -455,7 +455,7 @@ blockquote cite::before {
     .article-third .article-title a {
         position: static;
     }
-    .article-photo {
+    .article-photo-desktop {
         display: none;
     }
     .article-photo-mobile {
