@@ -10,7 +10,7 @@
     <div class="ui container">
         {% if request.user.is_staff %}
         <div class="ui {% if unpublished.count %}warning{% else %}green{% endif %} message">
-            <div class="ui grid">
+            <div class="ui stackable grid">
                 <div class="ten wide column">
                     <h3 class="ui header">
                         Welcome, {{ request.user.first_name }}
