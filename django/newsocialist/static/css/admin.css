@@ -47,3 +47,7 @@ div.breadcrumbs {
 .highlighted.column {
     background: #ffdba8;
 }
+
+.calendar  a.article {
+    word-break: break-word;
+}

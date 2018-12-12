@@ -46,7 +46,7 @@ def show_article_calendar(month_delta=0):
                     status_label = READY_LABEL
 
             articles_html.append(
-                '<div><a href="{url}" title="{full_title} by {authors}">{title}</a><br />{male_label}{status_label}</div>'.format(
+                '<div><a class="article" href="{url}" title="{full_title} by {authors}">{title}</a><br />{male_label}{status_label}</div>'.format(
                     full_title=article.title,
                     authors=', '.join(a.name for a in article.authors.all()),
                     title=title,
@@ -79,7 +79,7 @@ def show_article_calendar(month_delta=0):
     return format_html(
         """
         <h2>{current_month} {current_year}</h1>
-        <div class="ui celled seven column stackable grid">
+        <div class="ui celled seven column stackable grid calendar">
             {non_days}
             {days}
         </div>
