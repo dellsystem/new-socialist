@@ -21,7 +21,7 @@ def show_article_calendar(month_delta=0):
     current_month = (today.month + month_delta) % 12
     if current_month == 0:
         current_month = 12
-    current_year = today.year + (today.month == 12)
+    current_year = today.year + (today.month + month_delta == 13)
     current_day = today.day
 
     num_non_days, num_days = calendar.monthrange(current_year, current_month)
@@ -73,7 +73,7 @@ def show_article_calendar(month_delta=0):
     # If we're showing the current month, and we're nearing the end of the
     # month, then show the next month as well.
     next_month = ''
-    if not month_delta and current_day >= 15:
+    if not month_delta and current_day >= 12:
         next_month = show_article_calendar(1)
 
     return format_html(
