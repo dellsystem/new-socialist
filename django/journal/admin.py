@@ -96,6 +96,7 @@ class ArticleAdmin(CompareVersionAdmin):
     actions = [make_published]
     form = ArticleForm
     list_display_links = None
+    ordering = ['published', '-date']
 
     def changelist_view(self, request, extra_context=None):
         extra_context = {'title': 'Published and unpublished articles'}
