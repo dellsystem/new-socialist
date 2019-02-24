@@ -25,7 +25,7 @@
                         {{ author.name }}
                     </a>
                     <div class="sub header">
-                        {% with count=author.articles.count %}
+                        {% with count=author.get_articles.count %}
                         {{ count }} article{{ count|pluralize }}
                         {% endwith %}
                     </div>
