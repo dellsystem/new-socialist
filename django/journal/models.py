@@ -19,7 +19,10 @@ class Author(models.Model):
     formatted_bio = models.TextField(editable=False)
     twitter = models.CharField(max_length=15, blank=True, null=True,
         help_text='Username (without the @)')
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(
+        unique=True,
+        help_text="Please do not change this after the author is live."
+    )
     is_male = models.BooleanField(default=True)
 
     def __str__(self):
