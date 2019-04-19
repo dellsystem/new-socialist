@@ -32,14 +32,22 @@ def archives(request, number):
 def index(request):
     page = Page.objects.get(slug='')
 
-    articles = Article.objects.filter(published=True).order_by('-date').distinct()[:12]
+    articles = Article.objects.filter(
+        published=True
+    ).order_by(
+        '-date'
+    ).distinct(
+    ).prefetch_related(
+        'authors', 'tags'
+    )[:12]
 
     today = datetime.date.today()
     unpublished = Article.objects.filter(published=False, date__lte=today)
 
     context = {
         'unpublished': unpublished,
-        'articles': articles,
+        # Converting the QuerySet -> list makes prefetch_related work. idk why
+        'articles': [article for article in articles],
         'page': page,
     }
 
