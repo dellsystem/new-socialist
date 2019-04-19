@@ -204,7 +204,7 @@ def editors(request):
         ('General Editor', Author.objects.get(slug='tom')),
         ("Readers' Editor", Author.objects.get(slug='jude')),
         ("Contributing Editor", Author.objects.get(slug='daniel')),
-        ('Contributing Editor', Author.objects.get(slug='josie-moore')),
+        ('Contributing Editor', Author.objects.get(slug='josie')),
         ('Design', Author.objects.get(slug='tom-munday')),
         ('Web', Author.objects.get(slug='joe-corcoran')),
     ]
