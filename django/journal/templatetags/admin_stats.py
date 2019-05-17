@@ -109,7 +109,10 @@ def show_article_stats():
 
     scheduled = Article.objects.filter(published=False)
     male_scheduled_count = len([a for a in scheduled if a.is_all_male()])
-    male_scheduled_percent = int(male_scheduled_count / scheduled.count() * 100)
+    if scheduled.exists():
+        male_scheduled_percent = int(male_scheduled_count / scheduled.count() * 100)
+    else:
+        male_scheduled_percent = 0
 
     return format_html(
         """
