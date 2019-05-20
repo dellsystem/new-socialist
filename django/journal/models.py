@@ -72,6 +72,9 @@ class Tag(models.Model):
         else:
             return '/static/img/banner.png'
 
+    def get_editors(self):
+        return self.editors.filter(is_public=True)
+
     def get_articles(self):
         return self.articles.filter(published=True)
 
@@ -103,10 +106,13 @@ class Editor(models.Model):
         default=False,
         help_text='Will have the ability to approve articles + gets email reminders'
     )
+    is_public = models.BooleanField(
+        default=True,
+        help_text="Uncheck to hide from the editors page."
+    )
 
     def __str__(self):
         return self.author.name
-
 
     def get_overdue_commissions(self):
         return self.commissions.filter(remind_after__lte=datetime.date.today())

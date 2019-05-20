@@ -40,7 +40,7 @@
                     </div>
                 </h2>
                 <div class="ui list">
-                    {% for editor in section.editors.all %}
+                    {% for editor in section.get_editors %}
                     <div class="item">
                         <a href="{{ editor.author.get_absolute_url }}">{{ editor.author.name }}</a>
                         {% if editor.author.twitter %}
