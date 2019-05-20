@@ -77,7 +77,7 @@
                 href="mailto:{{ tag.email }}" class="email-address">{{ tag.email }}</a>
                 <div class="sub header">
                     Editors:
-                    {% for editor in tag.editors.all %}
+                    {% for editor in tag.get_editors %}
                     <a href="{{ editor.author.get_absolute_url }}">{{ editor.author.name }}</a>
                     {% if editor.author.twitter %}
                     (<a href="https://twitter.com/{{ editor.author.twitter }}">@{{ editor.author.twitter }}</a> on Twitter){% endif %}{% if not forloop.last %} and {% endif %}{% endfor %}.
