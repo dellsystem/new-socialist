@@ -188,10 +188,12 @@ MARTOR_MARKDOWN_EXTENSIONS = [
     # Custom markdown extensions.
     'newsocialist.extensions.interview',
     'uploads.extensions.embed',
+    'newsocialist.extensions.divider',
     #'martor.extensions.urlize',
-    'martor.extensions.del_ins', # ~~strikethrough~~ and ++underscores++
-    'martor.extensions.mention', # require for mention
-    'martor.extensions.emoji',   # require for emoji
+    'ocxsect',
+    #'martor.extensions.del_ins', # ~~strikethrough~~ and ++underscores++
+    #'martor.extensions.mention', # require for mention
+    #'martor.extensions.emoji',   # require for emoji
 ]
 
 # Markdown Extensions Configs
