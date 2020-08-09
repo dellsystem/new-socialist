@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block twittercard %}summary{% endblock %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+{% block description %}{{ tag.description }}{% endblock %}
+{% block longdescription %}{{ tag.formatted_content|striptags|truncatechars:500 }}{% endblock %}
+
+{% block image %}{{ tag.get_image_url }}{% endblock %}
+
+{% block content %}
+<div class="ui container">
+    <h3 class="section-header">articles</h3>
+    <div class="three column stackable grid">
+        {% for article in object_list %}
+        <div class="column">
+            <h3 class="ui header article-title">
+                <a href="{{ article.get_absolute_url }}">
+                    {{ article.title }}
+                </a>
+            </h3>
+            <p>
+                {% if article.authors.count %}
+                by {% for author in article.authors.all %}
+                    <strong><a href="{{ author.get_absolute_url }}">{{ author.name }}</a>{% if author.twitter %} (<a href="https://twitter.com/{{ author.twitter }}">@{{ author.twitter }}</a>){% endif %}</strong>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                {% else %}
+                by anonymous
+                {% endif %}
+                on {{ article.date|date:"F j, Y" }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -7,20 +7,13 @@
 
 {% block description %}{{ article.get_description }}{% endblock %}
 
-{% block image %}{{ article.get_image_thumbnail_url }}{% endblock %}
-
 {% block pagetype %}article{% endblock %}
+
+{% load readtime_filter %}
 
 {% block content %}
 <article class="page-content" id="article-top">
     <div class="ui container">
-        <div class="article-photo article-photo-desktop print-hide"
-             style="background-image: url('{{ article.get_image_url }}'); background-position: {{ article.background_position|default:"center" }}">
-        </div>
-        <div class="article-photo-mobile print-hide">
-            <img src="{{ article.get_image_thumbnail_url }}" class="ui fluid image" />
-        </div>
-        <br />
         <h3 class="ui header article-category">
             {% for tag in article.tags.all %}
             <a href="{{ tag.get_absolute_url }}">
@@ -41,14 +34,6 @@
                 by anonymous
                 {% endif %}
                 on {{ article.date|date:"F j, Y" }}
-                {% if article.edition %}
-                in
-                <strong>
-                <a href="{{ article.edition.get_absolute_url }}">
-                    {{ article.edition.title }} ({{ article.edition.date|date:"F Y" }})
-                </a>
-                </strong>
-                {% endif %}
             </div>
         </h1>
         {% if not article.published %}
@@ -59,8 +44,36 @@
             <p>This article won't show up elsewhere on the website yet.</p>
         </div>
         {% endif %}
+        <h2>reading time {{ unformatted | readtime }}</h2>
         {% if request.user.is_staff %}
-        {% include 'article_manage_banner.html' with article=article url=request.build_absolute_uri|urlencode only %}
+       <div class="ui black segment print-hide">
+            <h2 class="ui header">
+                Transmission management
+                <div class="sub header">
+                    {{ article.get_word_count }} words
+                </div>
+            </h2>
+            <div class="ui centered doubling three column grid">
+                <div class="column">
+                    <a href="{% url 'editor:transmissions_article_change' article.pk %}"
+                       class="ui fluid blue icon button">
+                        <i class="edit icon"></i>Edit transmission
+                    </a>
+                </div>
+                <div class="column">
+                    <a href="https://cards-dev.twitter.com/validator"
+                       class="ui fluid twitter icon button">
+                        <i class="twitter icon"></i>Refresh Twitter preview
+                    </a>
+                </div>
+                <div class="column">
+                    <a href="https://developers.facebook.com/tools/debug/sharing/?q={{ request.build_absolute_uri|urlencode }}"
+                       class="ui fluid facebook icon button">
+                        <i class="facebook icon"></i>Refresh FB preview
+                    </a>
+                </div>
+            </div>
+        </div>
         {% endif %}
         {% if languages %}
         <div id="article-lead" class="print-hide">
@@ -98,15 +111,6 @@
                         <i class="print icon"></i>
                     </a>
                 </div>
-                <div class="right aligned twelve wide column">
-                    {% if article.formatted_image_credit %}
-                        <h4 class="ui header">
-                            <div class="sub header">
-                                <em>{{ article.formatted_image_credit|safe }}</em>
-                            </div>
-                        </h4>
-                    {% endif %}
-                </div>
             </div>
         </div>
         <br />
@@ -133,28 +137,5 @@
         {% endwith %}
     </div>
     {% include 'patreon.html' %}
-    <div class="ui container">
-        {% with related=article.get_related %}
-        {% if related %}
-        <div class="section print-hide" id="article-related">
-            <h3 class="section-header">related</h3>
-            <div class="ui two column computer mobile only stackable grid">
-                {% for related_article in related %}
-                <div class="column">
-                {% include 'article_thumb.html' with article=related_article only %}
-                </div>
-                {% endfor %}
-            </div>
-            <div class="ui two column tablet only grid">
-                {% for related_article in related %}
-                <div class="column">
-                {% include 'article_third.html' with article=related_article only %}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-        {% endwith %}
-    </div>
 </article>
 {% endblock %}

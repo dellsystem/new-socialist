@@ -1,0 +1,56 @@
+{% extends "admin/change_form.html" %}
+
+{% block content_title %}
+<h1>
+    {% if article.slug %}Edit{% else %}Add{% endif %} transmission
+</h1>
+{% endblock %}
+
+{% load i18n static %}
+{% block extrastyle %}
+{% endblock %}
+
+{% block field_sets %}
+{{ adminform.form.errors }}
+<div class="ui form">
+    <div class="ui segment">
+        <div class="ui field">
+            <label>Title - 120 characters maximum (ideally under 100)</label>
+            <div class="ui huge fluid input">
+            {{ adminform.form.title }}
+            </div>
+        </div>
+        <div class="ui field">
+            <label>Subtitle (this is what shows up in social media
+            previews) - 215 characters maximum (ideally 120-180)</label>
+            <div class="ui huge fluid input">
+            {{ adminform.form.subtitle }}
+            </div>
+        </div>
+        <div class="ui field">
+            <label>URL (automatically generated from the title)</label>
+            <div class="ui huge searchable fluid input">
+            {{ adminform.form.slug }}
+            </div>
+        </div>
+        <div class="ui fields">
+            <div class="ui ten wide field">
+                <label>Authors (leave empty if anonymous)</label>
+                {{ adminform.form.authors }}
+            </div>
+            <div class="ui four wide field">
+                <label>Date</label>
+                {{ adminform.form.date }}
+            </div>
+            <div class="ui two wide field">
+                <label>Published?</label>
+                <div class="ui toggle checkbox">
+                    {{ adminform.form.published }}
+                </div>
+            </div>
+    </div>
+</div>
+<div class="ui segment">
+    {{ adminform.form.content }}
+</div>
+{% endblock %}

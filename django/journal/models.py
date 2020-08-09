@@ -1,3 +1,4 @@
+import collections
 import operator
 import datetime
 
@@ -65,6 +66,10 @@ class Tag(models.Model):
         options={'quality': 100},
         blank=True
     )
+    order_in_edition = models.PositiveSmallIntegerField(
+        blank=True, null=True,
+        help_text="For tags associated with editions, set this to the order in which the tag should appear."
+    )
 
     def get_image_url(self):
         if self.image:
@@ -119,18 +124,45 @@ class Editor(models.Model):
 
 
 
-class Issue(models.Model):
+class Edition(models.Model):
     title = models.CharField(max_length=50)
     date = models.DateField(help_text='Day ignored')
+    slug = models.SlugField(max_length=100, unique=True)
     image = ProcessedImageField(
-        upload_to='issues',
+        upload_to='editions',
         processors=[ResizeToFill(1920, 450)],
         options={'quality': 100},
         blank=True
     )
+    published = models.BooleanField(default=False)
+    
+    class Meta:
+        get_latest_by = 'date'
+
+    def get_articles_by_tag(self):
+        # Show only tags that have something in the order_in_edition field. If there are multiple such tags, add this article to both.
+        tag_data = {}
+
+        for article in self.articles.prefetch_related('tags').all():
+            for tag in article.tags.filter(order_in_edition__isnull=False):
+                if tag.pk not in tag_data:
+                    tag_data[tag.pk] = {
+                        'name': tag.name,
+                        'order': tag.order_in_edition,
+                        'articles': [article],
+                    }
+                else:
+                    tag_data[tag.pk]['articles'].append(article)
+
+        sorted_tag_data = sorted(tag_data.values(), key=lambda v: v['order'])
+        articles_by_tag = [(x['name'], x['articles']) for x in sorted_tag_data]
+        return articles_by_tag
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('view-edition', args=[self.slug])
 
 
 class Article(models.Model):
@@ -145,7 +177,7 @@ class Article(models.Model):
     # Store the formatted_content field with all tags removed (for related)
     unformatted_content = models.TextField(editable=False)
     date = models.DateField()
-    issue = models.ForeignKey(Issue, related_name='articles', null=True,
+    edition = models.ForeignKey(Edition, related_name='articles', null=True,
         blank=True, on_delete=models.CASCADE)
     editor_notes = models.CharField(max_length=255, blank=True)
     image = ProcessedImageField(

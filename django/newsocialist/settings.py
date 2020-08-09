@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'cms',
     'uploads',
     'django_cron',
+    'transmissions',
 ]
 ADD_REVERSION_ADMIN = True
 

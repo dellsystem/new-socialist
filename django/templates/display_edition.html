@@ -1,0 +1,23 @@
+<div class="edition-{{ edition.slug }}">
+    <h1 class="ui header">
+        {{ edition.title }}
+        <div class="sub header">
+          {{ edition.date|date:"F Y" }}
+      </div>
+    </h1>
+    {% if edition.image %}
+    <img src="{{ edition.image.url }}" class="ui large image" />
+    {% endif %}
+    <br /><br />
+
+    {% for tag, articles in edition.get_articles_by_tag %}
+        <h2>{{ tag }}</h2>
+        <hr />
+        {% for article in articles %}
+            <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></p>
+            {% if article.image %}
+            <img src="{{ article.image.url }}" class="ui medium image" />
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>

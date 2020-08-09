@@ -6,41 +6,16 @@
             <a href="{% url 'unpublish-article' article.slug %}">click here</a>
         </h2>
     </div>
-{% else %}
-<div class="ui grid">
+{% elif article.slug %}
+<div class="ui grid" style="clear: both">
     <div class="twelve wide column">
-        {% with commission=article.commission %}
-        {% if commission %}
-            <div class="ui warning message">
-                <h2 class="ui header">
-                    Commissioned by {{ commission.editor }}.
-                    <a href="{{ commission.link }}" target="_blank">
-                    View draft document
-                    </a>
-                    /
-                    <a href="{% url 'editor:journal_commission_change' commission.id %}">
-                    View commission
-                    </a>
-                    <div class="sub header">
-                        Last updated {{ commission.last_updated }}; scheduled for a follow up
-                        on {{ commission.remind_after }}
-                    </div>
-                </h2>
-                {% if commission.link %}
-                    <h2 class="ui centered header">
-                    </h2>
-                {% endif %}
-            </div>
-        {% else %}
-            <div class="ui warning message">
-                <h2 class="ui header">
-                    Is the piece ready to go? If so, click the green button on
-                    the right to publish
-                    (make sure to <a href="{{ article.get_absolute_url }}">preview it first</a>)
-                </h2>
-            </div>
-        {% endif %}
-        {% endwith %}
+        <div class="ui warning message">
+            <h2 class="ui header">
+                Is the piece ready to go? If so, click the green button on
+                the right to publish
+                (make sure to <a href="{{ article.get_absolute_url }}">preview it first</a>)
+            </h2>
+        </div>
     </div>
     <div class="four wide column">
         <a class="ui fluid massive green icon button"

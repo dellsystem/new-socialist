@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 
-from .models import Article, Tag, Author, Issue
+from .models import Article, Tag, Author, Edition
 
 
 class TagView(generic.DetailView):
@@ -19,6 +19,11 @@ class AuthorView(generic.DetailView):
     template_name = 'author.html'
 
 
-class IssueView(generic.DetailView):
-    model = Issue
-    template_name = 'issue.html'
+class EditionListView(generic.ListView):
+    model = Edition
+    template_name = 'view_editions.html'
+
+
+class EditionView(generic.DetailView):
+    model = Edition
+    template_name = 'view_edition.html'

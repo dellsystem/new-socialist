@@ -30,15 +30,7 @@
     <br />
     <div class="ui segment">
         <h2 class="ui center aligned header">Other website management</h2>
-        <div class="ui five column doubling grid">
-            <div class="column">
-                <h3 class="ui icon center aligned header">
-                    <i class="money icon"></i>
-                    <a href="{% url 'editor:journal_commission_changelist' %}">
-                        Commissions
-                    </a>
-                </h3>
-            </div>
+        <div class="ui six column doubling grid">
             <div class="column">
                 <h3 class="ui icon center aligned header">
                     <i class="archive icon"></i>
@@ -68,6 +60,22 @@
                     <i class="image outline icon"></i>
                     <a href="{% url 'editor:uploads_imageupload_changelist' %}">
                         Images
+                    </a>
+                </h3>
+            </div>
+            <div class="column">
+                <h3 class="ui icon center aligned header">
+                    <i class="image podcast icon"></i>
+                    <a href="{% url 'editor:transmissions_article_changelist' %}">
+                        Transmissions
+                    </a>
+                </h3>
+            </div>
+            <div class="column">
+                <h3 class="ui icon center aligned header">
+                    <i class="image archive icon"></i>
+                    <a href="{% url 'editor:journal_edition_changelist' %}">
+                        Editions
                     </a>
                 </h3>
             </div>

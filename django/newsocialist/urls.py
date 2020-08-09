@@ -22,6 +22,7 @@ from django.contrib.sitemaps.views import sitemap
 import journal.views
 import newsocialist.views
 import cms.views
+import transmissions.views
 from newsocialist.admin import editor_site
 from journal.feeds import ArticleFeed
 from journal.sitemaps import *
@@ -50,6 +51,10 @@ urlpatterns = [
     path('tag/<slug:slug>/', journal.views.TagView.as_view(), name='tag'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('rss/', ArticleFeed()),
+    path('editions/', journal.views.EditionListView.as_view(), name='view-editions'),
+    path('editions/<slug:slug>/', journal.views.EditionView.as_view(), name='view-edition'),
+    path('transmissions/', transmissions.views.ListView.as_view(), name='view-transmissions'),
+    path('transmissions/<slug:slug>/', transmissions.views.view_transmission, name='view-transmission'),
     path('<slug:slug>/', newsocialist.views.article_or_page, name='article-or-page'),
     path('<slug:slug>/manage', newsocialist.views.manage_article, name='manage-article'),
     path('<slug:slug>/publish', newsocialist.views.publish_article, name='publish-article'),

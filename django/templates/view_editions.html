@@ -1,0 +1,14 @@
+{% extends 'page.html' %}
+
+{% block title %}Edition archives{% endblock %}
+{% block twittercard %}summary{% endblock %}
+
+{% block content %}
+<article class="page-content">
+    <div class="ui container">
+        {% for edition in object_list %}
+        <h2><a href="{{ edition.get_absolute_url }}">{{ edition.title }}</a></h2>
+        {% endfor %}
+    </div>
+</article>
+{% endblock %}

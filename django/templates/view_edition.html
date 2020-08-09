@@ -1,0 +1,13 @@
+{% extends 'page.html' %}
+
+{% block title %}{{ edition.title }}{% endblock %}
+{% block description %}Edition from {{ edition.date|date:"F Y" }}{% endblock %}
+{% block twittercard %}summary{% endblock %}
+
+{% block content %}
+<article class="page-content">
+    <div class="ui container">
+        {% include "display_edition.html" with edition=object only %}
+    </div>
+</article>
+{% endblock %}

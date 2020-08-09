@@ -13,12 +13,13 @@ from newsocialist.admin import editor_site
 from . import models
 
 
-class IssueAdmin(CompareVersionAdmin):
-    list_display = ['title', 'date']
+class EditionAdmin(CompareVersionAdmin):
+    list_display = ['title', 'slug', 'date', 'published']
+    prepopulated_fields = {'slug': ('title',)}
 
 
 class TagAdmin(CompareVersionAdmin):
-    list_display = ['name', 'display_label', 'slug', 'list_editors', 'get_article_count']
+    list_display = ['name', 'display_label', 'slug', 'order_in_edition', 'list_editors', 'get_article_count']
     prepopulated_fields = {'slug': ('name',)}
 
     def get_article_count(self, obj):
@@ -32,12 +33,14 @@ class TagAdmin(CompareVersionAdmin):
                 t=obj.short_name or obj.name
             )
         )
+    display_label.short_description = 'Display'
 
     def list_editors(self, obj):
         if obj.editors.count():
             return ', '.join(e.author.name for e in obj.editors.all())
         else:
             return '--'
+    list_editors.short_description = 'Editor(s)'
 
 
 class AuthorAdmin(CompareVersionAdmin):
@@ -86,10 +89,10 @@ make_published.short_description = 'Mark selected articles as published'
 
 
 class ArticleAdmin(CompareVersionAdmin):
-    list_display = ['display_title', 'date', 'show_image', 'list_authors',
+    list_display = ['display_title', 'date', 'edition', 'show_image', 'list_authors',
         'list_tags', 'get_word_count','published']
     readonly_fields = ['image_thumbnail']
-    list_filter = ['tags', 'published']
+    list_filter = ['tags', 'edition', 'published']
     search_fields = ['title', 'authors__name']
     prepopulated_fields = {'slug': ('title',)}
     change_form_template = 'admin/edit_article.html'
@@ -289,14 +292,14 @@ class EditorAdmin(CompareVersionAdmin):
     list_filter = ['section']
 
 
-editor_site.register(models.Issue, IssueAdmin)
+editor_site.register(models.Edition, EditionAdmin)
 editor_site.register(models.Article, ArticleAdmin)
 editor_site.register(models.ArticleTranslation, ArticleTranslationAdmin)
 editor_site.register(models.Author, AuthorAdmin)
 editor_site.register(models.Tag, TagAdmin)
 editor_site.register(models.Commission, CommissionAdmin)
 
-admin.site.register(models.Issue, IssueAdmin)
+admin.site.register(models.Edition, EditionAdmin)
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.ArticleTranslation, ArticleTranslationAdmin)
 admin.site.register(models.Author, AuthorAdmin)

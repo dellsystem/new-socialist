@@ -9,12 +9,12 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from journal.forms import ArticleDetailsForm
-from journal.models import Article, ArticleDetails, Author, Tag
+from journal.models import Article, ArticleDetails, Author, Tag, Edition
 from cms.models import Page
 
 
 def archives(request, number):
-    all_articles = Article.objects.filter(published=True).order_by('-date')
+    all_articles = Article.objects.filter(published=True, edition__isnull=True).order_by('-date')
     paginator = Paginator(all_articles, 6)
     articles = paginator.get_page(number)
     sections = Tag.objects.exclude(editors=None).order_by('name')
@@ -32,22 +32,10 @@ def archives(request, number):
 def index(request):
     page = Page.objects.get(slug='')
 
-    articles = Article.objects.filter(
-        published=True
-    ).order_by(
-        '-date'
-    ).distinct(
-    ).prefetch_related(
-        'authors', 'tags'
-    )[:12]
-
-    today = datetime.date.today()
-    unpublished = Article.objects.filter(published=False, date__lte=today)
+    latest_edition = Edition.objects.filter(published=True).latest()
 
     context = {
-        'unpublished': unpublished,
-        # Converting the QuerySet -> list makes prefetch_related work. idk why
-        'articles': [article for article in articles],
+        'latest_edition': latest_edition,
         'page': page,
     }
 
